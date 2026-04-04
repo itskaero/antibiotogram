@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Antibiotic Spectrum Reference</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #050912;
+    --surface: #0c1428;
+    --surface2: #111d35;
+    --border: #1e3058;
+    --text: #c8d8f0;
+    --text-dim: #5a7aa0;
+    --text-bright: #e8f2ff;
+    --accent: #00c8ff;
+    --accent2: #7b5ea7;
+
+    --full: #00e676;
+    --partial: #ffb300;
+    --none: #1e3058;
+    --none-text: #2a4070;
+    --variable: #ff7043;
+    --combo: #29b6f6;
+    --vitro: #ab47bc;
+
+    --gpos: #ff6b9d;
+    --gneg: #4dd0e1;
+    --anaerobe: #a5d6a7;
+    --atypical: #ffe082;
+    --mdr: #ff5252;
+    --new-mdr: #ff1744;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    min-height: 100vh;
+    overflow-x: auto;
+  }
+
+  /* HEADER */
+  .header {
+    padding: 28px 32px 20px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(135deg, #050912 0%, #0a1830 100%);
+    position: relative;
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  }
+  .header-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .title-block h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--text-bright);
+    letter-spacing: -0.5px;
+  }
+  .title-block .subtitle {
+    font-size: 10px;
+    color: var(--text-dim);
+    margin-top: 3px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+  .header-badges {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .badge {
+    padding: 3px 10px;
+    border-radius: 3px;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .badge-alert { background: #ff174420; color: #ff6b6b; border: 1px solid #ff174440; }
+  .badge-new { background: #00e67620; color: #00e676; border: 1px solid #00e67640; }
+  .badge-year { background: #00c8ff15; color: var(--accent); border: 1px solid #00c8ff30; }
+
+  /* FILTER BAR */
+  .filter-bar {
+    padding: 12px 32px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+    background: var(--surface);
+  }
+  .filter-label {
+    font-size: 9px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-right: 4px;
+  }
+  .filter-btn {
+    padding: 4px 10px;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-dim);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    cursor: pointer;
+    transition: all 0.15s;
+    letter-spacing: 0.5px;
+  }
+  .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .filter-btn.active { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 700; }
+  .filter-btn.gpos { --c: var(--gpos); }
+  .filter-btn.gneg { --c: var(--gneg); }
+  .filter-btn.mdr  { --c: var(--mdr); }
+  .filter-btn.gpos.active { background: var(--gpos); border-color: var(--gpos); }
+  .filter-btn.gneg.active { background: var(--gneg); border-color: var(--gneg); color: #000; }
+  .filter-btn.mdr.active  { background: var(--mdr);  border-color: var(--mdr); }
+
+  /* LEGEND */
+  .legend {
+    padding: 14px 32px;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .legend-section {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .legend-title {
+    font-size: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-dim);
+    margin-bottom: 2px;
+    font-weight: 700;
+  }
+  .legend-items {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 9.5px;
+    color: var(--text);
+  }
+  .dot {
+    width: 14px; height: 14px;
+    border-radius: 2px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 8px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .dot-full { background: var(--full); color: #000; }
+  .dot-partial { background: var(--partial); color: #000; }
+  .dot-variable { background: var(--variable); color: #fff; }
+  .dot-combo { background: var(--combo); color: #000; }
+  .dot-vitro { background: var(--vitro); color: #fff; }
+  .dot-none { background: var(--none); color: var(--none-text); }
+
+  .sym-item {
+    display: flex; align-items: center; gap: 5px;
+    font-size: 9.5px; color: var(--text);
+  }
+  .sym { font-size: 12px; }
+
+  /* ORGANISM CATEGORY COLORS */
+  .cat-gpos { color: var(--gpos); }
+  .cat-gneg { color: var(--gneg); }
+  .cat-anaerobe { color: var(--anaerobe); }
+  .cat-atypical { color: var(--atypical); }
+  .cat-mdr { color: var(--mdr); }
+  .cat-new-mdr { color: var(--new-mdr); animation: pulse-mdr 2s infinite; }
+
+  @keyframes pulse-mdr {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+  }
+
+  /* MAIN TABLE CONTAINER */
+  .table-container {
+    padding: 24px 32px 40px;
+    overflow-x: auto;
+  }
+  .table-wrapper {
+    min-width: 1200px;
+  }
+
+  /* ORG HEADERS */
+  .org-section {
+    margin-bottom: 32px;
+  }
+  .org-section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+  .org-section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+  .org-section-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--border), transparent);
+  }
+  .org-tag {
+    font-size: 8px;
+    padding: 2px 8px;
+    border-radius: 2px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  /* DRUG-ORGANISM GRID */
+  .grid {
+    display: grid;
+    gap: 2px;
+  }
+
+  .grid-header-row {
+    display: flex;
+    gap: 2px;
+    margin-bottom: 4px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .drug-label {
+    font-size: 8.5px;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: 0.3px;
+    color: var(--text-dim);
+    line-height: 1.2;
+    padding: 4px 2px;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .org-row {
+    display: flex;
+    align-items: stretch;
+    gap: 2px;
+    transition: background 0.1s;
+  }
+  .org-row:hover { background: #ffffff08; }
+
+  .org-name-cell {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 230px;
+    max-width: 230px;
+    padding: 5px 8px;
+    background: var(--surface);
+    border-radius: 2px;
+    border-left: 3px solid transparent;
+  }
+
+  .org-name-text {
+    font-size: 10px;
+    font-style: italic;
+    line-height: 1.3;
+  }
+  .org-name-abbr {
+    font-size: 8px;
+    color: var(--text-dim);
+    font-style: normal;
+  }
+  .org-pills {
+    display: flex;
+    gap: 3px;
+    flex-wrap: wrap;
+    margin-top: 2px;
+  }
+  .org-pill {
+    font-size: 7px;
+    padding: 1px 4px;
+    border-radius: 2px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    font-style: normal;
+  }
+  .pill-mdr { background: #ff525220; color: #ff5252; border: 1px solid #ff525240; }
+  .pill-xdr { background: #ff174420; color: #ff6b6b; border: 1px solid #ff174460; }
+  .pill-new { background: #00e67620; color: #00e676; border: 1px solid #00e67640; }
+  .pill-emerging { background: #ffb30020; color: #ffb300; border: 1px solid #ffb30040; }
+  .pill-sepsis { background: #ff9a0020; color: #ff9a00; border: 1px solid #ff9a0040; }
+  .pill-2025 { background: #7b5ea720; color: #b39ddb; border: 1px solid #7b5ea740; }
+
+  .activity-cell {
+    width: 38px;
+    min-width: 38px;
+    height: 42px;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    position: relative;
+    cursor: default;
+    transition: transform 0.1s, box-shadow 0.1s;
+  }
+  .activity-cell:hover {
+    transform: scale(1.15);
+    z-index: 5;
+    box-shadow: 0 4px 12px #00000080;
+  }
+
+  .cell-full     { background: #00e67618; color: var(--full); border: 1px solid #00e67640; }
+  .cell-partial  { background: #ffb30018; color: var(--partial); border: 1px solid #ffb30040; }
+  .cell-variable { background: #ff704318; color: var(--variable); border: 1px solid #ff704340; }
+  .cell-combo    { background: #29b6f618; color: var(--combo); border: 1px solid #29b6f640; }
+  .cell-vitro    { background: #ab47bc18; color: var(--vitro); border: 1px solid #ab47bc40; }
+  .cell-none     { background: var(--none); color: var(--none-text); border: 1px solid #1e305860; }
+  .cell-doc      { outline: 2px solid #ffd60060; outline-offset: -2px; }
+
+  .cell-superscript {
+    position: absolute;
+    top: 2px; right: 3px;
+    font-size: 7px;
+    font-weight: 400;
+    opacity: 0.9;
+  }
+
+  /* DRUG CLASS HEADERS */
+  .drug-class-row {
+    display: flex;
+    gap: 2px;
+    margin: 14px 0 4px;
+  }
+  .drug-class-spacer {
+    min-width: 230px;
+    max-width: 230px;
+  }
+  .drug-class-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 8px;
+    font-weight: 600;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    padding: 2px 4px;
+    border-bottom: 1px solid var(--border);
+    text-align: center;
+  }
+
+  /* NOTES PANEL */
+  .notes-panel {
+    margin: 24px 32px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 18px 20px;
+  }
+  .notes-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-bright);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .notes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 10px;
+  }
+  .note-card {
+    background: var(--surface);
+    border-radius: 3px;
+    padding: 10px 12px;
+    border-left: 3px solid var(--border);
+  }
+  .note-card.danger { border-left-color: var(--mdr); }
+  .note-card.warn   { border-left-color: var(--partial); }
+  .note-card.info   { border-left-color: var(--accent); }
+  .note-card.new    { border-left-color: var(--full); }
+  .note-card-title {
+    font-size: 9.5px;
+    font-weight: 700;
+    color: var(--text-bright);
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .note-card-body {
+    font-size: 9px;
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  /* TOOLTIP */
+  .tooltip {
+    display: none;
+    position: fixed;
+    background: #0d1f3c;
+    border: 1px solid var(--accent);
+    border-radius: 4px;
+    padding: 8px 10px;
+    font-size: 9px;
+    max-width: 200px;
+    z-index: 100;
+    pointer-events: none;
+    line-height: 1.6;
+    color: var(--text-bright);
+    box-shadow: 0 8px 24px #00000080;
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: #2e4878; }
+
+  /* CLASSES SECTION DIVIDER */
+  .section-divider {
+    font-size: 9px;
+    color: var(--accent);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 6px 0 2px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 230px;
+    max-width: 230px;
+  }
+
+  .col-group-label {
+    font-size: 7.5px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-dim);
+    text-align: center;
+    padding: 2px 4px;
+    background: #ffffff05;
+    border-radius: 2px;
+  }
+
+  .new-drug-flag {
+    display: inline-block;
+    width: 5px; height: 5px;
+    background: var(--full);
+    border-radius: 50%;
+    margin-left: 3px;
+    vertical-align: middle;
+    box-shadow: 0 0 4px var(--full);
+  }
+
+  .resistance-banner {
+    margin: 0 32px 20px;
+    padding: 10px 16px;
+    background: #ff174410;
+    border: 1px solid #ff174440;
+    border-radius: 3px;
+    font-size: 9.5px;
+    color: #ff8a80;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    line-height: 1.6;
+  }
+  .resistance-banner .icon { font-size: 18px; }
+
+  /* Print */
+  @media print {
+    body { background: #fff; color: #000; font-size: 7px; }
+    .filter-bar { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <div class="title-block">
+      <h1>ANTIBIOTIC SPECTRUM REFERENCE</h1>
+      <div class="subtitle">Extended Coverage · MDR Pathogens · 2024–2025 Updates · Clinical Reference</div>
+    </div>
+    <div class="header-badges">
+      <span class="badge badge-year">Updated 2025</span>
+      <span class="badge badge-alert">⚠ MDR Alerts Included</span>
+      <span class="badge badge-new">◆ New Agents Marked</span>
+    </div>
+  </div>
+</div>
+
+<!-- LEGEND -->
+<div class="legend">
+  <div class="legend-section">
+    <div class="legend-title">Activity Level</div>
+    <div class="legend-items">
+      <div class="legend-item"><div class="dot dot-full">●</div> Active (susceptible)</div>
+      <div class="legend-item"><div class="dot dot-partial">◑</div> Partial / Moderate</div>
+      <div class="legend-item"><div class="dot dot-variable">~</div> Variable / Unpredictable</div>
+      <div class="legend-item"><div class="dot dot-combo">⊕</div> Active in combination only</div>
+      <div class="legend-item"><div class="dot dot-vitro">🔬</div> In vitro / limited clinical data</div>
+      <div class="legend-item"><div class="dot dot-none">—</div> Inactive / Not indicated</div>
+    </div>
+  </div>
+  <div class="legend-section">
+    <div class="legend-title">Special Symbols</div>
+    <div class="legend-items">
+      <div class="sym-item"><span class="sym">★</span> Drug of choice</div>
+      <div class="sym-item"><span class="sym">✦</span> FDA approved 2020–2025</div>
+      <div class="sym-item"><span class="sym">⚡</span> Rapid resistance emerges</div>
+      <div class="sym-item"><span class="sym">⚠</span> Use with caution / toxicity</div>
+      <div class="sym-item"><span class="sym">🔴</span> XDR / PDR organism</div>
+      <div class="sym-item"><span class="sym">†</span> Refer to susceptibility testing</div>
+    </div>
+  </div>
+  <div class="legend-section">
+    <div class="legend-title">Organism Tags</div>
+    <div class="legend-items">
+      <div class="sym-item"><span class="org-pill pill-mdr">MDR</span> Multi-drug resistant</div>
+      <div class="sym-item"><span class="org-pill pill-xdr">XDR</span> Extensively drug resistant</div>
+      <div class="sym-item"><span class="org-pill pill-new">NEW</span> Newly emerging strain/clone</div>
+      <div class="sym-item"><span class="org-pill pill-sepsis">SEPSIS</span> High sepsis mortality risk</div>
+      <div class="sym-item"><span class="org-pill pill-emerging">EMERGING</span> Resistance spreading globally</div>
+      <div class="sym-item"><span class="org-pill pill-2025">2025</span> Newly reported 2024–2025</div>
+    </div>
+  </div>
+  <div class="legend-section">
+    <div class="legend-title">Organism Groups</div>
+    <div class="legend-items">
+      <div class="legend-item" style="color:var(--gpos)">█ Gram-positive</div>
+      <div class="legend-item" style="color:var(--gneg)">█ Gram-negative</div>
+      <div class="legend-item" style="color:var(--anaerobe)">█ Anaerobes</div>
+      <div class="legend-item" style="color:var(--atypical)">█ Atypicals</div>
+      <div class="legend-item" style="color:var(--mdr)">█ MDR Critical Priority</div>
+    </div>
+  </div>
+</div>
+
+<div class="resistance-banner">
+  <span class="icon">🔴</span>
+  <span><strong>2024–2025 Alerts:</strong> New linezolid-resistant MRSA (cfr, optrA genes) reported globally · NDM-producing <em>Pseudomonas aeruginosa</em> clone ST235 spreading · VRSA (vanA) sporadic cases · CRE with OXA-48 emerging in community settings · Ceftazidime-avibactam resistance via porin loss in KPC-Kp reported · Enterobacter cloacae complex MDR surging in ICU settings.</span>
+</div>
+
+<!-- FILTER BAR -->
+<div class="filter-bar">
+  <span class="filter-label">Show:</span>
+  <button class="filter-btn active" onclick="filterView('all')">All Organisms</button>
+  <button class="filter-btn gpos" onclick="filterView('gpos')">Gram-Positive</button>
+  <button class="filter-btn gneg" onclick="filterView('gneg')">Gram-Negative</button>
+  <button class="filter-btn" onclick="filterView('anaerobe')">Anaerobes</button>
+  <button class="filter-btn" onclick="filterView('atypical')">Atypicals</button>
+  <button class="filter-btn mdr" onclick="filterView('mdr')">🔴 MDR Only</button>
+</div>
+
+<div class="table-container">
+<div class="table-wrapper" id="main-table">
+
+<!-- ========== DRUGS: define columns ========== -->
+<!-- 
+  Drugs (columns, left to right):
+  PENICILLINS: Ampicillin, Amox-Clav, Pip-Tazo, Amp-Sulbactam
+  CEPHALOSPORINS: Cefazolin, Cefuroxime, Ceftriaxone, Cefepime, Ceftaroline, Ceftolozane-Tazo
+  CARBAPENEMS: Ertapenem, Meropenem, Imipenem, Doripenem
+  NEW BL/BLI: Ceftaz-Avibactam, Mero-Vaborbactam, Imi-Relebactam, Aztreonam-Avibactam, Cefiderocol
+  GLYCOPEPTIDES: Vancomycin, Dalbavancin, Oritavancin
+  LIPOPEPTIDES: Daptomycin
+  OXAZOLIDINONES: Linezolid, Tedizolid
+  TETRACYCLINES: Doxycycline, Tigecycline, Omadacycline, Eravacycline
+  AMINOGLYCOSIDES: Gentamicin, Amikacin, Plazomicin
+  FLUOROQUINOLONES: Ciprofloxacin, Levofloxacin, Moxifloxacin, Delafloxacin
+  POLYMYXINS: Colistin, Polymyxin B
+  OTHER: TMP-SMX, Metronidazole, Clindamycin, Azithromycin, Chloramphenicol
+-->
+
+<script>
+// Data structure
+const drugs = [
+  // [shortName, fullName, class, isNew]
+  // PENICILLINS
+  {s:'AMP', f:'Ampicillin', c:'PCN', n:false},
+  {s:'AMC', f:'Amox-Clav', c:'PCN', n:false},
+  {s:'TZP', f:'Pip-Tazo', c:'PCN', n:false},
+  {s:'SAM', f:'Amp-Sulbactam', c:'PCN', n:false},
+  // CEPHALOSPORINS
+  {s:'CFZ', f:'Cefazolin', c:'CEPH', n:false},
+  {s:'CXM', f:'Cefuroxime', c:'CEPH', n:false},
+  {s:'CRO', f:'Ceftriaxone', c:'CEPH', n:false},
+  {s:'FEP', f:'Cefepime', c:'CEPH', n:false},
+  {s:'CPT', f:'Ceftaroline ✦', c:'CEPH', n:true},
+  {s:'C/T', f:'Ceftolozane-Tazo ✦', c:'CEPH', n:true},
+  // CARBAPENEMS
+  {s:'ETP', f:'Ertapenem', c:'CARB', n:false},
+  {s:'MEM', f:'Meropenem', c:'CARB', n:false},
+  {s:'IPM', f:'Imipenem', c:'CARB', n:false},
+  // NEW BL/BLI COMBINATIONS
+  {s:'C/A', f:'Ceftaz-Avibactam ✦', c:'BLI', n:true},
+  {s:'M/V', f:'Mero-Vaborbactam ✦', c:'BLI', n:true},
+  {s:'I/R', f:'Imi-Relebactam ✦', c:'BLI', n:true},
+  {s:'A/A', f:'Azt-Avibactam ✦', c:'BLI', n:true},
+  {s:'FDC', f:'Cefiderocol ✦', c:'BLI', n:true},
+  // GLYCOPEPTIDES
+  {s:'VAN', f:'Vancomycin', c:'GLYCO', n:false},
+  {s:'DAL', f:'Dalbavancin ✦', c:'GLYCO', n:true},
+  {s:'ORI', f:'Oritavancin ✦', c:'GLYCO', n:true},
+  // LIPOPEPTIDE
+  {s:'DAP', f:'Daptomycin', c:'LIPO', n:false},
+  // OXAZOLIDINONES
+  {s:'LZD', f:'Linezolid', c:'OXA', n:false},
+  {s:'TZD', f:'Tedizolid ✦', c:'OXA', n:true},
+  // TETRACYCLINES
+  {s:'DOX', f:'Doxycycline', c:'TET', n:false},
+  {s:'TGC', f:'Tigecycline', c:'TET', n:false},
+  {s:'OMA', f:'Omadacycline ✦', c:'TET', n:true},
+  {s:'ERC', f:'Eravacycline ✦', c:'TET', n:true},
+  // AMINOGLYCOSIDES
+  {s:'GEN', f:'Gentamicin', c:'AG', n:false},
+  {s:'AMK', f:'Amikacin', c:'AG', n:false},
+  {s:'PLZ', f:'Plazomicin ✦', c:'AG', n:true},
+  // FLUOROQUINOLONES
+  {s:'CIP', f:'Ciprofloxacin', c:'FQ', n:false},
+  {s:'LVX', f:'Levofloxacin', c:'FQ', n:false},
+  {s:'MXF', f:'Moxifloxacin', c:'FQ', n:false},
+  {s
