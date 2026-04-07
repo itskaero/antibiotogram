@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Antibiotic Spectrum Reference</title>
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #050912;
+    --surface: #0c1428;
+    --surface2: #111d35;
+    --border: #1e3058;
+    --text: #c8d8f0;
+    --text-dim: #5a7aa0;
+    --text-bright: #e8f2ff;
+    --accent: #00c8ff;
+    --accent2: #7b5ea7;
+
+    --full: #00e676;
+    --partial: #ffb300;
+    --none: #1e3058;
+    --none-text: #2a4070;
+    --variable: #ff7043;
+    --combo: #29b6f6;
+    --vitro: #ab47bc;
+
+    --gpos: #ff6b9d;
+    --gneg: #4dd0e1;
+    --anaerobe: #a5d6a7;
+    --atypical: #ffe082;
+    --mdr: #ff5252;
+    --new-mdr: #ff1744;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    min-height: 100vh;
+    overflow-x: auto;
+  }
+
+  /* HEADER */
+  .header {
+    padding: 28px 32px 20px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(135deg, #050912 0%, #0a1830 100%);
+    position: relative;
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  }
+  .header-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .title-block h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--text-bright);
+    letter-spacing: -0.5px;
+  }
+  .title-block .subtitle {
+    font-size: 10px;
+    color: var(--text-dim);
+    margin-top: 3px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+  .header-badges {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .badge {
+    padding: 3px 10px;
+    border-radius: 3px;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .badge-alert { background: #ff174420; color: #ff6b6b; border: 1px solid #ff174440; }
+  .badge-new { background: #00e67620; color: #00e676; border: 1px solid #00e67640; }
+  .badge-year { background: #00c8ff15; color: var(--accent); border: 1px solid #00c8ff30; }
+
+  /* FILTER BAR */
+  .filter-bar {
+    padding: 12px 32px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+    background: var(--surface);
+  }
+  .filter-label {
+    font-size: 9px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-right: 4px;
+  }
+  .filter-btn {
+    padding: 4px 10px;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-dim);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    cursor: pointer;
+    transition: all 0.15s;
+    letter-spacing: 0.5px;
+  }
+  .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .filter-btn.active { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 700; }
+  .filter-btn.gpos { --c: var(--gpos); }
+  .filter-btn.gneg { --c: var(--gneg); }
+  .filter-btn.mdr  { --c: var(--mdr); }
+  .filter-btn.gpos.active { background: var(--gpos); border-color: var(--gpos); }
+  .filter-btn.gneg.active { background: var(--gneg); border-color: var(--gneg); color: #000; }
+  .filter-btn.mdr.active  { background: var(--mdr);  border-color: var(--mdr); }
+
+  /* LEGEND */
+  .legend {
+    padding: 14px 32px;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .legend-section {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .legend-title {
+    font-size: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-dim);
+    margin-bottom: 2px;
+    font-weight: 700;
+  }
+  .legend-items {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 9.5px;
+    color: var(--text);
+  }
+  .dot {
+    width: 14px; height: 14px;
+    border-radius: 2px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 8px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .dot-full { background: var(--full); color: #000; }
+  .dot-partial { background: var(--partial); color: #000; }
+  .dot-variable { background: var(--variable); color: #fff; }
+  .dot-combo { background: var(--combo); color: #000; }
+  .dot-vitro { background: var(--vitro); color: #fff; }
+  .dot-none { background: var(--none); color: var(--none-text); }
+
+  .sym-item {
+    display: flex; align-items: center; gap: 5px;
+    font-size: 9.5px; color: var(--text);
+  }
+  .sym { font-size: 12px; }
+
+  /* ORGANISM CATEGORY COLORS */
+  .cat-gpos { color: var(--gpos); }
+  .cat-gneg { color: var(--gneg); }
+  .cat-anaerobe { color: var(--anaerobe); }
+  .cat-atypical { color: var(--atypical); }
+  .cat-mdr { color: var(--mdr); }
+  .cat-new-mdr { color: var(--new-mdr); animation: pulse-mdr 2s infinite; }
+
+  @keyframes pulse-mdr {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+  }
+
+  /* MAIN TABLE CONTAINER */
+  .table-container {
+    padding: 24px 32px 40px;
+    overflow-x: auto;
+  }
+  .table-wrapper {
+    min-width: 1200px;
+  }
+
+  /* ORG HEADERS */
+  .org-section {
+    margin-bottom: 32px;
+  }
+  .org-section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+  .org-section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+  .org-section-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--border), transparent);
+  }
+  .org-tag {
+    font-size: 8px;
+    padding: 2px 8px;
+    border-radius: 2px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  /* DRUG-ORGANISM GRID */
+  .grid {
+    display: grid;
+    gap: 2px;
+  }
+
+  .grid-header-row {
+    display: flex;
+    gap: 2px;
+    margin-bottom: 4px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .drug-label {
+    font-size: 8.5px;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: 0.3px;
+    color: var(--text-dim);
+    line-height: 1.2;
+    padding: 4px 2px;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .org-row {
+    display: flex;
+    align-items: stretch;
+    gap: 2px;
+    transition: background 0.1s;
+  }
+  .org-row:hover { background: #ffffff08; }
+
+  .org-name-cell {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 230px;
+    max-width: 230px;
+    padding: 5px 8px;
+    background: var(--surface);
+    border-radius: 2px;
+    border-left: 3px solid transparent;
+  }
+
+  .org-name-text {
+    font-size: 10px;
+    font-style: italic;
+    line-height: 1.3;
+  }
+  .org-name-abbr {
+    font-size: 8px;
+    color: var(--text-dim);
+    font-style: normal;
+  }
+  .org-pills {
+    display: flex;
+    gap: 3px;
+    flex-wrap: wrap;
+    margin-top: 2px;
+  }
+  .org-pill {
+    font-size: 7px;
+    padding: 1px 4px;
+    border-radius: 2px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    font-style: normal;
+  }
+  .pill-mdr { background: #ff525220; color: #ff5252; border: 1px solid #ff525240; }
+  .pill-xdr { background: #ff174420; color: #ff6b6b; border: 1px solid #ff174460; }
+  .pill-new { background: #00e67620; color: #00e676; border: 1px solid #00e67640; }
+  .pill-emerging { background: #ffb30020; color: #ffb300; border: 1px solid #ffb30040; }
+  .pill-sepsis { background: #ff9a0020; color: #ff9a00; border: 1px solid #ff9a0040; }
+  .pill-2025 { background: #7b5ea720; color: #b39ddb; border: 1px solid #7b5ea740; }
+
+  .activity-cell {
+    width: 38px;
+    min-width: 38px;
+    height: 42px;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    position: relative;
+    cursor: default;
+    transition: transform 0.1s, box-shadow 0.1s;
+  }
+  .activity-cell:hover {
+    transform: scale(1.15);
+    z-index: 5;
+    box-shadow: 0 4px 12px #00000080;
+  }
+
+  .cell-full     { background: #00e67618; color: var(--full); border: 1px solid #00e67640; }
+  .cell-partial  { background: #ffb30018; color: var(--partial); border: 1px solid #ffb30040; }
+  .cell-variable { background: #ff704318; color: var(--variable); border: 1px solid #ff704340; }
+  .cell-combo    { background: #29b6f618; color: var(--combo); border: 1px solid #29b6f640; }
+  .cell-vitro    { background: #ab47bc18; color: var(--vitro); border: 1px solid #ab47bc40; }
+  .cell-none     { background: var(--none); color: var(--none-text); border: 1px solid #1e305860; }
+  .cell-doc      { outline: 2px solid #ffd60060; outline-offset: -2px; }
+
+  .cell-superscript {
+    position: absolute;
+    top: 2px; right: 3px;
+    font-size: 7px;
+    font-weight: 400;
+    opacity: 0.9;
+  }
+
+  /* DRUG CLASS HEADERS */
+  .drug-class-row {
+    display: flex;
+    gap: 2px;
+    margin: 14px 0 4px;
+  }
+  .drug-class-spacer {
+    min-width: 230px;
+    max-width: 230px;
+  }
+  .drug-class-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 8px;
+    font-weight: 600;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    padding: 2px 4px;
+    border-bottom: 1px solid var(--border);
+    text-align: center;
+  }
+
+  /* NOTES PANEL */
+  .notes-panel {
+    margin: 24px 32px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 18px 20px;
+  }
+  .notes-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-bright);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .notes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 10px;
+  }
+  .note-card {
+    background: var(--surface);
+    border-radius: 3px;
+    padding: 10px 12px;
+    border-left: 3px solid var(--border);
+  }
+  .note-card.danger { border-left-color: var(--mdr); }
+  .note-card.warn   { border-left-color: var(--partial); }
+  .note-card.info   { border-left-color: var(--accent); }
+  .note-card.new    { border-left-color: var(--full); }
+  .note-card-title {
+    font-size: 9.5px;
+    font-weight: 700;
+    color: var(--text-bright);
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .note-card-body {
+    font-size: 9px;
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  /* TOOLTIP */
+  .tooltip {
+    display: none;
+    position: fixed;
+    background: #0d1f3c;
+    border: 1px solid var(--accent);
+    border-radius: 4px;
+    padding: 8px 10px;
+    font-size: 9px;
+    max-width: 200px;
+    z-index: 100;
+    pointer-events: none;
+    line-height: 1.6;
+    color: var(--text-bright);
+    box-shadow: 0 8px 24px #00000080;
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: #2e4878; }
+
+  /* CLASSES SECTION DIVIDER */
+  .section-divider {
+    font-size: 9px;
+    color: var(--accent);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 6px 0 2px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 230px;
+    max-width: 230px;
+  }
+
+  .col-group-label {
+    font-size: 7.5px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-dim);
+    text-align: center;
+    padding: 2px 4px;
+    background: #ffffff05;
+    border-radius: 2px;
+  }
+
+  .new-drug-flag {
+    display: inline-block;
+    width: 5px; height: 5px;
+    background: var(--full);
+    border-radius: 50%;
+    margin-left: 3px;
+    vertical-align: middle;
+    box-shadow: 0 0 4px var(--full);
+  }
+
+  .resistance-banner {
+    margin: 0 32px 20px;
+    padding: 10px 16px;
+    background: #ff174410;
+    border: 1px solid #ff174440;
+    border-radius: 3px;
+    font-size: 9.5px;
+    color: #ff8a80;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    line-height: 1.6;
+  }
+  .resistance-banner .icon { font-size: 18px; }
+
+  /* Print */
+  @media print {
+    body { background: #fff; color: #000; font-size: 7px; }
+    .filter-bar { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <div class="title-block">
+      <h1>ANTIBIOTIC SPECTRUM REFERENCE</h1>
+      <div class="subtitle">Extended Coverage · MDR Pathogens · 2024–2025 Updates · Clinical Reference</div>
+    </div>
+    <div class="header-badges">
+      <span class="badge badge-year">Updated 2025</span>
+      <span class="badge badge-alert">⚠ MDR Alerts Included</span>
+      <span class="badge badge-new">◆ New Agents Marked</span>
+    </div>
+  </div>
+</div>
+
+<!-- LEGEND -->
+<div class="legend">
+  <div class="legend-section">
+    <div class="legend-title">Activity Level</div>
+    <div class="legend-items">
+      <div class="legend-item"><div class="dot dot-full">●</div> Active (susceptible)</div>
+      <div class="legend-item"><div class="dot dot-partial">◑</div> Partial / Moderate</div>
+      <div class="legend-item"><div class="dot dot-variable">~</div> Variable / Unpredictable</div>
+      <div class="legend-item"><div class="dot dot-combo">⊕</div> Active in combination only</div>
+      <div class="legend-item"><div class="dot dot-vitro">🔬</div> In vitro / limited clinical data</div>
+      <div class="legend-item"><div class="dot dot-none">—</div> Inactive / Not indicated</div>
+    </div>
+  </div>
+  <div class="legend-section">
+    <div class="legend-title">Special Symbols</div>
+    <div class="legend-items">
+      <div class="sym-item"><span class="sym">★</span> Drug of choice</div>
+      <div class="sym-item"><span class="sym">✦</span> FDA approved 2020–2025</div>
+      <div class="sym-item"><span class="sym">⚡</span> Rapid resistance emerges</div>
+      <div class="sym-item"><span class="sym">⚠</span> Use with caution / toxicity</div>
+      <div class="sym-item"><span class="sym">🔴</span> XDR / PDR organism</div>
+      <div class="sym-item"><span class="sym">†</span> Refer to susceptibility testing</div>
+    </div>
+  </div>
+  <div class="legend-section">
+    <div class="legend-title">Organism Tags</div>
+    <div class="legend-items">
+      <div class="sym-item"><span class="org-pill pill-mdr">MDR</span> Multi-drug resistant</div>
+      <div class="sym-item"><span class="org-pill pill-xdr">XDR</span> Extensively drug resistant</div>
+      <div class="sym-item"><span class="org-pill pill-new">NEW</span> Newly emerging strain/clone</div>
+      <div class="sym-item"><span class="org-pill pill-sepsis">SEPSIS</span> High sepsis mortality risk</div>
+      <div class="sym-item"><span class="org-pill pill-emerging">EMERGING</span> Resistance spreading globally</div>
+      <div class="sym-item"><span class="org-pill pill-2025">2025</span> Newly reported 2024–2025</div>
+    </div>
+  </div>
+  <div class="legend-section">
+    <div class="legend-title">Organism Groups</div>
+    <div class="legend-items">
+      <div class="legend-item" style="color:var(--gpos)">█ Gram-positive</div>
+      <div class="legend-item" style="color:var(--gneg)">█ Gram-negative</div>
+      <div class="legend-item" style="color:var(--anaerobe)">█ Anaerobes</div>
+      <div class="legend-item" style="color:var(--atypical)">█ Atypicals</div>
+      <div class="legend-item" style="color:var(--mdr)">█ MDR Critical Priority</div>
+    </div>
+  </div>
+</div>
+
+<div class="resistance-banner">
+  <span class="icon">🔴</span>
+  <span><strong>2024–2025 Alerts:</strong> New linezolid-resistant MRSA (cfr, optrA genes) reported globally · NDM-producing <em>Pseudomonas aeruginosa</em> clone ST235 spreading · VRSA (vanA) sporadic cases · CRE with OXA-48 emerging in community settings · Ceftazidime-avibactam resistance via porin loss in KPC-Kp reported · Enterobacter cloacae complex MDR surging in ICU settings.</span>
+</div>
+
+<!-- FILTER BAR -->
+<div class="filter-bar">
+  <span class="filter-label">Show:</span>
+  <button class="filter-btn active" onclick="filterView('all')">All Organisms</button>
+  <button class="filter-btn gpos" onclick="filterView('gpos')">Gram-Positive</button>
+  <button class="filter-btn gneg" onclick="filterView('gneg')">Gram-Negative</button>
+  <button class="filter-btn" onclick="filterView('anaerobe')">Anaerobes</button>
+  <button class="filter-btn" onclick="filterView('atypical')">Atypicals</button>
+  <button class="filter-btn mdr" onclick="filterView('mdr')">🔴 MDR Only</button>
+</div>
+
+<div class="table-container">
+<div class="table-wrapper" id="main-table">
+
+<!-- ========== DRUGS: define columns ========== -->
+<!-- 
+  Drugs (columns, left to right):
+  PENICILLINS: Ampicillin, Amox-Clav, Pip-Tazo, Amp-Sulbactam
+  CEPHALOSPORINS: Cefazolin, Cefuroxime, Ceftriaxone, Cefepime, Ceftaroline, Ceftolozane-Tazo
+  CARBAPENEMS: Ertapenem, Meropenem, Imipenem, Doripenem
+  NEW BL/BLI: Ceftaz-Avibactam, Mero-Vaborbactam, Imi-Relebactam, Aztreonam-Avibactam, Cefiderocol
+  GLYCOPEPTIDES: Vancomycin, Dalbavancin, Oritavancin
+  LIPOPEPTIDES: Daptomycin
+  OXAZOLIDINONES: Linezolid, Tedizolid
+  TETRACYCLINES: Doxycycline, Tigecycline, Omadacycline, Eravacycline
+  AMINOGLYCOSIDES: Gentamicin, Amikacin, Plazomicin
+  FLUOROQUINOLONES: Ciprofloxacin, Levofloxacin, Moxifloxacin, Delafloxacin
+  POLYMYXINS: Colistin, Polymyxin B
+  OTHER: TMP-SMX, Metronidazole, Clindamycin, Azithromycin, Chloramphenicol
+-->
+
+<script>
+// Data structure
+const drugs = [
+  // [shortName, fullName, class, isNew]
+  // PENICILLINS
+  {s:'AMP', f:'Ampicillin', c:'PCN', n:false},
+  {s:'AMC', f:'Amox-Clav', c:'PCN', n:false},
+  {s:'TZP', f:'Pip-Tazo', c:'PCN', n:false},
+  {s:'SAM', f:'Amp-Sulbactam', c:'PCN', n:false},
+  // CEPHALOSPORINS
+  {s:'CFZ', f:'Cefazolin', c:'CEPH', n:false},
+  {s:'CXM', f:'Cefuroxime', c:'CEPH', n:false},
+  {s:'CRO', f:'Ceftriaxone', c:'CEPH', n:false},
+  {s:'FEP', f:'Cefepime', c:'CEPH', n:false},
+  {s:'CPT', f:'Ceftaroline ✦', c:'CEPH', n:true},
+  {s:'C/T', f:'Ceftolozane-Tazo ✦', c:'CEPH', n:true},
+  // CARBAPENEMS
+  {s:'ETP', f:'Ertapenem', c:'CARB', n:false},
+  {s:'MEM', f:'Meropenem', c:'CARB', n:false},
+  {s:'IPM', f:'Imipenem', c:'CARB', n:false},
+  // NEW BL/BLI COMBINATIONS
+  {s:'C/A', f:'Ceftaz-Avibactam ✦', c:'BLI', n:true},
+  {s:'M/V', f:'Mero-Vaborbactam ✦', c:'BLI', n:true},
+  {s:'I/R', f:'Imi-Relebactam ✦', c:'BLI', n:true},
+  {s:'A/A', f:'Azt-Avibactam ✦', c:'BLI', n:true},
+  {s:'FDC', f:'Cefiderocol ✦', c:'BLI', n:true},
+  // GLYCOPEPTIDES
+  {s:'VAN', f:'Vancomycin', c:'GLYCO', n:false},
+  {s:'DAL', f:'Dalbavancin ✦', c:'GLYCO', n:true},
+  {s:'ORI', f:'Oritavancin ✦', c:'GLYCO', n:true},
+  // LIPOPEPTIDE
+  {s:'DAP', f:'Daptomycin', c:'LIPO', n:false},
+  // OXAZOLIDINONES
+  {s:'LZD', f:'Linezolid', c:'OXA', n:false},
+  {s:'TZD', f:'Tedizolid ✦', c:'OXA', n:true},
+  // TETRACYCLINES
+  {s:'DOX', f:'Doxycycline', c:'TET', n:false},
+  {s:'TGC', f:'Tigecycline', c:'TET', n:false},
+  {s:'OMA', f:'Omadacycline ✦', c:'TET', n:true},
+  {s:'ERC', f:'Eravacycline ✦', c:'TET', n:true},
+  // AMINOGLYCOSIDES
+  {s:'GEN', f:'Gentamicin', c:'AG', n:false},
+  {s:'AMK', f:'Amikacin', c:'AG', n:false},
+  {s:'PLZ', f:'Plazomicin ✦', c:'AG', n:true},
+  // FLUOROQUINOLONES
+  {s:'CIP', f:'Ciprofloxacin', c:'FQ', n:false},
+  {s:'LVX', f:'Levofloxacin', c:'FQ', n:false},
+  {s:'MXF', f:'Moxifloxacin', c:'FQ', n:false},
+  {s:'DLX', f:'Delafloxacin ✦', c:'FQ', n:true},
+  // POLYMYXINS
+  {s:'CST', f:'Colistin', c:'PMX', n:false},
+  {s:'PMB', f:'Polymyxin B', c:'PMX', n:false},
+  // OTHER
+  {s:'SXT', f:'TMP-SMX', c:'OTH', n:false},
+  {s:'MTZ', f:'Metronidazole', c:'OTH', n:false},
+  {s:'CLI', f:'Clindamycin', c:'OTH', n:false},
+  {s:'AZM', f:'Azithromycin', c:'OTH', n:false},
+];
+
+// Activity codes:
+// F=full, P=partial, V=variable, C=combo-only, I=in-vitro, N=none
+// Special: F★=DOC, F⚡=resistance emerges fast
+// Format: {a: activity, s: special symbol}
+
+const organisms = [
+  // ===== GRAM POSITIVE =====
+  {
+    group: 'gpos', groupLabel: 'GRAM-POSITIVE', groupColor: 'var(--gpos)',
+    name: 'Staphylococcus aureus', abbr: 'MSSA', note: 'Methicillin-susceptible',
+    pills: [],
+    desc: 'Most community-acquired. β-lactam preferred.',
+    act: {AMP:'N',AMC:'F',TZP:'F',SAM:'F',CFZ:'F★',CXM:'F',CRO:'F',FEP:'F',CPT:'F',CT:'F',ETP:'F',MEM:'F',IPM:'F',CA:'N',MV:'N',IR:'N',AA:'N',FDC:'N',VAN:'F',DAL:'F',ORI:'F',DAP:'F',LZD:'F',TZD:'F',DOX:'F',TGC:'F',OMA:'F',ERC:'F',GEN:'P',AMK:'P',PLZ:'P',CIP:'F',LVX:'F',MXF:'F',DLX:'F',CST:'N',PMB:'N',SXT:'F',MTZ:'N',CLI:'F',AZM:'P',}
+  },
+  {
+    group: 'gpos mdr', groupLabel: 'GRAM-POSITIVE', groupColor: 'var(--gpos)',
+    name: 'Staphylococcus aureus', abbr: 'MRSA', note: 'Methicillin-resistant',
+    pills: ['mdr'],
+    desc: 'mecA/mecC-mediated. Vancomycin cornerstone. Community vs Healthcare MRSA differ.',
+    act: {AMP:'N',AMC:'N',TZP:'N',SAM:'N',CFZ:'N',CXM:'N',CRO:'N',FEP:'N',CPT:'F',CT:'N',ETP:'N',MEM:'N',IPM:'N',CA:'N',MV:'N',IR:'N',AA:'N',FDC:'N',VAN:'F★',DAL:'F',ORI:'F',DAP:'F',LZD:'F',TZD:'F',DOX:'P',TGC:'F',OMA:'F',ERC:'F',GEN:'N',AMK:'N',PLZ:'N',CIP:'N',LVX:'N',MXF:'N',DLX:'F',CST:'N',PMB:'N',SXT:'F',MTZ:'N',CLI:'V',AZM:'N',}
+  },
+  {
+    group: 'gpos mdr', groupLabel: 'GRAM-POSITIVE', groupColor: 'var(--gpos)',
+    name: 'Staph. aureus', abbr: 'VRSA/VISA', note: 'Van-Resistant/Intermediate ⚠ NEW 2025',
+    pills: ['xdr','new','2025'],
+    desc: 'vanA gene (VRSA): resistance to vancomycin. VISA: MIC 4–8. Very rare. Options: Daptomycin ± Ceftaroline, Tedizolid, Oritavancin. TP5 clones reported.',
+    act: {AMP:'N',AMC:'N',TZP:'N',SAM:'N',CFZ:'N',CXM:'N',CRO:'N',FEP:'N',CPT:'F',CT:'N',ETP:'N',MEM:'N',IPM:'N',CA:'N',MV:'N',IR:'N',AA:'N',FDC:'N',VAN:'N',DAL:'P',ORI:'F',DAP:'F★',LZD:'F',TZD:'F',DOX:'P',TGC:'F',OMA:'F',ERC:'F',GEN:'N',AMK:'N',PLZ:'N',CIP:'N',LVX:'N',MXF:'N',DLX:'P',CST:'N',PMB:'N',SXT:'V',MTZ:'N',CLI:'N',AZM:'N',}
+  },
+  {
+    group: 'gpos mdr', groupLabel: 'GRAM-POSITIVE', groupColor: 'var(--gpos)',
+    name: 'Staph. aureus', abbr: 'LRSA', note: 'Linezolid-Resistant ⚠ EMERGING',
+    pills: ['xdr','emerging','2025'],
+    desc: 'cfr, optrA, poxtA genes. Emerging globally, esp. livestock-associated. Severely limited options. Consider: Daptomycin+Ceftaroline, Oritavancin, Ceftaroline alone if susceptible.',
+    act: {AMP:'N',AMC:'N',TZP:'N',SAM:'N',CFZ:'N',CXM:'N',CRO:'N',FEP:'N',CPT:'F',CT:'N',ETP:'N',MEM:'N',IPM:'N',CA:'N',MV:'N',IR:'N',AA:'N',FDC:'N',VAN:'N',DAL:'P',ORI:'F',DAP:'F★',LZD:'N',TZD:'N',DOX:'P',TGC:'F',OMA:'P',ERC:'F',GEN:'N',AMK:'N',PLZ:'N',CIP:'N',LVX:'N',MXF:'N',DLX:'P',CST:'N',PMB:'N',SXT:'V',MTZ:'N',CLI:'N',AZM:'N',}
+  },
+  {
+    group: 'gpos',
+    name: 'Streptococcus pneumoniae', abbr: 'DRSP', note: 'Drug-resistant pneumococcus',
+    pills: ['mdr'],
+    desc: 'PBP mutations → PCN resistance. Ceftriaxone often active. Check MIC. FQ active.',
+    act: {AMP:'V',AMC:'V',TZP:'V',SAM:'V',CFZ:'P',CXM:'P',CRO:'F',FEP:'F',CPT:'F',CT:'N',ETP:'F',MEM:'F',IPM:'F',CA:'N',MV:'N',IR:'N',AA:'N',FDC:'N',VAN:'F★',DAL:'F',ORI:'F',DAP:'N',LZD:'F',TZD:'F',DOX:'V',TGC:'F',OMA:'F',ERC:'F',GEN:'N',AMK:'N',PLZ:'N',CIP:'N',LVX:'F',MXF:'F',DLX:'F',CST:'N',PMB:'N',SXT:'V',MTZ:'N',CLI:'V',AZM:'V',}
+  },
+  {
+    group: 'gpos',
+    name: 'Enterococcus faecalis', abbr: 'E. faecalis', note: '',
+    pills: [],
+    desc: 'Intrinsically resistant to cephalosporins. Ampicillin preferred. Endocarditis: amp+gent synergy.',
+    act: {AMP:'F★',AMC:'F',TZP:'F',SAM:'F',CFZ:'N',CXM:'N',CRO:'N',FEP:'N',CPT:'N',CT:'N',ETP:'N',MEM:'N',IPM:'P',CA:'N',MV:'N',IR:'N',AA:'N',FDC:'N',VAN:'F',DAL:'F',ORI:'F',DAP:'F',LZD:'F',TZD:'F',DOX:'N',TGC:'P',OMA:'N',ERC:'F',GEN:'C',AMK:'C',PLZ:'C',CIP:'P',LVX:'P',MXF:'P',DLX:'P',CST:'N',PMB:'N',SXT:'N',MTZ:'N',CLI:'N',AZM:'N',}
+  },
+  {
+    group: 'gpos mdr',
+    name: 'Enterococcus faecium', abbr: 'VRE', note: 'Vancomycin-resistant',
+    pills: ['mdr','sepsis'],
+    desc: 'vanA/vanB genes. Very limited options. Linezolid, daptomycin, oritavancin, dalbavancin.',
+    act: {AMP:'N',AMC:'N',TZP:'N',SAM:'N',CFZ:'N',CXM:'N',CRO:'N',FEP:'N',CPT:'N',CT:'N',ETP:'N',MEM:'N',IPM:'N',CA:'N',MV:'N',IR:'N',AA:'N',FDC:'N',VAN:'N',DAL:'F',ORI:'F',DAP:'F★',LZD:'F',TZD:'F',DOX:'N',TGC:'F',OMA:'N',ERC:'F',GEN:'N',AMK:'N',PLZ:'N',CIP:'N',LVX:'N',MXF:'N',DLX:'N',CST:'N',PMB:'N',SXT:'N',MTZ:'N',CLI:'N',AZM:'N',}
+  },
+
+  // ===== GRAM NEGATIVE =====
+  {
+    group: 'gneg',
+    name: 'Escherichia coli', abbr: 'Standard E. coli', note: 'ESBL-negative',
+    pills: [],
+    desc: 'Most UTIs, biliary. TMP-SMX if susceptible. FQ resistance increasing.',
+    act: {AMP:'V',AMC:'F',TZP:'F',SAM:'F',CFZ:'F',CXM:'F',CRO:'F',FEP:'F',CPT:'N',CT:'F',ETP:'F',MEM:'F',IPM:'F',CA:'F',MV:'F',IR:'F',AA:'N',FDC:'F',VAN:'N',DAL:'N',ORI:'N',DAP:'N',LZD:'N',TZD:'N',DOX:'V',TGC:'F',OMA:'F',ERC:'F',GEN:'F',AMK:'F',PLZ:'F',CIP:'F',LVX:'F',MXF:'F',DLX:'F',CST:'F',PMB:'F',SXT:'V',MTZ:'N',CLI:'N',AZM:'N',}
+  },
+  {
+    group: 'gneg mdr',
+    name: 'ESBL-producing Enterobacterales', abbr: 'ESBL-E', note: 'E. coli / K. pneumoniae',
+    pills: ['mdr'],
+    desc: 'CTX-M, TEM, SHV ESBLs. Carbapenems preferred for serious infections. Pip-tazo unreliable (inoculum effect).',
+    act: {AMP:'N',AMC:'N',TZP:'V',SAM:'N',CFZ:'N',CXM:'N',CRO:'N',FEP:'P',CPT:'N',CT:'N',ETP:'F★',MEM:'F★',IPM:'F★',CA:'F',MV:'F',IR:'F',AA:'N',FDC:'F',VAN:'N',DAL:'N',ORI:'N',DAP:'N',LZD:'N',TZD:'N',DOX:'N',TGC:'F',OMA:'F',ERC:'F',GEN:'V',AMK:'F',PLZ:'F',CIP:'N',LVX:'N',MXF:'N',DLX:'N',CST:'F',PMB:'F',SXT:'N',MTZ:'N',CLI:'N',AZM:'N',}
+  },
+  {
+    group: 'gneg mdr',
+    name: 'CRE — KPC-producing', abbr: 'KPC-Kp', note: 'Carbapenem-resistant (KPC)',
+    pills: ['xdr','sepsis'],
+    desc: 'KPC serine carbapenemases (Ambler A). C/A, M/V, I/R highly active. Resistance via porin loss + KPC upregulation now emerging to C/A.',
+    act: {AMP:'N',AMC:'N',TZP:'N',SAM:'N',CFZ:'N',CXM:'N',CRO:'N',FEP:'N',CPT:'N',CT:'N',ETP:'N',MEM:'N',IPM:'N',CA:'F★',MV:'F★',IR:'F',AA:'I',FDC:'F',VAN:'N',DAL:'N',ORI:'N',DAP:'N',LZD:'N',TZD:'N',DOX:'N',TGC:'F',OMA:'P',ERC:'F',GEN:'N',AMK:'V',PLZ:'F',CIP:'N',LVX:'N',MXF:'N',DLX:'N',CST:'F',PMB:'F',SXT:'N',MTZ:'N',CLI:'N',AZM:'N',}
+  },
+  {
+    group: 'gneg mdr',
+    name: 'CRE — NDM-producing', abbr: 'NDM-Kp/Ec', note: 'Carbapenem-resistant (MBL)',
+    pills: ['xdr','sepsis','emerging'],
+    desc: 'NDM-1 to NDM-30+ metallo-β-lactamases (Ambler B). NOT inhibited by avibactam. Aztreonam-Avibactam (A/A) is KEY — aztreonam not hydrolyzed by MBLs but susceptible to ESBLs/KPC, avibactam covers those. Cefiderocol active.',
+    act: {AMP:'N',AMC:'N',TZP:'N',SAM:'N',CFZ:'N',CXM:'N',CRO:'N',FEP:'N',CPT:'N',CT:'N',ETP:'N',MEM:'N',IPM:'N',CA:'N',MV:'N',IR:'N',AA:'F★',FDC:'F',VAN:'N',DAL:'N',ORI:'N',DAP:'N',LZD:'N',TZD:'N',DOX:'N',TGC:'F',OMA:'P',ERC:'F',GEN:'N',AMK:'V',PLZ:'F',CIP:'N',LVX:'N',MXF:'N',DLX:'N',CST:'F',PMB:'F',SXT:'N',MTZ:'N',CLI:'N',AZM:'N',}
+  },
+  {
+    group: 'gneg mdr',
+    name: 'CRE — OXA-48-like', abbr: 'OXA-48', note: 'Carbapenem-resistant (OXA)',
+    pills: ['xdr','emerging','2025'],
+    desc: 'OXA-48/OXA-244 (Ambler D). Often co-harbors ESBL. Emerging in community. C/A + MEM combination or Cefiderocol. M/V shows limited activity. Community spread via travel 2024.',
+    act: {AMP:'N',AMC:'N',TZP:'N',SAM:'N',CFZ:'N',CXM:'N',CRO:'N',FEP:'N',CPT:'N',CT:'N',ETP:'N',MEM:'N',IPM:'N',CA:'F',MV:'P',IR:'P',AA:'F',FDC:'F',VAN:'N',DAL:'N',ORI:'N',DAP:'N',LZD:'N',TZD:'N',DOX:'N',TGC:'F',OMA:'P',ERC:'F',GEN:'N',AMK:'V',PLZ:'P',CIP:'N',LVX:'N',MXF:'N',DLX:'N',CST:'F',PMB:'F',SXT:'N',MTZ:'N',CLI:'N',AZM:'N',}
+  },
+  {
+    group: 'gneg mdr',
+    name: 'Enterobacter cloacae complex', abbr: 'ECC-MDR', note: 'AmpC + ESBL ⚠',
+    pills: ['mdr','sepsis','2025'],
+    desc: 'Inducible AmpC (de-repressed mutants). Do NOT use 1st/2nd/3rd-gen ceph — select resistance. Cefepime (high dose), carbapenems. ESBL co-production increasing 2024.',
+    act: {AMP:'N',AMC:'N',TZP:'V',SAM:'N',CFZ:'N',CXM:'N',CRO:'N',FEP:'F',CPT:'N',CT:'F',ETP:'F',MEM:'F',IPM:'F',CA:'F',MV:'F',IR:'F',AA:'I',FDC:'F',VAN:'N',DAL:'N',ORI:'N',DAP:'N',LZD:'N',TZD:'N',DOX:'N',TGC:'F',OMA:'F',ERC:'F',GEN:'V',AMK:'F',PLZ:'F',CIP:'V',LVX:'V',MXF:'N',DLX:'N',CST:'F',PMB:'F',SXT:'V',MTZ:'N',CLI:'N',AZM:'N',}
+  },
+  {
+    group: 'gneg',
+    name: 'Pseudomonas aeruginosa', abbr: 'Standard PA', note: 'Susceptible',
+    pills: [],
+    desc: 'Multiple intrinsic resistances. Anti-pseudomonal agents required. Monotherapy for serious infections.',
+    act: {AMP:'N',AMC:'N',TZP:'F',SAM:'N',CFZ:'N',CXM:'N',CRO:'N',FEP:'F',CPT:'N',CT:'F',ETP:'N',MEM:'F',IPM:'F',CA:'N',MV:'N',IR:'F',AA:'N',FDC:'F',VAN:'N',DAL:'N',ORI:'N',DAP:'N',LZD:'N',TZD:'N',DOX:'N',TGC:'N',OMA:'N',ERC:'N',GEN:'F',AMK:'F',PLZ:'F',CIP:'F',LVX:'F',MXF:'N',DLX:'F',CST:'F',PMB:'F',SXT:'N',MTZ:'N',CLI:'N',AZM:'N',}
+  },
+  {
+    group: 'gneg mdr',
+    name: 'MDR Pseudomonas aeruginosa', abbr: 'MDR-PA', note: 'Multidrug resistant',
+    pills: ['mdr','sepsis'],
+    desc: 'Efflux pumps, OprD porin loss, AmpC overproduction. C/T and I/R preferred. FQ/AG may have retained activity - test!',
+    act: {AMP:'N',AMC:'N',TZP:'N',SAM:'N',CFZ:'N',CXM:'N',CRO:'N',FEP:'V',CPT:'N',CT:'F★',ETP:'N',MEM:'V',IPM:'V',CA:'V',MV:'N',IR:'F',AA:'N',FDC:'F',VAN:'N',DAL:'N',ORI:'N',DAP:'N',LZD:'N',TZD:'N',DOX:'N',TGC:'N',OMA:'N',ERC:'N',GEN:'V',AMK:'V',PLZ:'P',CIP:'V',LVX:'V',MXF:'N',DLX:'V',CST:'F',PMB:'F',SXT:'N',MTZ:'N',CLI:'N',AZM:'N',}
+  },
+  {
+    group: 'gneg mdr',
+    name: 'XDR Pseudomonas (NDM/MBL)', abbr: 'NDM-PA', note: 'ST235 clone ⚠ 2025',
+    pills: ['xdr','new','sepsis','emerging'],
+    desc: 'NDM-producing PA (ST235 international clone). Spreading SE Asia, Europe, Middle East. Aztreonam-Avibactam emerging as only option. Cefiderocol. Combination essential.',
+    act: {AMP:'N',AMC:'N',TZP:'N',SAM:'N',CFZ:'N',CXM:'N',CRO:'N',FEP:'N',CPT:'N',CT:'N',ETP:'N',MEM:'N',IPM:'N',CA:'N',MV:'N',IR:'N',AA:'F★',FDC:'F',VAN:'N',DAL:'N',ORI:'N',DAP:'N',LZD:'N',TZD:'N',DOX:'N',TGC:'N',OMA:'N',ERC:'N',GEN:'N',AMK:'N',PLZ:'I',CIP:'N',LVX:'N',MXF:'N',DLX:'N',CST:'F',PMB:'F',SXT:'N',MTZ:'N',CLI:'N',AZM:'N',}
+  },
+  {
+    group: 'gneg mdr',
+    name: 'Acinetobacter baumannii', abbr: 'CRAB', note: 'Carbapenem-resistant',
+    pills: ['xdr','sepsis'],
+    desc: 'OXA-23/24/58 oxacillinases ubiquitous. Sulbactam (via PBP2 inhibition) is key. SAM or novel Sulbactam-Durlobactam (2023 FDA). Cefiderocol + Colistin ± Rifampin.',
+    act: {AMP:'N',AMC:'N',TZP:'N',SAM:'F',CFZ:'N',CXM:'N',CRO:'N',FEP:'N',CPT:'N',CT:'N',ETP:'N',MEM:'N',IPM:'N',CA:'N',MV:'N',IR:'N',AA:'N',FDC:'F',VAN:'N',DAL:'N',ORI:'N',DAP:'N',LZD:'N',TZD:'N',DOX:'P',TGC:'F',OMA:'P',ERC:'F',GEN:'N',AMK:'N',PLZ:'I',CIP:'N',LVX:'N',MXF:'N',DLX:'N',CST:'F★',PMB:'F★',SXT:'V',MTZ:'N',CLI:'N',AZM:'N',}
+  },
+  {
+    group: 'gneg mdr',
+    name: 'Stenotrophomonas maltophilia', abbr: 'S. malt.', note: 'Intrinsically MDR',
+    pills: ['mdr'],
+    desc: 'Intrinsically resistant to carbapenems (MBLs L1+L2). TMP-SMX drug of choice. Levofloxacin 2nd line. Ticarcillin-Clav (where available) or TGC.',
+    act: {AMP:'N',AMC:'N',TZP:'N',SAM:'N',CFZ:'N',CXM:'N',CRO:'N',FEP:'N',CPT:'N',CT:'N',ETP:'N',MEM:'N',IPM:'N',CA:'N',MV:'N',IR:'N',AA:'N',FDC:'I',VAN:'N',DAL:'N',ORI:'N',DAP:'N',LZD:'N',TZD:'N',DOX:'F',TGC:'F',OMA:'F',ERC:'F',GEN:'N',AMK:'N',PLZ:'N',CIP:'P',LVX:'F',MXF:'F',DLX:'F',CST:'N',PMB:'N',SXT:'F★',MTZ:'N',CLI:'N',AZM:'N',}
+  },
+  {
+    group: 'gneg',
+    name: 'Haemophilus influenzae', abbr: 'H. influenzae', note: '',
+    pills: [],
+    desc: 'β-lactamase-producing strains common. Amox-Clav, cefuroxime, or ceftriaxone.',
+    act: {AMP:'V',AMC:'F',TZP:'F',SAM:'F',CFZ:'N',CXM:'F',CRO:'F★',FEP:'F',CPT:'N',CT:'N',ETP:'F',MEM:'F',IPM:'F',CA:'N',MV:'N',IR:'N',AA:'N',FDC:'N',VAN:'N',DAL:'N',ORI:'N',DAP:'N',LZD:'N',TZD:'N',DOX:'F',TGC:'F',OMA:'F',ERC:'F',GEN:'F',AMK:'F',PLZ:'N',CIP:'F',LVX:'F',MXF:'F',DLX:'F',CST:'N',PMB:'N',SXT:'V',MTZ:'N',CLI:'N',AZM:'F',}
+  },
+
+  // ===== ANAEROBES =====
+  {
+    group: 'anaerobe',
+    name: 'Bacteroides fragilis', abbr: 'B. fragilis', note: '',
+    pills: [],
+    desc: 'Key intra-abdominal anaerobe. Pip-Tazo, carbapenems, metronidazole. Resistance to Clindamycin increasing.',
+    act: {AMP:'N',AMC:'F',TZP:'F★',SAM:'F',CFZ:'N',CXM:'N',CRO:'N',FEP:'N',CPT:'N',CT:'N',ETP:'F★',MEM:'F',IPM:'F',CA:'F',MV:'F',IR:'F',AA:'N',FDC:'N',VAN:'N',DAL:'N',ORI:'N',DAP:'N',LZD:'N',TZD:'N',DOX:'N',TGC:'F',OMA:'F',ERC:'F',GEN:'N',AMK:'N',PLZ:'N',CIP:'N',LVX:'N',MXF:'F',DLX:'N',CST:'N',PMB:'N',SXT:'N',MTZ:'F★',CLI:'V',AZM:'N',}
+  },
+  {
+    group: 'anaerobe',
+    name: 'Clostridioides difficile', abbr: 'C. diff', note: '',
+    pills: [],
+    desc: 'Oral vancomycin or fidaxomicin first-line. Metronidazole only mild cases (inferior). Bezlotoxumab for recurrence prevention.',
+    act: {AMP:'N',AMC:'N',TZP:'N',SAM:'N',CFZ:'N',CXM:'N',CRO:'N',FEP:'N',CPT:'N',CT:'N',ETP:'N',MEM:'N',IPM:'N',CA:'N',MV:'N',IR:'N',AA:'N',FDC:'N',VAN:'F★',DAL:'N',ORI:'N',DAP:'N',LZD:'N',TZD:'N',DOX:'N',TGC:'N',OMA:'N',ERC:'N',GEN:'N',AMK:'N',PLZ:'N',CIP:'N',LVX:'N',MXF:'N',DLX:'N',CST:'N',PMB:'N',SXT:'N',MTZ:'P',CLI:'N',AZM:'N',}
+  },
+
+  // ===== ATYPICALS =====
+  {
+    group: 'atypical',
+    name: 'Mycoplasma pneumoniae', abbr: 'Mycoplasma', note: '',
+    pills: [],
+    desc: 'No cell wall → β-lactams inactive. Macrolide resistance rising. FQ or tetracycline alternatives.',
+    act: {AMP:'N',AMC:'N',TZP:'N',SAM:'N',CFZ:'N',CXM:'N',CRO:'N',FEP:'N',CPT:'N',CT:'N',ETP:'N',MEM:'N',IPM:'N',CA:'N',MV:'N',IR:'N',AA:'N',FDC:'N',VAN:'N',DAL:'N',ORI:'N',DAP:'N',LZD:'F',TZD:'F',DOX:'F',TGC:'F',OMA:'F★',ERC:'F',GEN:'N',AMK:'N',PLZ:'N',CIP:'F',LVX:'F',MXF:'F',DLX:'F',CST:'N',PMB:'N',SXT:'N',MTZ:'N',CLI:'N',AZM:'F',}
+  },
+  {
+    group: 'atypical',
+    name: 'Legionella pneumophila', abbr: 'Legionella', note: '',
+    pills: [],
+    desc: 'Intracellular. FQ superior to macrolide in severe disease. Rifampin not recommended as monotherapy.',
+    act: {AMP:'N',AMC:'N',TZP:'N',SAM:'N',CFZ:'N',CXM:'N',CRO:'N',FEP:'N',CPT:'N',CT:'N',ETP:'N',MEM:'N',IPM:'N',CA:'N',MV:'N',IR:'N',AA:'N',FDC:'N',VAN:'N',DAL:'N',ORI:'N',DAP:'N',LZD:'F',TZD:'N',DOX:'F',TGC:'F',OMA:'F',ERC:'F',GEN:'N',AMK:'N',PLZ:'N',CIP:'F★',LVX:'F★',MXF:'F',DLX:'F',CST:'N',PMB:'N',SXT:'N',MTZ:'N',CLI:'N',AZM:'F',}
+  },
+];
+
+// Drug classes for grouping header
+const drugClasses = [
+  {c:'PCN', label:'PENICILLINS', span:4},
+  {c:'CEPH', label:'CEPHALOSPORINS', span:6},
+  {c:'CARB', label:'CARBAPENEMS', span:3},
+  {c:'BLI', label:'NEW β-LACTAM/BLI COMBOS ✦', span:5},
+  {c:'GLYCO', label:'GLYCOPEPTIDES', span:3},
+  {c:'LIPO', label:'LIPO', span:1},
+  {c:'OXA', label:'OXAZOLIDINONES', span:2},
+  {c:'TET', label:'TETRACYCLINES', span:4},
+  {c:'AG', label:'AMINOGLYCOSIDES', span:3},
+  {c:'FQ', label:'FLUOROQUINOLONES', span:4},
+  {c:'PMX', label:'POLYMYXINS', span:2},
+  {c:'OTH', label:'OTHER', span:4},
+];
+
+function getCellClass(code) {
+  if (!code) return 'cell-none';
+  if (code.startsWith('F')) return 'cell-full';
+  if (code === 'P') return 'cell-partial';
+  if (code === 'V') return 'cell-variable';
+  if (code === 'C') return 'cell-combo';
+  if (code === 'I') return 'cell-vitro';
+  return 'cell-none';
+}
+
+function getCellText(code) {
+  if (!code || code === 'N') return '—';
+  if (code === 'F') return '●';
+  if (code === 'F★') return '★';
+  if (code === 'P') return '◑';
+  if (code === 'V') return '~';
+  if (code === 'C') return '⊕';
+  if (code === 'I') return '🔬';
+  return '—';
+}
+
+function getActKey(drugShort) {
+  // Map drug short to act key
+  const map = {
+    'AMP':'AMP','AMC':'AMC','TZP':'TZP','SAM':'SAM',
+    'CFZ':'CFZ','CXM':'CXM','CRO':'CRO','FEP':'FEP','CPT':'CPT','C/T':'CT',
+    'ETP':'ETP','MEM':'MEM','IPM':'IPM',
+    'C/A':'CA','M/V':'MV','I/R':'IR','A/A':'AA','FDC':'FDC',
+    'VAN':'VAN','DAL':'DAL','ORI':'ORI',
+    'DAP':'DAP',
+    'LZD':'LZD','TZD':'TZD',
+    'DOX':'DOX','TGC':'TGC','OMA':'OMA','ERC':'ERC',
+    'GEN':'GEN','AMK':'AMK','PLZ':'PLZ',
+    'CIP':'CIP','LVX':'LVX','MXF':'MXF','DLX':'DLX',
+    'CST':'CST','PMB':'PMB',
+    'SXT':'SXT','MTZ':'MTZ','CLI':'CLI','AZM':'AZM',
+  };
+  return map[drugShort] || drugShort;
+}
+
+function renderTable(filter) {
+  const container = document.getElementById('spectrum-grid');
+  container.innerHTML = '';
+
+  // Drug class header row
+  const classRow = document.createElement('div');
+  classRow.style.cssText = 'display:flex;gap:2px;margin-bottom:4px;';
+  const spacer = document.createElement('div');
+  spacer.style.cssText = 'min-width:230px;max-width:230px;';
+  classRow.appendChild(spacer);
+  
+  drugClasses.forEach(dc => {
+    const dcDiv = document.createElement('div');
+    const totalWidth = dc.span * 40;
+    dcDiv.style.cssText = `width:${totalWidth}px;min-width:${totalWidth}px;font-size:7px;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-dim);text-align:center;padding:2px 2px;background:#ffffff05;border-radius:2px;font-family:'Syne',sans-serif;font-weight:600;white-space:nowrap;overflow:hidden;`;
+    dcDiv.textContent = dc.label;
+    classRow.appendChild(dcDiv);
+  });
+  container.appendChild(classRow);
+
+  // Drug name header row
+  const headerRow = document.createElement('div');
+  headerRow.style.cssText = 'display:flex;gap:2px;margin-bottom:8px;';
+  const headerSpacer = document.createElement('div');
+  headerSpacer.style.cssText = 'min-width:230px;max-width:230px;';
+  headerRow.appendChild(headerSpacer);
+  
+  drugs.forEach(drug => {
+    const dDiv = document.createElement('div');
+    dDiv.style.cssText = 'width:38px;min-width:38px;height:90px;display:flex;align-items:center;justify-content:center;writing-mode:vertical-rl;transform:rotate(180deg);font-size:8px;font-weight:700;color:var(--text-dim);letter-spacing:0.5px;text-align:center;line-height:1.2;padding:2px;';
+    if (drug.n) dDiv.style.color = 'var(--full)';
+    dDiv.textContent = drug.s;
+    dDiv.title = drug.f;
+    headerRow.appendChild(dDiv);
+  });
+  container.appendChild(headerRow);
+
+  // Group separator tracking
+  let lastGroup = null;
+
+  organisms.forEach(org => {
+    // Filter check
+    if (filter !== 'all') {
+      const groups = org.group.split(' ');
+      if (filter === 'mdr') {
+        if (!groups.includes('mdr')) return;
+      } else {
+        if (!groups.includes(filter)) return;
+      }
+    }
+
+    // Group separator
+    const groups = org.group.split(' ');
+    const primaryGroup = groups[0];
+    if (primaryGroup !== lastGroup) {
+      lastGroup = primaryGroup;
+      const sep = document.createElement('div');
+      sep.style.cssText = 'display:flex;align-items:center;gap:10px;margin:14px 0 6px;';
+      
+      const groupColors = {gpos:'var(--gpos)',gneg:'var(--gneg)',anaerobe:'var(--anaerobe)',atypical:'var(--atypical)'};
+      const groupLabels = {gpos:'GRAM-POSITIVE',gneg:'GRAM-NEGATIVE',anaerobe:'ANAEROBES',atypical:'ATYPICALS'};
+      
+      sep.innerHTML = `
+        <div style="font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:${groupColors[primaryGroup] || 'var(--text)'};letter-spacing:1px;">${groupLabels[primaryGroup] || primaryGroup.toUpperCase()}</div>
+        <div style="flex:1;height:1px;background:linear-gradient(90deg,${groupColors[primaryGroup] || 'var(--border)'}40,transparent);"></div>
+      `;
+      container.appendChild(sep);
+    }
+
+    // Organism row
+    const row = document.createElement('div');
+    row.style.cssText = 'display:flex;align-items:stretch;gap:2px;margin-bottom:2px;';
+    row.onmouseenter = () => row.style.background = '#ffffff08';
+    row.onmouseleave = () => row.style.background = '';
+
+    // Organism name cell
+    const groupColors = {gpos:'var(--gpos)',gneg:'var(--gneg)',anaerobe:'var(--anaerobe)',atypical:'var(--atypical)'};
+    const orgGroups = org.group.split(' ');
+    const primaryOrgGroup = orgGroups[0];
+    const hasMdr = orgGroups.includes('mdr');
+    
+    const nameCell = document.createElement('div');
+    nameCell.style.cssText = `min-width:230px;max-width:230px;padding:5px 8px;background:var(--surface);border-radius:2px;border-left:3px solid ${hasMdr ? 'var(--mdr)' : (groupColors[primaryOrgGroup] || 'var(--border)')};cursor:pointer;`;
+    
+    let pillsHtml = org.pills.map(p => {
+      const pillMap = {mdr:'pill-mdr',xdr:'pill-xdr',new:'pill-new',sepsis:'pill-sepsis',emerging:'pill-emerging','2025':'pill-2025'};
+      return `<span class="org-pill ${pillMap[p] || ''}">${p.toUpperCase()}</span>`;
+    }).join('');
+
+    nameCell.innerHTML = `
+      <div style="font-size:10px;font-style:italic;color:${hasMdr ? 'var(--mdr)' : (groupColors[primaryOrgGroup] || 'var(--text)')};line-height:1.2;">${org.name}</div>
+      <div style="font-size:8px;color:var(--text-dim);font-style:normal;margin-top:1px;">${org.abbr}${org.note ? ' · ' + org.note : ''}</div>
+      <div style="display:flex;gap:3px;flex-wrap:wrap;margin-top:3px;">${pillsHtml}</div>
+    `;
+    nameCell.title = org.desc;
+    row.appendChild(nameCell);
+
+    // Activity cells
+    drugs.forEach(drug => {
+      const key = getActKey(drug.s);
+      const code = org.act[key] || 'N';
+      
+      const cell = document.createElement('div');
+      cell.className = `activity-cell ${getCellClass(code)}`;
+      if (code === 'F★') cell.classList.add('cell-doc');
+      cell.textContent = getCellText(code);
+      cell.title = `${drug.f} vs ${org.abbr}: ${getActivityLabel(code)}`;
+      
+      cell.addEventListener('mouseenter', (e) => showTooltip(e, drug, org, code));
+      cell.addEventListener('mouseleave', hideTooltip);
+      
+      row.appendChild(cell);
+    });
+
+    container.appendChild(row);
+  });
+}
+
+function getActivityLabel(code) {
+  const map = {'F':'Active','F★':'Drug of Choice','P':'Partial Activity','V':'Variable','C':'Combo only','I':'In vitro only','N':'Not Active'};
+  return map[code] || 'Not Active';
+}
+
+let tooltip = null;
+function showTooltip(e, drug, org, code) {
+  if (!tooltip) {
+    tooltip = document.createElement('div');
+    tooltip.className = 'tooltip';
+    document.body.appendChild(tooltip);
+  }
+  tooltip.innerHTML = `<strong>${drug.f}</strong><br><em>${org.name}</em> (${org.abbr})<br><span style="color:var(--accent)">Activity: ${getActivityLabel(code)}</span>${org.desc ? '<br><br>' + org.desc : ''}`;
+  tooltip.style.display = 'block';
+  positionTooltip(e);
+}
+
+function positionTooltip(e) {
+  if (!tooltip) return;
+  const x = Math.min(e.clientX + 12, window.innerWidth - 220);
+  const y = Math.min(e.clientY + 12, window.innerHeight - 120);
+  tooltip.style.left = x + 'px';
+  tooltip.style.top = y + 'px';
+}
+
+function hideTooltip() {
+  if (tooltip) tooltip.style.display = 'none';
+}
+
+document.addEventListener('mousemove', positionTooltip);
+
+function filterView(f) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  renderTable(f);
+}
+
+// Initial render
+document.addEventListener('DOMContentLoaded', () => renderTable('all'));
+</script>
+
+<div id="spectrum-grid"></div>
+
+</div><!-- table-container -->
+
+<!-- CLINICAL NOTES -->
+<div class="notes-panel">
+  <div class="notes-title">⚕ 2024–2025 CLINICAL HIGHLIGHTS & RESISTANCE UPDATES</div>
+  <div class="notes-grid">
+    <div class="note-card danger">
+      <div class="note-card-title">🔴 NDM-PA (ST235) — Critical 2025</div>
+      <div class="note-card-body">NDM-producing <em>Pseudomonas aeruginosa</em> (ST235 clone) now detected across SE Asia, Middle East, and Europe. Resistant to ALL β-lactams, carbapenems, fluoroquinolones, aminoglycosides. <strong>Aztreonam-Avibactam</strong> (Emblaveo™) is the key agent — aztreonam resists MBL hydrolysis; avibactam blocks co-harbored ESBL/KPC. <strong>Cefiderocol</strong> (siderophore cephalosporin) active via iron-transporter uptake. Combination therapy recommended; ID specialist mandatory.</div>
+    </div>
+    <div class="note-card danger">
+      <div class="note-card-title">🔴 LRSA — Linezolid-Resistant Staph. aureus</div>
+      <div class="note-card-body">cfr, optrA, and poxtA genes confer resistance to linezolid and tedizolid. LRSA isolates increasingly found in livestock-associated settings, long-term care, and hospitals (Spain, Denmark, Brazil, China). Options are extremely limited: <strong>Oritavancin</strong>, <strong>Daptomycin + Ceftaroline</strong> (synergistic for VISA/VRSA too), <strong>Eravacycline</strong>. Vancomycin may be co-resistant (VRSA/VISA overlap). Culture + susceptibility testing is mandatory.</div>
+    </div>
+    <div class="note-card danger">
+      <div class="note-card-title">🔴 VRSA / VISA — Vancomycin-Resistant Staph. aureus</div>
+      <div class="note-card-body">VRSA (vanA from enterococci; MIC ≥16) remains rare but devastating. VISA (MIC 4–8) more common, often missed. Both resistant to vancomycin, often linezolid (overlap clones). <strong>Daptomycin + Ceftaroline</strong> is synergistic gold standard. <strong>Oritavancin</strong> shows activity against VISA. TP5 glycan-thickening mechanism. ICU sepsis mortality >50%.</div>
+    </div>
+    <div class="note-card warn">
+      <div class="note-card-title">⚠ CRE — Community Spread of OXA-48</div>
+      <div class="note-card-body">OXA-48 and OXA-244 producing <em>K. pneumoniae</em> / <em>E. coli</em> increasingly detected in community-onset UTIs (2024 EU surveillance). Travel-associated from Turkey, N. Africa, Indian subcontinent. Key: C/A active only if no co-ESBL; M/V limited. <strong>Cefiderocol</strong> retains activity. Combination (C/A + Fosfomycin; or Cefiderocol + TGC) for serious infections. Check for co-resistance to polymyxins.</div>
+    </div>
+    <div class="note-card warn">
+      <div class="note-card-title">⚠ KPC C/A Resistance Emerging</div>
+      <div class="note-card-body">Ceftazidime-Avibactam resistance in KPC-producing <em>K. pneumoniae</em> now well-documented via: (1) KPC mutation (Asp179Tyr etc.), (2) OmpK35/36 porin loss, (3) MBL co-acquisition. Backup options: <strong>Cefiderocol</strong>, <strong>Meropenem-Vaborbactam</strong> (if no MBL), <strong>Aztreonam-Avibactam</strong> (if NDM). Repeat susceptibility testing of all CRE isolates during therapy.</div>
+    </div>
+    <div class="note-card new">
+      <div class="note-card-title">✦ New Agents 2020–2025</div>
+      <div class="note-card-body"><strong>Aztreonam-Avibactam</strong> (2024 EU; 2023 FDA for NDM): the MBL solution. <strong>Cefiderocol</strong>: siderophore cephalosporin, CRAB/XDR-PA/NDM active. <strong>Sulbactam-Durlobactam</strong> (2023): CRAB-specific. <strong>Omadacycline</strong>: oral/IV, MRSA + atypicals. <strong>Delafloxacin</strong>: MRSA-active FQ. <strong>Oritavancin/Dalbavancin</strong>: long-acting glycopeptides, single-dose SSTI. <strong>Plazomicin</strong>: CRE-active aminoglycoside.</div>
+    </div>
+    <div class="note-card info">
+      <div class="note-card-title">ℹ CRAB Treatment — Sulbactam is Key</div>
+      <div class="note-card-body">Carbapenem-resistant <em>Acinetobacter baumannii</em> (CRAB): OXA-23/24/58 ubiquitous. Sulbactam (in Ampicillin-Sulbactam or novel Sulbactam-Durlobactam) inhibits PBP2 directly — it is the active agent, not the β-lactam. <strong>Cefiderocol</strong> + Colistin + Rifampin triple therapy for severe infections. Avoid monotherapy. Tigecycline + Colistin combination used but toxicity significant. Sulbactam-Durlobactam (FDA 2023) is now preferred where available.</div>
+    </div>
+    <div class="note-card info">
+      <div class="note-card-title">ℹ Enterobacter — Never Use Narrow Cephalosporins</div>
+      <div class="note-card-body"><em>Enterobacter cloacae</em> complex and <em>Serratia marcescens</em> harbor inducible AmpC. 1st/2nd/3rd-gen cephalosporins (including ceftriaxone) may appear susceptible in vitro but select de-repressed mutants during therapy → clinical failure. Use <strong>Cefepime</strong> (high dose 2g q8h), carbapenems, or new BL/BLI. ESBL co-production in ECC rising sharply 2024 (ECDC report).</div>
+    </div>
+  </div>
+</div>
+
+<div style="padding:12px 32px 30px;font-size:8.5px;color:var(--text-dim);border-top:1px solid var(--border);margin-top:10px;line-height:1.8;">
+  ⚕ <strong style="color:var(--text)">Clinical Disclaimer:</strong> This spectrum chart is for educational and clinical reference only. Susceptibility patterns vary by region, institution, and patient. Always correlate with local antibiogram data and microbiological susceptibility testing. Consult Infectious Disease specialist for XDR/PDR organisms and novel agents. ★ = commonly preferred; does not substitute for individualized clinical judgment. Sources: EUCAST 2024, CLSI 2024, IDSA guidelines, WHO Critical Priority Pathogens 2024.
+</div>
+
+<div id="tooltip" class="tooltip"></div>
+
+</body>
+</html>

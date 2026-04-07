@@ -3,1117 +3,1936 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Antibiotic Spectrum Reference</title>
-  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+<title>Antibiotic Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #050912;
-    --surface: #0c1428;
-    --surface2: #111d35;
-    --border: #1e3058;
-    --text: #c8d8f0;
-    --text-dim: #5a7aa0;
-    --text-bright: #e8f2ff;
-    --accent: #00c8ff;
-    --accent2: #7b5ea7;
-
-    --full: #00e676;
-    --partial: #ffb300;
-    --none: #1e3058;
-    --none-text: #2a4070;
-    --variable: #ff7043;
-    --combo: #29b6f6;
-    --vitro: #ab47bc;
-
-    --gpos: #ff6b9d;
-    --gneg: #4dd0e1;
-    --anaerobe: #a5d6a7;
-    --atypical: #ffe082;
-    --mdr: #ff5252;
-    --new-mdr: #ff1744;
+    --bg: #0d1117;
+    --canvas: #0d1117;
+    --canvas-subtle: #161b22;
+    --surface: #111827;
+    --surface-strong: #161b22;
+    --border: #30363d;
+    --border-strong: #484f58;
+    --text: #e6edf3;
+    --muted: #98a6b5;
+    --secondary-text: #c0cad5;
+    --accent: #58a6ff;
+    --accent-strong: #79c0ff;
+    --success: #3fb950;
+    --warning: #d29922;
+    --danger: #f85149;
+    --violet: #bc8cff;
+    --mint: #3fb950;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.36), 0 18px 36px rgba(0, 0, 0, 0.28);
+    --body-gradient:
+      radial-gradient(circle at top left, rgba(56, 139, 253, 0.16), transparent 26rem),
+      radial-gradient(circle at top right, rgba(63, 185, 80, 0.12), transparent 24rem),
+      linear-gradient(180deg, #0b1016 0%, #0d1117 35%, #111827 100%);
+    --panel-bg: rgba(13, 17, 23, 0.92);
+    --hero-gradient:
+      linear-gradient(135deg, rgba(56, 139, 253, 0.16), rgba(188, 140, 255, 0.08) 45%, rgba(63, 185, 80, 0.10)),
+      linear-gradient(180deg, #0d1117, #161b22);
+    --hero-grid-line: rgba(48, 54, 61, 0.5);
+    --pill-bg: rgba(22, 27, 34, 0.9);
+    --control-bg: #0d1117;
+    --card-gradient: linear-gradient(180deg, #161b22, #111827);
+    --card-highlight: linear-gradient(180deg, rgba(56, 139, 253, 0.18), #111827);
+    --detail-gradient: linear-gradient(180deg, rgba(22, 27, 34, 0.98), rgba(13, 17, 23, 0.96));
+    --table-grid: #21262d;
+    --matrix-cell-bg: #0d1117;
+    --matrix-head-bg: #161b22;
+    --visual-scroll-bg: linear-gradient(180deg, #111827, #0f1722);
+    --visual-header-gradient: linear-gradient(180deg, #111827 0%, rgba(17, 24, 39, 0.96) 80%, transparent 100%);
+    --tooltip-bg: #1c2128;
+    --tooltip-border: rgba(121, 192, 255, 0.32);
+    --active-control-bg: linear-gradient(180deg, rgba(56, 139, 253, 0.22), rgba(31, 111, 235, 0.14));
+    --active-control-border: rgba(121, 192, 255, 0.38);
+    --active-card-bg: linear-gradient(180deg, rgba(56, 139, 253, 0.16), rgba(17, 24, 39, 0.98));
+    --radius: 16px;
+    --mono: "JetBrains Mono", monospace;
+    --sans: "Manrope", sans-serif;
   }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body.light-theme {
+    --bg: #f6f8fa;
+    --canvas: #ffffff;
+    --canvas-subtle: #f6f8fa;
+    --surface: #ffffff;
+    --surface-strong: #f3f4f6;
+    --border: #d0d7de;
+    --border-strong: #afb8c1;
+    --text: #1f2328;
+    --muted: #57606a;
+    --secondary-text: #57606a;
+    --accent: #0969da;
+    --accent-strong: #0550ae;
+    --success: #1a7f37;
+    --warning: #9a6700;
+    --danger: #cf222e;
+    --violet: #8250df;
+    --mint: #1f883d;
+    --shadow: 0 1px 2px rgba(31, 35, 40, 0.08), 0 8px 24px rgba(140, 149, 159, 0.12);
+    --body-gradient:
+      radial-gradient(circle at top left, rgba(9, 105, 218, 0.10), transparent 26rem),
+      radial-gradient(circle at top right, rgba(31, 136, 61, 0.10), transparent 24rem),
+      linear-gradient(180deg, #ffffff 0%, #f6f8fa 28%, #eef2f6 100%);
+    --panel-bg: rgba(255, 255, 255, 0.94);
+    --hero-gradient:
+      linear-gradient(135deg, rgba(9, 105, 218, 0.08), rgba(130, 80, 223, 0.04) 45%, rgba(31, 136, 61, 0.06)),
+      linear-gradient(180deg, #ffffff, #f6f8fa);
+    --hero-grid-line: rgba(208, 215, 222, 0.35);
+    --pill-bg: rgba(255, 255, 255, 0.85);
+    --control-bg: #ffffff;
+    --card-gradient: linear-gradient(180deg, #ffffff, #f8fafc);
+    --card-highlight: linear-gradient(180deg, rgba(221, 244, 255, 0.86), #ffffff);
+    --detail-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(246, 248, 250, 0.96));
+    --table-grid: #eaeef2;
+    --matrix-cell-bg: #ffffff;
+    --matrix-head-bg: #f6f8fa;
+    --visual-scroll-bg: linear-gradient(180deg, #ffffff, #f8fafc);
+    --visual-header-gradient: linear-gradient(180deg, #ffffff 0%, rgba(255, 255, 255, 0.96) 80%, transparent 100%);
+    --tooltip-bg: #ffffff;
+    --tooltip-border: rgba(9, 105, 218, 0.22);
+    --active-control-bg: linear-gradient(180deg, rgba(221, 244, 255, 0.95), rgba(221, 244, 255, 0.72));
+    --active-control-border: rgba(9, 105, 218, 0.25);
+    --active-card-bg: linear-gradient(180deg, rgba(221, 244, 255, 0.86), #ffffff);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
 
   body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
+    margin: 0;
     min-height: 100vh;
-    overflow-x: auto;
+    background: var(--body-gradient);
+    color: var(--text);
+    font-family: var(--sans);
+    transition: background 0.2s ease, color 0.2s ease;
   }
 
-  /* HEADER */
-  .header {
-    padding: 28px 32px 20px;
-    border-bottom: 1px solid var(--border);
-    background: linear-gradient(135deg, #050912 0%, #0a1830 100%);
-    position: relative;
-  }
-  .header::after {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--accent), transparent);
-  }
-  .header-top {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 12px;
-  }
-  .title-block h1 {
-    font-family: 'Syne', sans-serif;
-    font-size: 22px;
-    font-weight: 800;
-    color: var(--text-bright);
-    letter-spacing: -0.5px;
-  }
-  .title-block .subtitle {
-    font-size: 10px;
-    color: var(--text-dim);
-    margin-top: 3px;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-  }
-  .header-badges {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    align-items: center;
-  }
-  .badge {
-    padding: 3px 10px;
-    border-radius: 3px;
-    font-size: 9px;
-    font-weight: 700;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-  }
-  .badge-alert { background: #ff174420; color: #ff6b6b; border: 1px solid #ff174440; }
-  .badge-new { background: #00e67620; color: #00e676; border: 1px solid #00e67640; }
-  .badge-year { background: #00c8ff15; color: var(--accent); border: 1px solid #00c8ff30; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
 
-  /* FILTER BAR */
-  .filter-bar {
-    padding: 12px 32px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    align-items: center;
-    background: var(--surface);
+  .app-shell {
+    width: min(1360px, calc(100vw - 32px));
+    margin: 24px auto 40px;
   }
-  .filter-label {
-    font-size: 9px;
-    color: var(--text-dim);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-right: 4px;
-  }
-  .filter-btn {
-    padding: 4px 10px;
-    border-radius: 3px;
+
+  .hero,
+  .panel,
+  .card,
+  .matrix-shell,
+  .footnote {
     border: 1px solid var(--border);
-    background: transparent;
-    color: var(--text-dim);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
-    cursor: pointer;
-    transition: all 0.15s;
-    letter-spacing: 0.5px;
+    border-radius: 16px;
+    background: var(--panel-bg);
+    box-shadow: var(--shadow);
   }
-  .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
-  .filter-btn.active { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 700; }
-  .filter-btn.gpos { --c: var(--gpos); }
-  .filter-btn.gneg { --c: var(--gneg); }
-  .filter-btn.mdr  { --c: var(--mdr); }
-  .filter-btn.gpos.active { background: var(--gpos); border-color: var(--gpos); }
-  .filter-btn.gneg.active { background: var(--gneg); border-color: var(--gneg); color: #000; }
-  .filter-btn.mdr.active  { background: var(--mdr);  border-color: var(--mdr); }
 
-  /* LEGEND */
-  .legend {
-    padding: 14px 32px;
-    background: var(--surface2);
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    gap: 24px;
-    flex-wrap: wrap;
+  .hero {
+    position: relative;
+    overflow: hidden;
+    border-radius: 24px;
+    background: var(--hero-gradient);
+    padding: 28px;
   }
-  .legend-section {
+
+  .hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--hero-grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--hero-grid-line) 1px, transparent 1px);
+    background-size: 34px 34px;
+    mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.65), transparent 85%);
+    pointer-events: none;
+  }
+
+  .hero-row {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 1.8fr) minmax(280px, 1fr);
+    gap: 20px;
+    align-items: start;
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(9, 105, 218, 0.16);
+    background: color-mix(in srgb, var(--accent) 14%, transparent);
+    color: var(--accent-strong);
+    font: 700 12px/1.2 var(--mono);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  h1 {
+    margin: 16px 0 10px;
+    font-size: clamp(2rem, 4vw, 3.4rem);
+    line-height: 1.02;
+    letter-spacing: -0.04em;
+  }
+
+  .hero-copy,
+  .panel-copy,
+  .body-copy,
+  .pair-copy,
+  .detail-summary,
+  .footnote {
+    color: var(--secondary-text);
+    line-height: 1.7;
+  }
+
+  .hero-pills,
+  .stat-grid,
+  .chip-row,
+  .detail-chip-row,
+  .coverage-row,
+  .profile-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .hero-pill,
+  .chip,
+  .coverage-pill,
+  .meta-chip {
+    display: inline-flex;
+    align-items: center;
+    min-height: 34px;
+    padding: 8px 12px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--pill-bg);
+    color: var(--text);
+    font-size: 0.84rem;
+    font-weight: 600;
+  }
+
+  .hero-card {
+    position: relative;
+    z-index: 1;
+    padding: 18px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: var(--panel-bg);
+  }
+
+  .hero-card h2,
+  .panel-head h2,
+  .panel-head h3 {
+    margin: 0;
+  }
+
+  .stat-grid { margin-top: 16px; }
+
+  .stat {
+    flex: 1 1 150px;
+    padding: 14px;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    background: var(--card-gradient);
+  }
+
+  .stat strong {
+    display: block;
+    font-size: 1.8rem;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    margin-bottom: 6px;
+  }
+
+  .tab-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 18px 0 16px;
+    align-items: center;
+  }
+
+  .tab-button,
+  .filter-button {
+    appearance: none;
+    border: 1px solid var(--border);
+    background: var(--control-bg);
+    color: var(--text);
+    padding: 10px 14px;
+    border-radius: 12px;
+    font: 600 0.92rem/1.1 var(--sans);
+    cursor: pointer;
+    transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  }
+
+  .tab-button:hover,
+  .filter-button:hover,
+  .organism-card:hover {
+    transform: translateY(-1px);
+    border-color: var(--border-strong);
+    box-shadow: 0 8px 20px rgba(140, 149, 159, 0.16);
+  }
+
+  .tab-button.is-active,
+  .filter-button.is-active {
+    border-color: var(--active-control-border);
+    background: var(--active-control-bg);
+    color: var(--text);
+  }
+
+  .theme-toggle {
+    margin-left: auto;
+  }
+
+  .quick-link-card {
+    margin-top: 16px;
+    padding: 14px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--card-gradient);
+  }
+
+  .quick-link-card strong {
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .quick-link-card p {
+    margin: 0 0 12px;
+    color: var(--secondary-text);
+    line-height: 1.6;
+    font-size: 0.9rem;
+  }
+
+  .quick-link-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--control-bg);
+    color: var(--text);
+    font: 700 0.84rem/1 var(--sans);
+    text-decoration: none;
+  }
+
+  .quick-link-button:hover {
+    border-color: var(--active-control-border);
+    background: var(--active-control-bg);
+    text-decoration: none;
+  }
+
+  .tab-panel { display: none; }
+  .tab-panel.is-active { display: block; }
+  .panel { padding: 20px; }
+  .panel + .panel { margin-top: 16px; }
+
+  .panel-head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 18px;
+  }
+
+  .toolbar {
+    display: grid;
+    grid-template-columns: minmax(220px, 1fr) auto;
+    gap: 16px;
+    align-items: start;
+    margin-bottom: 18px;
+  }
+
+  .toolbar-stack {
     display: flex;
     flex-direction: column;
-    gap: 5px;
-  }
-  .legend-title {
-    font-size: 8px;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    color: var(--text-dim);
-    margin-bottom: 2px;
-    font-weight: 700;
-  }
-  .legend-items {
-    display: flex;
     gap: 10px;
+  }
+
+  label {
+    display: block;
+    font-size: 0.84rem;
+    font-weight: 700;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  input,
+  select {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--control-bg);
+    color: var(--text);
+    padding: 12px 14px;
+    font: 500 0.95rem/1.2 var(--sans);
+    outline: none;
+  }
+
+  input:focus,
+  select:focus {
+    border-color: rgba(9, 105, 218, 0.4);
+    box-shadow: 0 0 0 4px rgba(9, 105, 218, 0.12);
+  }
+
+  .spectrum-layout {
+    display: grid;
+    grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
+    gap: 18px;
+  }
+
+  .organism-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .organism-card {
+    appearance: none;
+    width: 100%;
+    text-align: left;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: var(--card-gradient);
+    padding: 16px;
+    cursor: pointer;
+    transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .organism-card.is-active {
+    border-color: rgba(9, 105, 218, 0.32);
+    background: var(--active-card-bg);
+  }
+
+  .organism-top,
+  .detail-top,
+  .pair-top,
+  .profile-top,
+  .timeline-top,
+  .note-top {
+    display: flex;
     flex-wrap: wrap;
     align-items: center;
-  }
-  .legend-item {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 9.5px;
-    color: var(--text);
-  }
-  .dot {
-    width: 14px; height: 14px;
-    border-radius: 2px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 8px;
-    font-weight: 700;
-    flex-shrink: 0;
-  }
-  .dot-full { background: var(--full); color: #000; }
-  .dot-partial { background: var(--partial); color: #000; }
-  .dot-variable { background: var(--variable); color: #fff; }
-  .dot-combo { background: var(--combo); color: #000; }
-  .dot-vitro { background: var(--vitro); color: #fff; }
-  .dot-none { background: var(--none); color: var(--none-text); }
-
-  .sym-item {
-    display: flex; align-items: center; gap: 5px;
-    font-size: 9.5px; color: var(--text);
-  }
-  .sym { font-size: 12px; }
-
-  /* ORGANISM CATEGORY COLORS */
-  .cat-gpos { color: var(--gpos); }
-  .cat-gneg { color: var(--gneg); }
-  .cat-anaerobe { color: var(--anaerobe); }
-  .cat-atypical { color: var(--atypical); }
-  .cat-mdr { color: var(--mdr); }
-  .cat-new-mdr { color: var(--new-mdr); animation: pulse-mdr 2s infinite; }
-
-  @keyframes pulse-mdr {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.6; }
+    justify-content: space-between;
+    gap: 12px;
   }
 
-  /* MAIN TABLE CONTAINER */
-  .table-container {
-    padding: 24px 32px 40px;
-    overflow-x: auto;
-  }
-  .table-wrapper {
-    min-width: 1200px;
+  .organism-name,
+  .detail-name,
+  .profile-name {
+    margin: 0;
+    font-size: 1.05rem;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
   }
 
-  /* ORG HEADERS */
-  .org-section {
-    margin-bottom: 32px;
-  }
-  .org-section-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 10px;
-    padding-bottom: 6px;
-    border-bottom: 1px solid var(--border);
-  }
-  .org-section-title {
-    font-family: 'Syne', sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-  }
-  .org-section-line {
-    flex: 1;
-    height: 1px;
-    background: linear-gradient(90deg, var(--border), transparent);
-  }
-  .org-tag {
-    font-size: 8px;
-    padding: 2px 8px;
-    border-radius: 2px;
-    letter-spacing: 1px;
+  .organism-name em,
+  .detail-name em { font-style: italic; }
+
+  .kicker {
+    font: 700 0.76rem/1 var(--mono);
     text-transform: uppercase;
-    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--muted);
   }
 
-  /* DRUG-ORGANISM GRID */
-  .grid {
-    display: grid;
-    gap: 2px;
+  .badge,
+  .tag,
+  .timeline-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 10px;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    font: 700 0.76rem/1 var(--mono);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
   }
 
-  .grid-header-row {
+  .badge-gpos { background: rgba(130, 80, 223, 0.10); color: var(--violet); border-color: rgba(130, 80, 223, 0.18); }
+  .badge-gneg { background: rgba(9, 105, 218, 0.10); color: var(--accent-strong); border-color: rgba(9, 105, 218, 0.18); }
+  .badge-anaerobe { background: rgba(31, 136, 61, 0.10); color: var(--mint); border-color: rgba(31, 136, 61, 0.18); }
+  .badge-atypical { background: rgba(154, 103, 0, 0.10); color: var(--warning); border-color: rgba(154, 103, 0, 0.18); }
+  .tag-mdr { background: rgba(207, 34, 46, 0.10); color: var(--danger); border-color: rgba(207, 34, 46, 0.18); }
+  .tag-new { background: rgba(31, 136, 61, 0.10); color: var(--mint); border-color: rgba(31, 136, 61, 0.18); }
+  .tag-emerging { background: rgba(154, 103, 0, 0.10); color: var(--warning); border-color: rgba(154, 103, 0, 0.18); }
+  .tag-sepsis { background: rgba(207, 34, 46, 0.10); color: var(--danger); border-color: rgba(207, 34, 46, 0.18); }
+
+  .detail-card {
+    position: sticky;
+    top: 18px;
+    min-height: 520px;
+    padding: 20px;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    background: var(--detail-gradient);
+  }
+
+  .detail-block { margin-top: 20px; }
+  .detail-block h4 {
+    margin: 0 0 10px;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+  }
+
+  .detail-drugs {
     display: flex;
-    gap: 2px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .drug-chip {
+    min-width: 190px;
+    padding: 12px 13px;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+  }
+
+  .drug-chip strong {
+    display: block;
+    font-size: 0.95rem;
     margin-bottom: 4px;
+  }
+
+  .drug-chip span {
+    color: var(--secondary-text);
+    font-size: 0.86rem;
+    line-height: 1.5;
+  }
+
+  .activity-strong { border-color: rgba(31, 136, 61, 0.18); background: rgba(46, 160, 67, 0.06); }
+  .activity-partial { border-color: rgba(154, 103, 0, 0.18); background: rgba(212, 167, 44, 0.08); }
+  .activity-combo { border-color: rgba(9, 105, 218, 0.18); background: rgba(221, 244, 255, 0.74); }
+
+  .matrix-shell { padding: 16px 18px; }
+  .matrix-shell summary { cursor: pointer; font-weight: 700; }
+  .matrix-wrap { overflow: auto; margin-top: 14px; border-radius: 14px; border: 1px solid var(--border); }
+
+  table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    min-width: 1080px;
+    font-size: 0.82rem;
+  }
+
+  th,
+  td {
+    border-bottom: 1px solid var(--table-grid);
+    border-right: 1px solid var(--table-grid);
+    padding: 0;
+    text-align: center;
+    background: var(--matrix-cell-bg);
+  }
+
+  th {
     position: sticky;
     top: 0;
-    z-index: 10;
+    z-index: 2;
+    padding: 10px 8px;
+    background: var(--matrix-head-bg);
+    color: var(--muted);
+    font: 700 0.72rem/1.3 var(--mono);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
   }
 
-  .drug-label {
-    font-size: 8.5px;
-    font-weight: 700;
-    text-align: center;
-    letter-spacing: 0.3px;
-    color: var(--text-dim);
-    line-height: 1.2;
-    padding: 4px 2px;
+  th:first-child,
+  td:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    background: var(--matrix-cell-bg);
+  }
+
+  th:first-child { z-index: 3; background: var(--matrix-head-bg); }
+
+  .matrix-name {
+    min-width: 250px;
+    padding: 12px 14px;
+    text-align: left;
+  }
+
+  .matrix-code {
+    width: 42px;
+    min-width: 42px;
+    height: 42px;
+    font: 700 0.8rem/1 var(--mono);
+  }
+
+  .code-FD,
+  .code-F { background: rgba(46, 160, 67, 0.10); color: var(--success); }
+  .code-P,
+  .code-V { background: rgba(212, 167, 44, 0.12); color: var(--warning); }
+  .code-C,
+  .code-I { background: rgba(221, 244, 255, 0.86); color: var(--accent-strong); }
+  .code-N { color: var(--muted); }
+
+  .visual-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .legend-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--muted);
+    font: 700 0.76rem/1 var(--mono);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .legend-pill strong {
+    color: var(--text);
+  }
+
+  .visual-scroll {
+    overflow: auto;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: var(--visual-scroll-bg);
+  }
+
+  .visual-grid {
+    min-width: 1280px;
+    padding: 16px;
+  }
+
+  .visual-header-row,
+  .visual-row {
+    display: flex;
+    gap: 6px;
+    align-items: stretch;
+  }
+
+  .visual-header-row {
+    position: sticky;
+    top: 0;
+    z-index: 4;
+    padding-bottom: 12px;
+    margin-bottom: 8px;
+    background: var(--visual-header-gradient);
+  }
+
+  .visual-name-spacer,
+  .visual-name-button {
+    width: 248px;
+    min-width: 248px;
+  }
+
+  .visual-drug-label {
+    width: 44px;
+    min-width: 44px;
+    height: 96px;
+    padding: 8px 4px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--surface);
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
     writing-mode: vertical-rl;
     transform: rotate(180deg);
-    height: 90px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .org-row {
-    display: flex;
-    align-items: stretch;
-    gap: 2px;
-    transition: background 0.1s;
-  }
-  .org-row:hover { background: #ffffff08; }
-
-  .org-name-cell {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    min-width: 230px;
-    max-width: 230px;
-    padding: 5px 8px;
-    background: var(--surface);
-    border-radius: 2px;
-    border-left: 3px solid transparent;
-  }
-
-  .org-name-text {
-    font-size: 10px;
-    font-style: italic;
-    line-height: 1.3;
-  }
-  .org-name-abbr {
-    font-size: 8px;
-    color: var(--text-dim);
-    font-style: normal;
-  }
-  .org-pills {
-    display: flex;
-    gap: 3px;
-    flex-wrap: wrap;
-    margin-top: 2px;
-  }
-  .org-pill {
-    font-size: 7px;
-    padding: 1px 4px;
-    border-radius: 2px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    font-style: normal;
-  }
-  .pill-mdr { background: #ff525220; color: #ff5252; border: 1px solid #ff525240; }
-  .pill-xdr { background: #ff174420; color: #ff6b6b; border: 1px solid #ff174460; }
-  .pill-new { background: #00e67620; color: #00e676; border: 1px solid #00e67640; }
-  .pill-emerging { background: #ffb30020; color: #ffb300; border: 1px solid #ffb30040; }
-  .pill-sepsis { background: #ff9a0020; color: #ff9a00; border: 1px solid #ff9a0040; }
-  .pill-2025 { background: #7b5ea720; color: #b39ddb; border: 1px solid #7b5ea740; }
-
-  .activity-cell {
-    width: 38px;
-    min-width: 38px;
-    height: 42px;
-    border-radius: 2px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 11px;
-    font-weight: 700;
-    position: relative;
-    cursor: default;
-    transition: transform 0.1s, box-shadow 0.1s;
-  }
-  .activity-cell:hover {
-    transform: scale(1.15);
-    z-index: 5;
-    box-shadow: 0 4px 12px #00000080;
-  }
-
-  .cell-full     { background: #00e67618; color: var(--full); border: 1px solid #00e67640; }
-  .cell-partial  { background: #ffb30018; color: var(--partial); border: 1px solid #ffb30040; }
-  .cell-variable { background: #ff704318; color: var(--variable); border: 1px solid #ff704340; }
-  .cell-combo    { background: #29b6f618; color: var(--combo); border: 1px solid #29b6f640; }
-  .cell-vitro    { background: #ab47bc18; color: var(--vitro); border: 1px solid #ab47bc40; }
-  .cell-none     { background: var(--none); color: var(--none-text); border: 1px solid #1e305860; }
-  .cell-doc      { outline: 2px solid #ffd60060; outline-offset: -2px; }
-
-  .cell-superscript {
-    position: absolute;
-    top: 2px; right: 3px;
-    font-size: 7px;
-    font-weight: 400;
-    opacity: 0.9;
-  }
-
-  /* DRUG CLASS HEADERS */
-  .drug-class-row {
-    display: flex;
-    gap: 2px;
-    margin: 14px 0 4px;
-  }
-  .drug-class-spacer {
-    min-width: 230px;
-    max-width: 230px;
-  }
-  .drug-class-label {
-    font-family: 'Syne', sans-serif;
-    font-size: 8px;
-    font-weight: 600;
-    color: var(--text-dim);
+    font: 700 0.72rem/1 var(--mono);
     text-transform: uppercase;
-    letter-spacing: 1.5px;
-    padding: 2px 4px;
-    border-bottom: 1px solid var(--border);
-    text-align: center;
+    letter-spacing: 0.04em;
   }
 
-  /* NOTES PANEL */
-  .notes-panel {
-    margin: 24px 32px;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 18px 20px;
+  .visual-drug-label.is-legacy {
+    border-style: dashed;
+    background: rgba(154, 103, 0, 0.06);
+    color: var(--warning);
   }
-  .notes-title {
-    font-family: 'Syne', sans-serif;
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--text-bright);
-    margin-bottom: 14px;
+
+  .visual-group-divider {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 12px;
+    margin: 18px 0 10px;
   }
+
+  .visual-group-divider h3 {
+    margin: 0;
+    font-size: 0.88rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .visual-group-divider .line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(9, 105, 218, 0.2), transparent);
+  }
+
+  .visual-name-button {
+    appearance: none;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--surface);
+    padding: 12px 14px;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .visual-name-button.is-active {
+    border-color: rgba(9, 105, 218, 0.35);
+    background: var(--active-card-bg);
+  }
+
+  .visual-name-button em {
+    display: block;
+    font-style: italic;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .visual-name-button small {
+    display: block;
+    margin-top: 4px;
+    color: var(--secondary-text);
+    font-size: 0.82rem;
+  }
+
+  .visual-activity-cell {
+    width: 44px;
+    min-width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font: 700 0.76rem/1 var(--mono);
+    background: var(--surface);
+    color: var(--muted);
+  }
+
+  .visual-activity-cell.code-FD,
+  .visual-activity-cell.code-F {
+    background: rgba(46, 160, 67, 0.12);
+  }
+
+  .visual-activity-cell.code-P,
+  .visual-activity-cell.code-V {
+    background: rgba(212, 167, 44, 0.14);
+  }
+
+  .visual-activity-cell.code-C,
+  .visual-activity-cell.code-I {
+    background: rgba(221, 244, 255, 0.92);
+  }
+
+  .combo-grid,
+  .card-grid,
+  .timeline-grid,
   .notes-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 10px;
+    gap: 16px;
   }
+
+  .combo-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .card-grid { grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); }
+  .timeline-grid,
+  .notes-grid { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+
+  .card,
+  .timeline-card,
+  .note-card,
+  .pair-card { padding: 18px; }
+
+  .pair-card,
+  .timeline-card,
   .note-card {
-    background: var(--surface);
-    border-radius: 3px;
-    padding: 10px 12px;
-    border-left: 3px solid var(--border);
-  }
-  .note-card.danger { border-left-color: var(--mdr); }
-  .note-card.warn   { border-left-color: var(--partial); }
-  .note-card.info   { border-left-color: var(--accent); }
-  .note-card.new    { border-left-color: var(--full); }
-  .note-card-title {
-    font-size: 9.5px;
-    font-weight: 700;
-    color: var(--text-bright);
-    margin-bottom: 5px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-  .note-card-body {
-    font-size: 9px;
-    color: var(--text);
-    line-height: 1.6;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: var(--card-gradient);
   }
 
-  /* TOOLTIP */
-  .tooltip {
-    display: none;
+  .code-pair {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: rgba(221, 244, 255, 0.84);
+    color: var(--accent-strong);
+    border: 1px solid rgba(9, 105, 218, 0.16);
+    font: 700 0.8rem/1 var(--mono);
+  }
+
+  .meta-chip {
+    background: var(--canvas-subtle);
+    color: var(--muted);
+    font: 700 0.76rem/1 var(--mono);
+  }
+
+  .timeline-badge {
+    background: rgba(221, 244, 255, 0.8);
+    color: var(--accent-strong);
+    border-color: rgba(9, 105, 218, 0.18);
+  }
+
+  .note-card.danger { border-color: rgba(207, 34, 46, 0.18); }
+  .note-card.warn { border-color: rgba(154, 103, 0, 0.18); }
+  .note-card.info { border-color: rgba(9, 105, 218, 0.18); }
+  .note-card.new { border-color: rgba(31, 136, 61, 0.18); }
+
+  .footnote {
+    margin-top: 18px;
+    padding: 18px 20px;
+  }
+
+  .hover-tooltip {
     position: fixed;
-    background: #0d1f3c;
-    border: 1px solid var(--accent);
-    border-radius: 4px;
-    padding: 8px 10px;
-    font-size: 9px;
-    max-width: 200px;
-    z-index: 100;
+    z-index: 1400;
+    max-width: 280px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    border: 1px solid var(--tooltip-border);
+    background: var(--tooltip-bg);
+    color: var(--text);
+    box-shadow: var(--shadow);
+    font-size: 0.82rem;
+    line-height: 1.55;
     pointer-events: none;
-    line-height: 1.6;
-    color: var(--text-bright);
-    box-shadow: 0 8px 24px #00000080;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 0.12s ease, transform 0.12s ease;
   }
 
-  /* SCROLLBAR */
-  ::-webkit-scrollbar { width: 6px; height: 6px; }
-  ::-webkit-scrollbar-track { background: var(--bg); }
-  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-  ::-webkit-scrollbar-thumb:hover { background: #2e4878; }
-
-  /* CLASSES SECTION DIVIDER */
-  .section-divider {
-    font-size: 9px;
-    color: var(--accent);
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    padding: 6px 0 2px;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    min-width: 230px;
-    max-width: 230px;
+  .hover-tooltip.is-visible {
+    opacity: 1;
+    transform: translateY(0);
   }
 
-  .col-group-label {
-    font-size: 7.5px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--text-dim);
+  [data-tooltip] {
+    cursor: help;
+  }
+
+  .empty-state {
+    padding: 28px;
+    border: 1px dashed var(--border-strong);
+    border-radius: 16px;
+    background: rgba(246, 248, 250, 0.9);
+    color: var(--muted);
     text-align: center;
-    padding: 2px 4px;
-    background: #ffffff05;
-    border-radius: 2px;
   }
 
-  .new-drug-flag {
-    display: inline-block;
-    width: 5px; height: 5px;
-    background: var(--full);
-    border-radius: 50%;
-    margin-left: 3px;
-    vertical-align: middle;
-    box-shadow: 0 0 4px var(--full);
+  @media (max-width: 1120px) {
+    .hero-row,
+    .spectrum-layout,
+    .combo-grid { grid-template-columns: 1fr; }
+    .detail-card { position: static; min-height: 0; }
   }
 
-  .resistance-banner {
-    margin: 0 32px 20px;
-    padding: 10px 16px;
-    background: #ff174410;
-    border: 1px solid #ff174440;
-    border-radius: 3px;
-    font-size: 9.5px;
-    color: #ff8a80;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    line-height: 1.6;
+  @media (max-width: 900px) {
+    .app-shell { width: min(100vw - 20px, 1360px); margin: 10px auto 28px; }
+    .hero,
+    .panel,
+    .matrix-shell,
+    .footnote { padding: 16px; }
+    .toolbar { grid-template-columns: 1fr; }
+    .matrix-shell { display: none; }
+    .theme-toggle { margin-left: 0; }
   }
-  .resistance-banner .icon { font-size: 18px; }
 
-  /* Print */
-  @media print {
-    body { background: #fff; color: #000; font-size: 7px; }
-    .filter-bar { display: none; }
+  @media (max-width: 640px) {
+    .organism-card,
+    .card,
+    .timeline-card,
+    .note-card,
+    .pair-card { padding: 14px; }
+    .drug-chip { min-width: 100%; }
   }
 </style>
 </head>
 <body>
+<div class="app-shell">
+  <header class="hero">
+    <div class="hero-row">
+      <div>
+        <div class="eyebrow">Antibiotics only - Separate modern page</div>
+        <h1>Antibiotic Hub</h1>
+        <p class="hero-copy">A lighter, mobile-friendly companion page for the existing spectrum chart. It carries over the useful coverage content, adds a combination tab, surfaces late-2025 and 2026 updates with dates, and turns the old hover-heavy layout into a cleaner GitHub-style explorer.</p>
+        <div class="hero-pills">
+          <div class="hero-pill">Spectrum explorer</div>
+          <div class="hero-pill">Combination making</div>
+          <div class="hero-pill">Drug cards for trainees</div>
+          <div class="hero-pill">What changed in 2026</div>
+        </div>
+      </div>
+      <aside class="hero-card">
+        <h2>Page Snapshot</h2>
+        <div class="stat-grid">
+          <div class="stat">
+            <strong id="stat-organisms">23</strong>
+            <span>organisms carried over from the current page</span>
+          </div>
+          <div class="stat">
+            <strong id="stat-drugs">30</strong>
+            <span>antibiotics rendered in the matrix and explorer</span>
+          </div>
+          <div class="stat">
+            <strong>7</strong>
+            <span>curated combination playbooks</span>
+          </div>
+          <div class="stat">
+            <strong>5</strong>
+            <span>official late-2025 to 2026 updates with source links</span>
+          </div>
+        </div>
+        <div class="quick-link-card">
+          <strong>Original spectrum page</strong>
+          <p>The older dense grid is still available if you want the previous single-page reference beside this newer layout.</p>
+          <a class="quick-link-button" href="index.html">Open previous spectrum file</a>
+        </div>
+      </aside>
+    </div>
+  </header>
 
-<div class="header">
-  <div class="header-top">
-    <div class="title-block">
-      <h1>ANTIBIOTIC SPECTRUM REFERENCE</h1>
-      <div class="subtitle">Extended Coverage · MDR Pathogens · 2024–2025 Updates · Clinical Reference</div>
-    </div>
-    <div class="header-badges">
-      <span class="badge badge-year">Updated 2025</span>
-      <span class="badge badge-alert">⚠ MDR Alerts Included</span>
-      <span class="badge badge-new">◆ New Agents Marked</span>
-    </div>
-  </div>
+  <nav class="tab-bar" aria-label="Primary sections">
+    <button class="tab-button is-active" data-tab-target="spectrum">Spectrum</button>
+    <button class="tab-button" data-tab-target="visual">Visual Spectrum</button>
+    <button class="tab-button" data-tab-target="combos">Combinations</button>
+    <button class="tab-button" data-tab-target="drugs">Drug Cards</button>
+    <button class="tab-button" data-tab-target="updates">What&apos;s New 2026</button>
+    <button class="tab-button theme-toggle" id="theme-toggle" type="button">Theme: Dark</button>
+  </nav>
+
+  <main>
+    <section class="tab-panel is-active" data-tab-panel="spectrum">
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2>Spectrum Explorer</h2>
+            <p class="panel-copy">Search organisms, filter by group, and inspect the antibiotic choices without relying on hover tooltips. The explorer is the primary mobile layout. The full matrix is kept below for desktop reference.</p>
+          </div>
+        </div>
+        <div class="toolbar">
+          <div class="toolbar-stack">
+            <div>
+              <label for="organism-search">Search organisms</label>
+              <input id="organism-search" type="search" placeholder="MRSA, Enterococcus, CRE, Legionella">
+            </div>
+          </div>
+          <div>
+            <label>Group filter</label>
+            <div class="chip-row" id="group-filters"></div>
+          </div>
+        </div>
+        <div class="spectrum-layout">
+          <div class="organism-list" id="organism-list"></div>
+          <div class="detail-pane" id="organism-detail"></div>
+        </div>
+      </div>
+
+      <details class="matrix-shell" open>
+        <summary>Desktop spectrum matrix</summary>
+        <div class="matrix-wrap" id="matrix-wrap"></div>
+      </details>
+    </section>
+
+    <section class="tab-panel" data-tab-panel="visual">
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2>Visual Spectrum</h2>
+            <p class="panel-copy">A dedicated spectrum chart inspired by the original page, but cleaned up for the newer UI. The explorer tab remains the best small-screen view. This tab is for scanning coverage patterns side by side.</p>
+          </div>
+        </div>
+        <div class="toolbar">
+          <div>
+            <label>Shared group filter</label>
+            <div class="chip-row" id="visual-group-filters"></div>
+          </div>
+          <div class="body-copy">Legacy-return agents are shown with dashed headers so they stand out from the core modern shortlist.</div>
+        </div>
+        <div class="visual-legend">
+          <span class="legend-pill"><strong>DOC</strong> preferred</span>
+          <span class="legend-pill"><strong>A</strong> active</span>
+          <span class="legend-pill"><strong>P</strong> partial</span>
+          <span class="legend-pill"><strong>V</strong> variable</span>
+          <span class="legend-pill"><strong>C</strong> combo-only</span>
+          <span class="legend-pill"><strong>I</strong> limited</span>
+        </div>
+        <div id="visual-spectrum-grid"></div>
+      </div>
+    </section>
+
+    <section class="tab-panel" data-tab-panel="combos">
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2>Combination Builder</h2>
+            <p class="panel-copy">Pick two antibiotics to see how their combined coverage behaves across the carried-over organisms. When the pair matches a known high-yield regimen, the page also shows the practical reasoning and the main caution.</p>
+          </div>
+        </div>
+        <div class="combo-grid">
+          <div class="pair-card">
+            <div class="pair-top">
+              <h3>Select a pair</h3>
+              <span class="code-pair" id="pair-code">DAP + CPT</span>
+            </div>
+            <div class="toolbar-stack" style="margin-top: 16px;">
+              <div>
+                <label for="combo-a">First antibiotic</label>
+                <select id="combo-a"></select>
+              </div>
+              <div>
+                <label for="combo-b">Second antibiotic</label>
+                <select id="combo-b"></select>
+              </div>
+            </div>
+            <p class="pair-copy" id="pair-summary"></p>
+          </div>
+          <div class="pair-card" id="pair-playbook"></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h3>Coverage by pair</h3>
+            <p class="panel-copy">This is a coverage-oriented view, not a treatment recommendation engine. It helps trainees see when a second drug genuinely adds something and when it mostly duplicates what is already covered.</p>
+          </div>
+        </div>
+        <div class="notes-grid" id="pair-coverage"></div>
+      </div>
+    </section>
+
+    <section class="tab-panel" data-tab-panel="drugs">
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2>Drug Cards</h2>
+            <p class="panel-copy">A trainee-facing antibiotic view. These are not dosing sheets. They are memory anchors: route, biggest coverage hooks, when the drug shines, and what usually trips people up.</p>
+          </div>
+        </div>
+        <div class="toolbar">
+          <div>
+            <label for="drug-search">Search antibiotic cards</label>
+            <input id="drug-search" type="search" placeholder="cefiderocol, anaerobes, oral step-down">
+          </div>
+          <div>
+            <label>Card focus</label>
+            <div class="chip-row" id="drug-filters"></div>
+          </div>
+        </div>
+        <div class="card-grid" id="drug-cards"></div>
+      </div>
+    </section>
+
+    <section class="tab-panel" data-tab-panel="updates">
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2>What&apos;s New 2026</h2>
+            <p class="panel-copy">These items use specific dates because the old page still hard-codes 2025. As of April 7, 2026, the page should talk about breakpoints, oral options, pipeline signals, and resistance trends instead of pretending there was already a major new 2026 approval.</p>
+          </div>
+        </div>
+        <div class="timeline-grid" id="updates-grid"></div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h3>Carried forward clinical alerts</h3>
+            <p class="panel-copy">These are the high-yield notes copied forward from the current chart and reframed into cleaner cards.</p>
+          </div>
+        </div>
+        <div class="notes-grid" id="alert-grid"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footnote">
+    This page is antibiotic-focused and educational. It does not replace local susceptibility data, official product labels, EUCAST or CLSI breakpoints, institutional pathways, or infectious diseases input for severe resistant infections. Combination cards here are teaching aids, not automated regimen recommendations.
+  </footer>
 </div>
-
-<!-- LEGEND -->
-<div class="legend">
-  <div class="legend-section">
-    <div class="legend-title">Activity Level</div>
-    <div class="legend-items">
-      <div class="legend-item"><div class="dot dot-full">●</div> Active (susceptible)</div>
-      <div class="legend-item"><div class="dot dot-partial">◑</div> Partial / Moderate</div>
-      <div class="legend-item"><div class="dot dot-variable">~</div> Variable / Unpredictable</div>
-      <div class="legend-item"><div class="dot dot-combo">⊕</div> Active in combination only</div>
-      <div class="legend-item"><div class="dot dot-vitro">🔬</div> In vitro / limited clinical data</div>
-      <div class="legend-item"><div class="dot dot-none">—</div> Inactive / Not indicated</div>
-    </div>
-  </div>
-  <div class="legend-section">
-    <div class="legend-title">Special Symbols</div>
-    <div class="legend-items">
-      <div class="sym-item"><span class="sym">★</span> Drug of choice</div>
-      <div class="sym-item"><span class="sym">✦</span> FDA approved 2020–2025</div>
-      <div class="sym-item"><span class="sym">⚡</span> Rapid resistance emerges</div>
-      <div class="sym-item"><span class="sym">⚠</span> Use with caution / toxicity</div>
-      <div class="sym-item"><span class="sym">🔴</span> XDR / PDR organism</div>
-      <div class="sym-item"><span class="sym">†</span> Refer to susceptibility testing</div>
-    </div>
-  </div>
-  <div class="legend-section">
-    <div class="legend-title">Organism Tags</div>
-    <div class="legend-items">
-      <div class="sym-item"><span class="org-pill pill-mdr">MDR</span> Multi-drug resistant</div>
-      <div class="sym-item"><span class="org-pill pill-xdr">XDR</span> Extensively drug resistant</div>
-      <div class="sym-item"><span class="org-pill pill-new">NEW</span> Newly emerging strain/clone</div>
-      <div class="sym-item"><span class="org-pill pill-sepsis">SEPSIS</span> High sepsis mortality risk</div>
-      <div class="sym-item"><span class="org-pill pill-emerging">EMERGING</span> Resistance spreading globally</div>
-      <div class="sym-item"><span class="org-pill pill-2025">2025</span> Newly reported 2024–2025</div>
-    </div>
-  </div>
-  <div class="legend-section">
-    <div class="legend-title">Organism Groups</div>
-    <div class="legend-items">
-      <div class="legend-item" style="color:var(--gpos)">█ Gram-positive</div>
-      <div class="legend-item" style="color:var(--gneg)">█ Gram-negative</div>
-      <div class="legend-item" style="color:var(--anaerobe)">█ Anaerobes</div>
-      <div class="legend-item" style="color:var(--atypical)">█ Atypicals</div>
-      <div class="legend-item" style="color:var(--mdr)">█ MDR Critical Priority</div>
-    </div>
-  </div>
-</div>
-
-<div class="resistance-banner">
-  <span class="icon">🔴</span>
-  <span><strong>2024–2025 Alerts:</strong> New linezolid-resistant MRSA (cfr, optrA genes) reported globally · NDM-producing <em>Pseudomonas aeruginosa</em> clone ST235 spreading · VRSA (vanA) sporadic cases · CRE with OXA-48 emerging in community settings · Ceftazidime-avibactam resistance via porin loss in KPC-Kp reported · Enterobacter cloacae complex MDR surging in ICU settings.</span>
-</div>
-
-<!-- FILTER BAR -->
-<div class="filter-bar">
-  <span class="filter-label">Show:</span>
-  <button class="filter-btn active" onclick="filterView('all')">All Organisms</button>
-  <button class="filter-btn gpos" onclick="filterView('gpos')">Gram-Positive</button>
-  <button class="filter-btn gneg" onclick="filterView('gneg')">Gram-Negative</button>
-  <button class="filter-btn" onclick="filterView('anaerobe')">Anaerobes</button>
-  <button class="filter-btn" onclick="filterView('atypical')">Atypicals</button>
-  <button class="filter-btn mdr" onclick="filterView('mdr')">🔴 MDR Only</button>
-</div>
-
-<div class="table-container">
-<div class="table-wrapper" id="main-table">
-
-<!-- ========== DRUGS: define columns ========== -->
-<!-- 
-  Drugs (columns, left to right):
-  PENICILLINS: Ampicillin, Amox-Clav, Pip-Tazo, Amp-Sulbactam
-  CEPHALOSPORINS: Cefazolin, Cefuroxime, Ceftriaxone, Cefepime, Ceftaroline, Ceftolozane-Tazo
-  CARBAPENEMS: Ertapenem, Meropenem, Imipenem, Doripenem
-  NEW BL/BLI: Ceftaz-Avibactam, Mero-Vaborbactam, Imi-Relebactam, Aztreonam-Avibactam, Cefiderocol
-  GLYCOPEPTIDES: Vancomycin, Dalbavancin, Oritavancin
-  LIPOPEPTIDES: Daptomycin
-  OXAZOLIDINONES: Linezolid, Tedizolid
-  TETRACYCLINES: Doxycycline, Tigecycline, Omadacycline, Eravacycline
-  AMINOGLYCOSIDES: Gentamicin, Amikacin, Plazomicin
-  FLUOROQUINOLONES: Ciprofloxacin, Levofloxacin, Moxifloxacin, Delafloxacin
-  POLYMYXINS: Colistin, Polymyxin B
-  OTHER: TMP-SMX, Metronidazole, Clindamycin, Azithromycin, Chloramphenicol
--->
-
+<div class="hover-tooltip" id="hover-tooltip" aria-hidden="true"></div>
 <script>
-// Data structure
-const drugs = [
-  // [shortName, fullName, class, isNew]
-  // PENICILLINS
-  {s:'AMP', f:'Ampicillin', c:'PCN', n:false},
-  {s:'AMC', f:'Amox-Clav', c:'PCN', n:false},
-  {s:'TZP', f:'Pip-Tazo', c:'PCN', n:false},
-  {s:'SAM', f:'Amp-Sulbactam', c:'PCN', n:false},
-  // CEPHALOSPORINS
-  {s:'CFZ', f:'Cefazolin', c:'CEPH', n:false},
-  {s:'CXM', f:'Cefuroxime', c:'CEPH', n:false},
-  {s:'CRO', f:'Ceftriaxone', c:'CEPH', n:false},
-  {s:'FEP', f:'Cefepime', c:'CEPH', n:false},
-  {s:'CPT', f:'Ceftaroline ✦', c:'CEPH', n:true},
-  {s:'C/T', f:'Ceftolozane-Tazo ✦', c:'CEPH', n:true},
-  // CARBAPENEMS
-  {s:'ETP', f:'Ertapenem', c:'CARB', n:false},
-  {s:'MEM', f:'Meropenem', c:'CARB', n:false},
-  {s:'IPM', f:'Imipenem', c:'CARB', n:false},
-  // NEW BL/BLI COMBINATIONS
-  {s:'C/A', f:'Ceftaz-Avibactam ✦', c:'BLI', n:true},
-  {s:'M/V', f:'Mero-Vaborbactam ✦', c:'BLI', n:true},
-  {s:'I/R', f:'Imi-Relebactam ✦', c:'BLI', n:true},
-  {s:'A/A', f:'Azt-Avibactam ✦', c:'BLI', n:true},
-  {s:'FDC', f:'Cefiderocol ✦', c:'BLI', n:true},
-  // GLYCOPEPTIDES
-  {s:'VAN', f:'Vancomycin', c:'GLYCO', n:false},
-  {s:'DAL', f:'Dalbavancin ✦', c:'GLYCO', n:true},
-  {s:'ORI', f:'Oritavancin ✦', c:'GLYCO', n:true},
-  // LIPOPEPTIDE
-  {s:'DAP', f:'Daptomycin', c:'LIPO', n:false},
-  // OXAZOLIDINONES
-  {s:'LZD', f:'Linezolid', c:'OXA', n:false},
-  {s:'TZD', f:'Tedizolid ✦', c:'OXA', n:true},
-  // TETRACYCLINES
-  {s:'DOX', f:'Doxycycline', c:'TET', n:false},
-  {s:'TGC', f:'Tigecycline', c:'TET', n:false},
-  {s:'OMA', f:'Omadacycline ✦', c:'TET', n:true},
-  {s:'ERC', f:'Eravacycline ✦', c:'TET', n:true},
-  // AMINOGLYCOSIDES
-  {s:'GEN', f:'Gentamicin', c:'AG', n:false},
-  {s:'AMK', f:'Amikacin', c:'AG', n:false},
-  {s:'PLZ', f:'Plazomicin ✦', c:'AG', n:true},
-  // FLUOROQUINOLONES
-  {s:'CIP', f:'Ciprofloxacin', c:'FQ', n:false},
-  {s:'LVX', f:'Levofloxacin', c:'FQ', n:false},
-  {s:'MXF', f:'Moxifloxacin', c:'FQ', n:false},
-  {s:'DLX', f:'Delafloxacin ✦', c:'FQ', n:true},
-  // POLYMYXINS
-  {s:'CST', f:'Colistin', c:'PMX', n:false},
-  {s:'PMB', f:'Polymyxin B', c:'PMX', n:false},
-  // OTHER
-  {s:'SXT', f:'TMP-SMX', c:'OTH', n:false},
-  {s:'MTZ', f:'Metronidazole', c:'OTH', n:false},
-  {s:'CLI', f:'Clindamycin', c:'OTH', n:false},
-  {s:'AZM', f:'Azithromycin', c:'OTH', n:false},
-];
-
-// Activity codes:
-// F=full, P=partial, V=variable, C=combo-only, I=in-vitro, N=none
-// Special: F★=DOC, F⚡=resistance emerges fast
-// Format: {a: activity, s: special symbol}
-
-const organisms = [
-  // ===== GRAM POSITIVE =====
-  {
-    group: 'gpos', groupLabel: 'GRAM-POSITIVE', groupColor: 'var(--gpos)',
-    name: 'Staphylococcus aureus', abbr: 'MSSA', note: 'Methicillin-susceptible',
-    pills: [],
-    desc: 'Most community-acquired. β-lactam preferred.',
-    act: {AMP:'N',AMC:'F',TZP:'F',SAM:'F',CFZ:'F★',CXM:'F',CRO:'F',FEP:'F',CPT:'F',CT:'F',ETP:'F',MEM:'F',IPM:'F',CA:'N',MV:'N',IR:'N',AA:'N',FDC:'N',VAN:'F',DAL:'F',ORI:'F',DAP:'F',LZD:'F',TZD:'F',DOX:'F',TGC:'F',OMA:'F',ERC:'F',GEN:'P',AMK:'P',PLZ:'P',CIP:'F',LVX:'F',MXF:'F',DLX:'F',CST:'N',PMB:'N',SXT:'F',MTZ:'N',CLI:'F',AZM:'P',}
-  },
-  {
-    group: 'gpos mdr', groupLabel: 'GRAM-POSITIVE', groupColor: 'var(--gpos)',
-    name: 'Staphylococcus aureus', abbr: 'MRSA', note: 'Methicillin-resistant',
-    pills: ['mdr'],
-    desc: 'mecA/mecC-mediated. Vancomycin cornerstone. Community vs Healthcare MRSA differ.',
-    act: {AMP:'N',AMC:'N',TZP:'N',SAM:'N',CFZ:'N',CXM:'N',CRO:'N',FEP:'N',CPT:'F',CT:'N',ETP:'N',MEM:'N',IPM:'N',CA:'N',MV:'N',IR:'N',AA:'N',FDC:'N',VAN:'F★',DAL:'F',ORI:'F',DAP:'F',LZD:'F',TZD:'F',DOX:'P',TGC:'F',OMA:'F',ERC:'F',GEN:'N',AMK:'N',PLZ:'N',CIP:'N',LVX:'N',MXF:'N',DLX:'F',CST:'N',PMB:'N',SXT:'F',MTZ:'N',CLI:'V',AZM:'N',}
-  },
-  {
-    group: 'gpos mdr', groupLabel: 'GRAM-POSITIVE', groupColor: 'var(--gpos)',
-    name: 'Staph. aureus', abbr: 'VRSA/VISA', note: 'Van-Resistant/Intermediate ⚠ NEW 2025',
-    pills: ['xdr','new','2025'],
-    desc: 'vanA gene (VRSA): resistance to vancomycin. VISA: MIC 4–8. Very rare. Options: Daptomycin ± Ceftaroline, Tedizolid, Oritavancin. TP5 clones reported.',
-    act: {AMP:'N',AMC:'N',TZP:'N',SAM:'N',CFZ:'N',CXM:'N',CRO:'N',FEP:'N',CPT:'F',CT:'N',ETP:'N',MEM:'N',IPM:'N',CA:'N',MV:'N',IR:'N',AA:'N',FDC:'N',VAN:'N',DAL:'P',ORI:'F',DAP:'F★',LZD:'F',TZD:'F',DOX:'P',TGC:'F',OMA:'F',ERC:'F',GEN:'N',AMK:'N',PLZ:'N',CIP:'N',LVX:'N',MXF:'N',DLX:'P',CST:'N',PMB:'N',SXT:'V',MTZ:'N',CLI:'N',AZM:'N',}
-  },
-  {
-    group: 'gpos mdr', groupLabel: 'GRAM-POSITIVE', groupColor: 'var(--gpos)',
-    name: 'Staph. aureus', abbr: 'LRSA', note: 'Linezolid-Resistant ⚠ EMERGING',
-    pills: ['xdr','emerging','2025'],
-    desc: 'cfr, optrA, poxtA genes. Emerging globally, esp. livestock-associated. Severely limited options. Consider: Daptomycin+Ceftaroline, Oritavancin, Ceftaroline alone if susceptible.',
-    act: {AMP:'N',AMC:'N',TZP:'N',SAM:'N',CFZ:'N',CXM:'N',CRO:'N',FEP:'N',CPT:'F',CT:'N',ETP:'N',MEM:'N',IPM:'N',CA:'N',MV:'N',IR:'N',AA:'N',FDC:'N',VAN:'N',DAL:'P',ORI:'F',DAP:'F★',LZD:'N',TZD:'N',DOX:'P',TGC:'F',OMA:'P',ERC:'F',GEN:'N',AMK:'N',PLZ:'N',CIP:'N',LVX:'N',MXF:'N',DLX:'P',CST:'N',PMB:'N',SXT:'V',MTZ:'N',CLI:'N',AZM:'N',}
-  },
-  {
-    group: 'gpos',
-    name: 'Streptococcus pneumoniae', abbr: 'DRSP', note: 'Drug-resistant pneumococcus',
-    pills: ['mdr'],
-    desc: 'PBP mutations → PCN resistance. Ceftriaxone often active. Check MIC. FQ active.',
-    act: {AMP:'V',AMC:'V',TZP:'V',SAM:'V',CFZ:'P',CXM:'P',CRO:'F',FEP:'F',CPT:'F',CT:'N',ETP:'F',MEM:'F',IPM:'F',CA:'N',MV:'N',IR:'N',AA:'N',FDC:'N',VAN:'F★',DAL:'F',ORI:'F',DAP:'N',LZD:'F',TZD:'F',DOX:'V',TGC:'F',OMA:'F',ERC:'F',GEN:'N',AMK:'N',PLZ:'N',CIP:'N',LVX:'F',MXF:'F',DLX:'F',CST:'N',PMB:'N',SXT:'V',MTZ:'N',CLI:'V',AZM:'V',}
-  },
-  {
-    group: 'gpos',
-    name: 'Enterococcus faecalis', abbr: 'E. faecalis', note: '',
-    pills: [],
-    desc: 'Intrinsically resistant to cephalosporins. Ampicillin preferred. Endocarditis: amp+gent synergy.',
-    act: {AMP:'F★',AMC:'F',TZP:'F',SAM:'F',CFZ:'N',CXM:'N',CRO:'N',FEP:'N',CPT:'N',CT:'N',ETP:'N',MEM:'N',IPM:'P',CA:'N',MV:'N',IR:'N',AA:'N',FDC:'N',VAN:'F',DAL:'F',ORI:'F',DAP:'F',LZD:'F',TZD:'F',DOX:'N',TGC:'P',OMA:'N',ERC:'F',GEN:'C',AMK:'C',PLZ:'C',CIP:'P',LVX:'P',MXF:'P',DLX:'P',CST:'N',PMB:'N',SXT:'N',MTZ:'N',CLI:'N',AZM:'N',}
-  },
-  {
-    group: 'gpos mdr',
-    name: 'Enterococcus faecium', abbr: 'VRE', note: 'Vancomycin-resistant',
-    pills: ['mdr','sepsis'],
-    desc: 'vanA/vanB genes. Very limited options. Linezolid, daptomycin, oritavancin, dalbavancin.',
-    act: {AMP:'N',AMC:'N',TZP:'N',SAM:'N',CFZ:'N',CXM:'N',CRO:'N',FEP:'N',CPT:'N',CT:'N',ETP:'N',MEM:'N',IPM:'N',CA:'N',MV:'N',IR:'N',AA:'N',FDC:'N',VAN:'N',DAL:'F',ORI:'F',DAP:'F★',LZD:'F',TZD:'F',DOX:'N',TGC:'F',OMA:'N',ERC:'F',GEN:'N',AMK:'N',PLZ:'N',CIP:'N',LVX:'N',MXF:'N',DLX:'N',CST:'N',PMB:'N',SXT:'N',MTZ:'N',CLI:'N',AZM:'N',}
-  },
-
-  // ===== GRAM NEGATIVE =====
-  {
-    group: 'gneg',
-    name: 'Escherichia coli', abbr: 'Standard E. coli', note: 'ESBL-negative',
-    pills: [],
-    desc: 'Most UTIs, biliary. TMP-SMX if susceptible. FQ resistance increasing.',
-    act: {AMP:'V',AMC:'F',TZP:'F',SAM:'F',CFZ:'F',CXM:'F',CRO:'F',FEP:'F',CPT:'N',CT:'F',ETP:'F',MEM:'F',IPM:'F',CA:'F',MV:'F',IR:'F',AA:'N',FDC:'F',VAN:'N',DAL:'N',ORI:'N',DAP:'N',LZD:'N',TZD:'N',DOX:'V',TGC:'F',OMA:'F',ERC:'F',GEN:'F',AMK:'F',PLZ:'F',CIP:'F',LVX:'F',MXF:'F',DLX:'F',CST:'F',PMB:'F',SXT:'V',MTZ:'N',CLI:'N',AZM:'N',}
-  },
-  {
-    group: 'gneg mdr',
-    name: 'ESBL-producing Enterobacterales', abbr: 'ESBL-E', note: 'E. coli / K. pneumoniae',
-    pills: ['mdr'],
-    desc: 'CTX-M, TEM, SHV ESBLs. Carbapenems preferred for serious infections. Pip-tazo unreliable (inoculum effect).',
-    act: {AMP:'N',AMC:'N',TZP:'V',SAM:'N',CFZ:'N',CXM:'N',CRO:'N',FEP:'P',CPT:'N',CT:'N',ETP:'F★',MEM:'F★',IPM:'F★',CA:'F',MV:'F',IR:'F',AA:'N',FDC:'F',VAN:'N',DAL:'N',ORI:'N',DAP:'N',LZD:'N',TZD:'N',DOX:'N',TGC:'F',OMA:'F',ERC:'F',GEN:'V',AMK:'F',PLZ:'F',CIP:'N',LVX:'N',MXF:'N',DLX:'N',CST:'F',PMB:'F',SXT:'N',MTZ:'N',CLI:'N',AZM:'N',}
-  },
-  {
-    group: 'gneg mdr',
-    name: 'CRE — KPC-producing', abbr: 'KPC-Kp', note: 'Carbapenem-resistant (KPC)',
-    pills: ['xdr','sepsis'],
-    desc: 'KPC serine carbapenemases (Ambler A). C/A, M/V, I/R highly active. Resistance via porin loss + KPC upregulation now emerging to C/A.',
-    act: {AMP:'N',AMC:'N',TZP:'N',SAM:'N',CFZ:'N',CXM:'N',CRO:'N',FEP:'N',CPT:'N',CT:'N',ETP:'N',MEM:'N',IPM:'N',CA:'F★',MV:'F★',IR:'F',AA:'I',FDC:'F',VAN:'N',DAL:'N',ORI:'N',DAP:'N',LZD:'N',TZD:'N',DOX:'N',TGC:'F',OMA:'P',ERC:'F',GEN:'N',AMK:'V',PLZ:'F',CIP:'N',LVX:'N',MXF:'N',DLX:'N',CST:'F',PMB:'F',SXT:'N',MTZ:'N',CLI:'N',AZM:'N',}
-  },
-  {
-    group: 'gneg mdr',
-    name: 'CRE — NDM-producing', abbr: 'NDM-Kp/Ec', note: 'Carbapenem-resistant (MBL)',
-    pills: ['xdr','sepsis','emerging'],
-    desc: 'NDM-1 to NDM-30+ metallo-β-lactamases (Ambler B). NOT inhibited by avibactam. Aztreonam-Avibactam (A/A) is KEY — aztreonam not hydrolyzed by MBLs but susceptible to ESBLs/KPC, avibactam covers those. Cefiderocol active.',
-    act: {AMP:'N',AMC:'N',TZP:'N',SAM:'N',CFZ:'N',CXM:'N',CRO:'N',FEP:'N',CPT:'N',CT:'N',ETP:'N',MEM:'N',IPM:'N',CA:'N',MV:'N',IR:'N',AA:'F★',FDC:'F',VAN:'N',DAL:'N',ORI:'N',DAP:'N',LZD:'N',TZD:'N',DOX:'N',TGC:'F',OMA:'P',ERC:'F',GEN:'N',AMK:'V',PLZ:'F',CIP:'N',LVX:'N',MXF:'N',DLX:'N',CST:'F',PMB:'F',SXT:'N',MTZ:'N',CLI:'N',AZM:'N',}
-  },
-  {
-    group: 'gneg mdr',
-    name: 'CRE — OXA-48-like', abbr: 'OXA-48', note: 'Carbapenem-resistant (OXA)',
-    pills: ['xdr','emerging','2025'],
-    desc: 'OXA-48/OXA-244 (Ambler D). Often co-harbors ESBL. Emerging in community. C/A + MEM combination or Cefiderocol. M/V shows limited activity. Community spread via travel 2024.',
-    act: {AMP:'N',AMC:'N',TZP:'N',SAM:'N',CFZ:'N',CXM:'N',CRO:'N',FEP:'N',CPT:'N',CT:'N',ETP:'N',MEM:'N',IPM:'N',CA:'F',MV:'P',IR:'P',AA:'F',FDC:'F',VAN:'N',DAL:'N',ORI:'N',DAP:'N',LZD:'N',TZD:'N',DOX:'N',TGC:'F',OMA:'P',ERC:'F',GEN:'N',AMK:'V',PLZ:'P',CIP:'N',LVX:'N',MXF:'N',DLX:'N',CST:'F',PMB:'F',SXT:'N',MTZ:'N',CLI:'N',AZM:'N',}
-  },
-  {
-    group: 'gneg mdr',
-    name: 'Enterobacter cloacae complex', abbr: 'ECC-MDR', note: 'AmpC + ESBL ⚠',
-    pills: ['mdr','sepsis','2025'],
-    desc: 'Inducible AmpC (de-repressed mutants). Do NOT use 1st/2nd/3rd-gen ceph — select resistance. Cefepime (high dose), carbapenems. ESBL co-production increasing 2024.',
-    act: {AMP:'N',AMC:'N',TZP:'V',SAM:'N',CFZ:'N',CXM:'N',CRO:'N',FEP:'F',CPT:'N',CT:'F',ETP:'F',MEM:'F',IPM:'F',CA:'F',MV:'F',IR:'F',AA:'I',FDC:'F',VAN:'N',DAL:'N',ORI:'N',DAP:'N',LZD:'N',TZD:'N',DOX:'N',TGC:'F',OMA:'F',ERC:'F',GEN:'V',AMK:'F',PLZ:'F',CIP:'V',LVX:'V',MXF:'N',DLX:'N',CST:'F',PMB:'F',SXT:'V',MTZ:'N',CLI:'N',AZM:'N',}
-  },
-  {
-    group: 'gneg',
-    name: 'Pseudomonas aeruginosa', abbr: 'Standard PA', note: 'Susceptible',
-    pills: [],
-    desc: 'Multiple intrinsic resistances. Anti-pseudomonal agents required. Monotherapy for serious infections.',
-    act: {AMP:'N',AMC:'N',TZP:'F',SAM:'N',CFZ:'N',CXM:'N',CRO:'N',FEP:'F',CPT:'N',CT:'F',ETP:'N',MEM:'F',IPM:'F',CA:'N',MV:'N',IR:'F',AA:'N',FDC:'F',VAN:'N',DAL:'N',ORI:'N',DAP:'N',LZD:'N',TZD:'N',DOX:'N',TGC:'N',OMA:'N',ERC:'N',GEN:'F',AMK:'F',PLZ:'F',CIP:'F',LVX:'F',MXF:'N',DLX:'F',CST:'F',PMB:'F',SXT:'N',MTZ:'N',CLI:'N',AZM:'N',}
-  },
-  {
-    group: 'gneg mdr',
-    name: 'MDR Pseudomonas aeruginosa', abbr: 'MDR-PA', note: 'Multidrug resistant',
-    pills: ['mdr','sepsis'],
-    desc: 'Efflux pumps, OprD porin loss, AmpC overproduction. C/T and I/R preferred. FQ/AG may have retained activity - test!',
-    act: {AMP:'N',AMC:'N',TZP:'N',SAM:'N',CFZ:'N',CXM:'N',CRO:'N',FEP:'V',CPT:'N',CT:'F★',ETP:'N',MEM:'V',IPM:'V',CA:'V',MV:'N',IR:'F',AA:'N',FDC:'F',VAN:'N',DAL:'N',ORI:'N',DAP:'N',LZD:'N',TZD:'N',DOX:'N',TGC:'N',OMA:'N',ERC:'N',GEN:'V',AMK:'V',PLZ:'P',CIP:'V',LVX:'V',MXF:'N',DLX:'V',CST:'F',PMB:'F',SXT:'N',MTZ:'N',CLI:'N',AZM:'N',}
-  },
-  {
-    group: 'gneg mdr',
-    name: 'XDR Pseudomonas (NDM/MBL)', abbr: 'NDM-PA', note: 'ST235 clone ⚠ 2025',
-    pills: ['xdr','new','sepsis','emerging'],
-    desc: 'NDM-producing PA (ST235 international clone). Spreading SE Asia, Europe, Middle East. Aztreonam-Avibactam emerging as only option. Cefiderocol. Combination essential.',
-    act: {AMP:'N',AMC:'N',TZP:'N',SAM:'N',CFZ:'N',CXM:'N',CRO:'N',FEP:'N',CPT:'N',CT:'N',ETP:'N',MEM:'N',IPM:'N',CA:'N',MV:'N',IR:'N',AA:'F★',FDC:'F',VAN:'N',DAL:'N',ORI:'N',DAP:'N',LZD:'N',TZD:'N',DOX:'N',TGC:'N',OMA:'N',ERC:'N',GEN:'N',AMK:'N',PLZ:'I',CIP:'N',LVX:'N',MXF:'N',DLX:'N',CST:'F',PMB:'F',SXT:'N',MTZ:'N',CLI:'N',AZM:'N',}
-  },
-  {
-    group: 'gneg mdr',
-    name: 'Acinetobacter baumannii', abbr: 'CRAB', note: 'Carbapenem-resistant',
-    pills: ['xdr','sepsis'],
-    desc: 'OXA-23/24/58 oxacillinases ubiquitous. Sulbactam (via PBP2 inhibition) is key. SAM or novel Sulbactam-Durlobactam (2023 FDA). Cefiderocol + Colistin ± Rifampin.',
-    act: {AMP:'N',AMC:'N',TZP:'N',SAM:'F',CFZ:'N',CXM:'N',CRO:'N',FEP:'N',CPT:'N',CT:'N',ETP:'N',MEM:'N',IPM:'N',CA:'N',MV:'N',IR:'N',AA:'N',FDC:'F',VAN:'N',DAL:'N',ORI:'N',DAP:'N',LZD:'N',TZD:'N',DOX:'P',TGC:'F',OMA:'P',ERC:'F',GEN:'N',AMK:'N',PLZ:'I',CIP:'N',LVX:'N',MXF:'N',DLX:'N',CST:'F★',PMB:'F★',SXT:'V',MTZ:'N',CLI:'N',AZM:'N',}
-  },
-  {
-    group: 'gneg mdr',
-    name: 'Stenotrophomonas maltophilia', abbr: 'S. malt.', note: 'Intrinsically MDR',
-    pills: ['mdr'],
-    desc: 'Intrinsically resistant to carbapenems (MBLs L1+L2). TMP-SMX drug of choice. Levofloxacin 2nd line. Ticarcillin-Clav (where available) or TGC.',
-    act: {AMP:'N',AMC:'N',TZP:'N',SAM:'N',CFZ:'N',CXM:'N',CRO:'N',FEP:'N',CPT:'N',CT:'N',ETP:'N',MEM:'N',IPM:'N',CA:'N',MV:'N',IR:'N',AA:'N',FDC:'I',VAN:'N',DAL:'N',ORI:'N',DAP:'N',LZD:'N',TZD:'N',DOX:'F',TGC:'F',OMA:'F',ERC:'F',GEN:'N',AMK:'N',PLZ:'N',CIP:'P',LVX:'F',MXF:'F',DLX:'F',CST:'N',PMB:'N',SXT:'F★',MTZ:'N',CLI:'N',AZM:'N',}
-  },
-  {
-    group: 'gneg',
-    name: 'Haemophilus influenzae', abbr: 'H. influenzae', note: '',
-    pills: [],
-    desc: 'β-lactamase-producing strains common. Amox-Clav, cefuroxime, or ceftriaxone.',
-    act: {AMP:'V',AMC:'F',TZP:'F',SAM:'F',CFZ:'N',CXM:'F',CRO:'F★',FEP:'F',CPT:'N',CT:'N',ETP:'F',MEM:'F',IPM:'F',CA:'N',MV:'N',IR:'N',AA:'N',FDC:'N',VAN:'N',DAL:'N',ORI:'N',DAP:'N',LZD:'N',TZD:'N',DOX:'F',TGC:'F',OMA:'F',ERC:'F',GEN:'F',AMK:'F',PLZ:'N',CIP:'F',LVX:'F',MXF:'F',DLX:'F',CST:'N',PMB:'N',SXT:'V',MTZ:'N',CLI:'N',AZM:'F',}
-  },
-
-  // ===== ANAEROBES =====
-  {
-    group: 'anaerobe',
-    name: 'Bacteroides fragilis', abbr: 'B. fragilis', note: '',
-    pills: [],
-    desc: 'Key intra-abdominal anaerobe. Pip-Tazo, carbapenems, metronidazole. Resistance to Clindamycin increasing.',
-    act: {AMP:'N',AMC:'F',TZP:'F★',SAM:'F',CFZ:'N',CXM:'N',CRO:'N',FEP:'N',CPT:'N',CT:'N',ETP:'F★',MEM:'F',IPM:'F',CA:'F',MV:'F',IR:'F',AA:'N',FDC:'N',VAN:'N',DAL:'N',ORI:'N',DAP:'N',LZD:'N',TZD:'N',DOX:'N',TGC:'F',OMA:'F',ERC:'F',GEN:'N',AMK:'N',PLZ:'N',CIP:'N',LVX:'N',MXF:'F',DLX:'N',CST:'N',PMB:'N',SXT:'N',MTZ:'F★',CLI:'V',AZM:'N',}
-  },
-  {
-    group: 'anaerobe',
-    name: 'Clostridioides difficile', abbr: 'C. diff', note: '',
-    pills: [],
-    desc: 'Oral vancomycin or fidaxomicin first-line. Metronidazole only mild cases (inferior). Bezlotoxumab for recurrence prevention.',
-    act: {AMP:'N',AMC:'N',TZP:'N',SAM:'N',CFZ:'N',CXM:'N',CRO:'N',FEP:'N',CPT:'N',CT:'N',ETP:'N',MEM:'N',IPM:'N',CA:'N',MV:'N',IR:'N',AA:'N',FDC:'N',VAN:'F★',DAL:'N',ORI:'N',DAP:'N',LZD:'N',TZD:'N',DOX:'N',TGC:'N',OMA:'N',ERC:'N',GEN:'N',AMK:'N',PLZ:'N',CIP:'N',LVX:'N',MXF:'N',DLX:'N',CST:'N',PMB:'N',SXT:'N',MTZ:'P',CLI:'N',AZM:'N',}
-  },
-
-  // ===== ATYPICALS =====
-  {
-    group: 'atypical',
-    name: 'Mycoplasma pneumoniae', abbr: 'Mycoplasma', note: '',
-    pills: [],
-    desc: 'No cell wall → β-lactams inactive. Macrolide resistance rising. FQ or tetracycline alternatives.',
-    act: {AMP:'N',AMC:'N',TZP:'N',SAM:'N',CFZ:'N',CXM:'N',CRO:'N',FEP:'N',CPT:'N',CT:'N',ETP:'N',MEM:'N',IPM:'N',CA:'N',MV:'N',IR:'N',AA:'N',FDC:'N',VAN:'N',DAL:'N',ORI:'N',DAP:'N',LZD:'F',TZD:'F',DOX:'F',TGC:'F',OMA:'F★',ERC:'F',GEN:'N',AMK:'N',PLZ:'N',CIP:'F',LVX:'F',MXF:'F',DLX:'F',CST:'N',PMB:'N',SXT:'N',MTZ:'N',CLI:'N',AZM:'F',}
-  },
-  {
-    group: 'atypical',
-    name: 'Legionella pneumophila', abbr: 'Legionella', note: '',
-    pills: [],
-    desc: 'Intracellular. FQ superior to macrolide in severe disease. Rifampin not recommended as monotherapy.',
-    act: {AMP:'N',AMC:'N',TZP:'N',SAM:'N',CFZ:'N',CXM:'N',CRO:'N',FEP:'N',CPT:'N',CT:'N',ETP:'N',MEM:'N',IPM:'N',CA:'N',MV:'N',IR:'N',AA:'N',FDC:'N',VAN:'N',DAL:'N',ORI:'N',DAP:'N',LZD:'F',TZD:'N',DOX:'F',TGC:'F',OMA:'F',ERC:'F',GEN:'N',AMK:'N',PLZ:'N',CIP:'F★',LVX:'F★',MXF:'F',DLX:'F',CST:'N',PMB:'N',SXT:'N',MTZ:'N',CLI:'N',AZM:'F',}
-  },
-];
-
-// Drug classes for grouping header
-const drugClasses = [
-  {c:'PCN', label:'PENICILLINS', span:4},
-  {c:'CEPH', label:'CEPHALOSPORINS', span:6},
-  {c:'CARB', label:'CARBAPENEMS', span:3},
-  {c:'BLI', label:'NEW β-LACTAM/BLI COMBOS ✦', span:5},
-  {c:'GLYCO', label:'GLYCOPEPTIDES', span:3},
-  {c:'LIPO', label:'LIPO', span:1},
-  {c:'OXA', label:'OXAZOLIDINONES', span:2},
-  {c:'TET', label:'TETRACYCLINES', span:4},
-  {c:'AG', label:'AMINOGLYCOSIDES', span:3},
-  {c:'FQ', label:'FLUOROQUINOLONES', span:4},
-  {c:'PMX', label:'POLYMYXINS', span:2},
-  {c:'OTH', label:'OTHER', span:4},
-];
-
-function getCellClass(code) {
-  if (!code) return 'cell-none';
-  if (code.startsWith('F')) return 'cell-full';
-  if (code === 'P') return 'cell-partial';
-  if (code === 'V') return 'cell-variable';
-  if (code === 'C') return 'cell-combo';
-  if (code === 'I') return 'cell-vitro';
-  return 'cell-none';
-}
-
-function getCellText(code) {
-  if (!code || code === 'N') return '—';
-  if (code === 'F') return '●';
-  if (code === 'F★') return '★';
-  if (code === 'P') return '◑';
-  if (code === 'V') return '~';
-  if (code === 'C') return '⊕';
-  if (code === 'I') return '🔬';
-  return '—';
-}
-
-function getActKey(drugShort) {
-  // Map drug short to act key
-  const map = {
-    'AMP':'AMP','AMC':'AMC','TZP':'TZP','SAM':'SAM',
-    'CFZ':'CFZ','CXM':'CXM','CRO':'CRO','FEP':'FEP','CPT':'CPT','C/T':'CT',
-    'ETP':'ETP','MEM':'MEM','IPM':'IPM',
-    'C/A':'CA','M/V':'MV','I/R':'IR','A/A':'AA','FDC':'FDC',
-    'VAN':'VAN','DAL':'DAL','ORI':'ORI',
-    'DAP':'DAP',
-    'LZD':'LZD','TZD':'TZD',
-    'DOX':'DOX','TGC':'TGC','OMA':'OMA','ERC':'ERC',
-    'GEN':'GEN','AMK':'AMK','PLZ':'PLZ',
-    'CIP':'CIP','LVX':'LVX','MXF':'MXF','DLX':'DLX',
-    'CST':'CST','PMB':'PMB',
-    'SXT':'SXT','MTZ':'MTZ','CLI':'CLI','AZM':'AZM',
+  const state = {
+    tab: 'spectrum',
+    theme: 'dark',
+    group: 'all',
+    organismSearch: '',
+    selectedOrganismId: 'mssa',
+    comboA: 'DAP',
+    comboB: 'CPT',
+    drugSearch: '',
+    drugFocus: 'all',
   };
-  return map[drugShort] || drugShort;
-}
 
-function renderTable(filter) {
-  const container = document.getElementById('spectrum-grid');
-  container.innerHTML = '';
+  const groupOrder = ['gpos', 'gneg', 'anaerobe', 'atypical'];
+  const groupLabels = {
+    all: 'All organisms',
+    gpos: 'Gram-positive',
+    gneg: 'Gram-negative',
+    anaerobe: 'Anaerobes',
+    atypical: 'Atypicals',
+    mdr: 'MDR only',
+  };
 
-  // Drug class header row
-  const classRow = document.createElement('div');
-  classRow.style.cssText = 'display:flex;gap:2px;margin-bottom:4px;';
-  const spacer = document.createElement('div');
-  spacer.style.cssText = 'min-width:230px;max-width:230px;';
-  classRow.appendChild(spacer);
-  
-  drugClasses.forEach(dc => {
-    const dcDiv = document.createElement('div');
-    const totalWidth = dc.span * 40;
-    dcDiv.style.cssText = `width:${totalWidth}px;min-width:${totalWidth}px;font-size:7px;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-dim);text-align:center;padding:2px 2px;background:#ffffff05;border-radius:2px;font-family:'Syne',sans-serif;font-weight:600;white-space:nowrap;overflow:hidden;`;
-    dcDiv.textContent = dc.label;
-    classRow.appendChild(dcDiv);
-  });
-  container.appendChild(classRow);
+  const pillClassMap = {
+    mdr: 'tag-mdr',
+    xdr: 'tag-mdr',
+    new: 'tag-new',
+    emerging: 'tag-emerging',
+    sepsis: 'tag-sepsis',
+    '2025': 'tag-new',
+  };
 
-  // Drug name header row
-  const headerRow = document.createElement('div');
-  headerRow.style.cssText = 'display:flex;gap:2px;margin-bottom:8px;';
-  const headerSpacer = document.createElement('div');
-  headerSpacer.style.cssText = 'min-width:230px;max-width:230px;';
-  headerRow.appendChild(headerSpacer);
-  
-  drugs.forEach(drug => {
-    const dDiv = document.createElement('div');
-    dDiv.style.cssText = 'width:38px;min-width:38px;height:90px;display:flex;align-items:center;justify-content:center;writing-mode:vertical-rl;transform:rotate(180deg);font-size:8px;font-weight:700;color:var(--text-dim);letter-spacing:0.5px;text-align:center;line-height:1.2;padding:2px;';
-    if (drug.n) dDiv.style.color = 'var(--full)';
-    dDiv.textContent = drug.s;
-    dDiv.title = drug.f;
-    headerRow.appendChild(dDiv);
-  });
-  container.appendChild(headerRow);
+  const groupClassMap = {
+    gpos: 'badge-gpos',
+    gneg: 'badge-gneg',
+    anaerobe: 'badge-anaerobe',
+    atypical: 'badge-atypical',
+  };
 
-  // Group separator tracking
-  let lastGroup = null;
+  const drugs = [
+    { id: 'AMP', short: 'AMP', name: 'Ampicillin', class: 'Penicillin', route: 'IV', matrix: true },
+    { id: 'AMC', short: 'AMC', name: 'Amoxicillin-clavulanate', class: 'Penicillin', route: 'PO', matrix: true },
+    { id: 'TZP', short: 'TZP', name: 'Piperacillin-tazobactam', class: 'Penicillin', route: 'IV', matrix: true },
+    { id: 'SAM', short: 'SAM', name: 'Ampicillin-sulbactam', class: 'Penicillin', route: 'IV', matrix: true },
+    { id: 'CFZ', short: 'CFZ', name: 'Cefazolin', class: 'Cephalosporin', route: 'IV', matrix: true },
+    { id: 'CRO', short: 'CRO', name: 'Ceftriaxone', class: 'Cephalosporin', route: 'IV', matrix: true },
+    { id: 'FEP', short: 'FEP', name: 'Cefepime', class: 'Cephalosporin', route: 'IV', matrix: true },
+    { id: 'CPT', short: 'CPT', name: 'Ceftaroline', class: 'Cephalosporin', route: 'IV', matrix: true },
+    { id: 'CT', short: 'C/T', name: 'Ceftolozane-tazobactam', class: 'Cephalosporin', route: 'IV', matrix: true },
+    { id: 'MEM', short: 'MEM', name: 'Meropenem', class: 'Carbapenem', route: 'IV', matrix: true },
+    { id: 'CA', short: 'C/A', name: 'Ceftazidime-avibactam', class: 'BL/BLI', route: 'IV', matrix: true },
+    { id: 'IR', short: 'I/R', name: 'Imipenem-relebactam', class: 'BL/BLI', route: 'IV', matrix: true },
+    { id: 'AA', short: 'A/A', name: 'Aztreonam-avibactam', class: 'BL/BLI', route: 'IV', matrix: true },
+    { id: 'FDC', short: 'FDC', name: 'Cefiderocol', class: 'Siderophore cephalosporin', route: 'IV', matrix: true },
+    { id: 'VAN', short: 'VAN', name: 'Vancomycin', class: 'Glycopeptide', route: 'IV/PO', matrix: true },
+    { id: 'DAL', short: 'DAL', name: 'Dalbavancin', class: 'Glycopeptide', route: 'IV', matrix: true },
+    { id: 'ORI', short: 'ORI', name: 'Oritavancin', class: 'Glycopeptide', route: 'IV', matrix: true },
+    { id: 'DAP', short: 'DAP', name: 'Daptomycin', class: 'Lipopeptide', route: 'IV', matrix: true },
+    { id: 'LZD', short: 'LZD', name: 'Linezolid', class: 'Oxazolidinone', route: 'IV/PO', matrix: true },
+    { id: 'DOX', short: 'DOX', name: 'Doxycycline', class: 'Tetracycline', route: 'PO/IV', matrix: true },
+    { id: 'TGC', short: 'TGC', name: 'Tigecycline', class: 'Tetracycline', route: 'IV', matrix: true },
+    { id: 'OMA', short: 'OMA', name: 'Omadacycline', class: 'Tetracycline', route: 'PO/IV', matrix: true },
+    { id: 'GEN', short: 'GEN', name: 'Gentamicin', class: 'Aminoglycoside', route: 'IV', matrix: true },
+    { id: 'AMK', short: 'AMK', name: 'Amikacin', class: 'Aminoglycoside', route: 'IV', matrix: true },
+    { id: 'CIP', short: 'CIP', name: 'Ciprofloxacin', class: 'Fluoroquinolone', route: 'PO/IV', matrix: true },
+    { id: 'LVX', short: 'LVX', name: 'Levofloxacin', class: 'Fluoroquinolone', route: 'PO/IV', matrix: true },
+    { id: 'MXF', short: 'MXF', name: 'Moxifloxacin', class: 'Fluoroquinolone', route: 'PO/IV', matrix: true, legacy: true },
+    { id: 'SXT', short: 'SXT', name: 'TMP-SMX', class: 'Sulfonamide', route: 'PO/IV', matrix: true },
+    { id: 'FOS', short: 'FOS', name: 'Fosfomycin', class: 'Phosphonic acid', route: 'PO / IV region-dependent', matrix: true, legacy: true },
+    { id: 'CHL', short: 'CHL', name: 'Chloramphenicol', class: 'Amphenicol', route: 'PO/IV', matrix: true, legacy: true },
+    { id: 'MTZ', short: 'MTZ', name: 'Metronidazole', class: 'Nitroimidazole', route: 'PO/IV', matrix: true },
+    { id: 'AZM', short: 'AZM', name: 'Azithromycin', class: 'Macrolide', route: 'PO/IV', matrix: true },
+    { id: 'PMB', short: 'PMB', name: 'Polymyxin B', class: 'Polymyxin', route: 'IV', matrix: true },
+  ];
 
-  organisms.forEach(org => {
-    // Filter check
-    if (filter !== 'all') {
-      const groups = org.group.split(' ');
-      if (filter === 'mdr') {
-        if (!groups.includes('mdr')) return;
-      } else {
-        if (!groups.includes(filter)) return;
-      }
+  const drugProfiles = [
+    { id: 'AMP', title: 'Ampicillin', subtitle: 'Enterococcus anchor', route: 'IV', tags: ['core', 'enterococcus'], summary: 'Classic cell-wall drug for susceptible Enterococcus faecalis and selected streptococci.', shines: 'Best remembered for enterococcal infections, especially when paired for endocarditis synergy.', trap: 'Do not expect cephalosporin-like Gram-negative coverage. It is narrow and easy to over-credit.' },
+    { id: 'TZP', title: 'Piperacillin-tazobactam', subtitle: 'Broad empiric workhorse', route: 'IV', tags: ['broad', 'pseudomonas', 'anaerobes'], summary: 'Strong single-agent breadth for many hospital infections, especially when anaerobes matter.', shines: 'Useful when you need Pseudomonas plus anaerobic coverage in one bag.', trap: 'Do not lean on it for serious ESBL infections just because the lab says susceptible.' },
+    { id: 'SAM', title: 'Ampicillin-sulbactam', subtitle: 'Sulbactam matters', route: 'IV', tags: ['anaerobes', 'crab'], summary: 'Good for oral flora and anaerobes, and worth remembering because sulbactam itself matters for Acinetobacter.', shines: 'Helpful teaching drug for aspiration syndromes, bite wounds, and CRAB discussions.', trap: 'The useful CRAB idea is the sulbactam exposure, not magical broad coverage against everything.' },
+    { id: 'CFZ', title: 'Cefazolin', subtitle: 'MSSA first-line memory hook', route: 'IV', tags: ['mssa', 'narrow'], summary: 'One of the cleanest answers for MSSA bacteremia and skin-soft tissue infections.', shines: 'A good reminder that a narrow beta-lactam often beats a broader agent for MSSA.', trap: 'Do not mentally upgrade it into MRSA or Enterococcus coverage.' },
+    { id: 'CRO', title: 'Ceftriaxone', subtitle: 'Daily broad-spectrum staple', route: 'IV', tags: ['community', 'step-down'], summary: 'Strong daily cephalosporin for many community infections and a frequent hospital default.', shines: 'Great teaching drug for pneumococcus, H. influenzae, meningitis patterns, and mixed community syndromes.', trap: 'It does not cover Pseudomonas and it is weak for AmpC derepression problems like Enterobacter cloacae complex.' },
+    { id: 'FEP', title: 'Cefepime', subtitle: 'AmpC-aware cephalosporin', route: 'IV', tags: ['pseudomonas', 'ampc'], summary: 'Broad cephalosporin with anti-pseudomonal activity and a better teaching role around inducible AmpC.', shines: 'Useful when the trainee needs to separate cefepime from ceftriaxone in Enterobacter-type organisms.', trap: 'It still does not cover anaerobes and it is not a universal answer for all resistant Gram-negatives.' },
+    { id: 'CPT', title: 'Ceftaroline', subtitle: 'Anti-MRSA cephalosporin', route: 'IV', tags: ['mrsa', 'rescue'], summary: 'A cephalosporin that matters because it reaches MRSA and often appears in salvage combinations.', shines: 'High-yield for MRSA teaching and for the daptomycin-plus-ceftaroline synergy concept.', trap: 'Do not confuse anti-MRSA activity with anti-pseudomonal activity. It does not solve that problem.' },
+    { id: 'CT', title: 'Ceftolozane-tazobactam', subtitle: 'Pseudomonas-focused modern beta-lactam', route: 'IV', tags: ['pseudomonas', 'reserve'], summary: 'A modern choice that trainees should associate with difficult Pseudomonas rather than routine use.', shines: 'Good mental anchor for MDR Pseudomonas when standard anti-pseudomonal beta-lactams start failing.', trap: 'It is not the same as ceftaroline and it is not an anaerobe solution.' },
+    { id: 'MEM', title: 'Meropenem', subtitle: 'Carbapenem benchmark', route: 'IV', tags: ['esbl', 'broad', 'anaerobes'], summary: 'Core reference carbapenem for ESBL and many severe Gram-negative infections.', shines: 'Useful benchmark when trainees need to compare newer BL/BLI agents against an old standard.', trap: 'Do not assume all carbapenem-resistant organisms are still partly carbapenem treatable.' },
+    { id: 'CA', title: 'Ceftazidime-avibactam', subtitle: 'KPC and OXA-48 memory hook', route: 'IV', tags: ['reserve', 'kpc'], summary: 'High-yield reserve agent for KPC and some OXA-48-like CRE discussions.', shines: 'A key teaching drug for serine carbapenemases and why mechanism matters.', trap: 'It does not fix metallo-beta-lactamases like NDM.' },
+    { id: 'AA', title: 'Aztreonam-avibactam', subtitle: 'NDM teaching pearl', route: 'IV', tags: ['reserve', 'ndm'], summary: 'The standout option on this page for MBL logic, especially NDM-heavy salvage scenarios.', shines: 'Excellent concept drug for explaining why aztreonam plus inhibitor logic matters in MBL infections.', trap: 'It is still a specialist-space drug and should not be mentally promoted into a routine broad-spectrum default.' },
+    { id: 'FDC', title: 'Cefiderocol', subtitle: 'Last-line Gram-negative tool', route: 'IV', tags: ['reserve', 'mdr-gn'], summary: 'Siderophore cephalosporin that belongs in the conversation when resistant Gram-negatives have exhausted standard options.', shines: 'Good for NDM, XDR Pseudomonas, and CRAB discussions where trainees need a modern salvage anchor.', trap: 'Coverage on paper does not remove the need for source control, repeat susceptibility checks, and specialist input.' },
+    { id: 'VAN', title: 'Vancomycin', subtitle: 'MRSA baseline comparator', route: 'IV/PO', tags: ['mrsa', 'gram-positive'], summary: 'The usual baseline comparator for MRSA and severe Gram-positive infections.', shines: 'Useful as the starting point for thinking through MRSA, enterococcal coverage, and C. difficile PO-specific use.', trap: 'Remember that IV vancomycin and oral vancomycin solve very different problems.' },
+    { id: 'DAP', title: 'Daptomycin', subtitle: 'Bacteremia and VRE rescue agent', route: 'IV', tags: ['mrsa', 'vre', 'rescue'], summary: 'Important for MRSA salvage and VRE, especially outside the lung.', shines: 'High-yield when paired with ceftaroline in persistent MRSA bacteremia or VISA-type problems.', trap: 'Do not reach for it in pneumonia. The lung is the classic catch.' },
+    { id: 'LZD', title: 'Linezolid', subtitle: 'Oral anti-MRSA and VRE option', route: 'IV/PO', tags: ['mrsa', 'vre', 'oral'], summary: 'A powerful oral-capable Gram-positive drug that trainees remember because it changes step-down planning.', shines: 'Useful for MRSA pneumonia logic and for VRE discussions when oral therapy matters.', trap: 'Myelosuppression, serotonin interactions, and prolonged-use toxicity are the exam traps.' },
+    { id: 'DOX', title: 'Doxycycline', subtitle: 'Oral flexibility', route: 'PO/IV', tags: ['oral', 'atypical'], summary: 'Flexible oral-heavy drug for atypicals, some skin infections, and selected MDR organisms like Stenotrophomonas.', shines: 'Easy teaching bridge between atypicals and outpatient-friendly therapy.', trap: 'It is not a universal staph or Gram-negative answer just because it comes in a tablet.' },
+    { id: 'OMA', title: 'Omadacycline', subtitle: 'Newer oral or IV tetracycline', route: 'PO/IV', tags: ['oral', 'mrsa', 'atypical'], summary: 'Useful trainee card because it spans MRSA and atypicals while offering oral or IV flexibility.', shines: 'A clean example of a newer drug that changes oral step-down thinking without being universally first-line.', trap: 'It should stay a targeted tool, not a substitute for understanding the underlying syndrome.' },
+    { id: 'GEN', title: 'Gentamicin', subtitle: 'Synergy before breadth', route: 'IV', tags: ['synergy', 'gram-negative'], summary: 'Aminoglycoside teaching value is often about synergy and careful use rather than mindless double coverage.', shines: 'Classic pair with ampicillin for enterococcal endocarditis teaching.', trap: 'Nephrotoxicity and ototoxicity quickly cancel any theoretical benefit when used badly.' },
+    { id: 'MXF', title: 'Moxifloxacin', subtitle: 'Respiratory and atypical-heavy fluoroquinolone', route: 'PO/IV', tags: ['oral', 'atypical', 'anaerobes', 'legacy'], summary: 'Worth a return mention because it still shows up where preserved susceptibility, atypical coverage, and some anaerobic reach are useful.', shines: 'A useful contrast drug: stronger respiratory and atypical framing than ciprofloxacin, but not an anti-pseudomonal answer.', trap: 'QT issues, collateral damage, and over-crediting its spectrum are the common mistakes.' },
+    { id: 'SXT', title: 'TMP-SMX', subtitle: 'Oral high-yield utility', route: 'PO/IV', tags: ['oral', 'steno', 'uti'], summary: 'Commonly useful oral drug that trainees should remember for selected UTIs, skin infections, and Stenotrophomonas.', shines: 'A good teaching card for why oral options still matter in 2026 discussions.', trap: 'Potassium, creatinine interpretation, and resistance variation are the usual catches.' },
+    { id: 'FOS', title: 'Fosfomycin', subtitle: 'Older agent with selective MDR return', route: 'PO / IV region-dependent', tags: ['oral', 'uti', 'legacy', 'reserve'], summary: 'A real return agent, but mostly in syndrome-specific and susceptibility-driven situations, especially urinary isolates and selected MDR combination strategies.', shines: 'Best remembered for resistant urinary Enterobacterales and as a mechanism-distinct partner rather than a universal salvage monotherapy.', trap: 'Its role is much narrower than a giant spectrum chart implies. Route, source, and regional IV access all matter.' },
+    { id: 'CHL', title: 'Chloramphenicol', subtitle: 'Legacy salvage only', route: 'PO/IV', tags: ['legacy', 'reserve'], summary: 'Historically broad, now mostly a niche or resource-limited salvage discussion because toxicity changed the risk-benefit balance.', shines: 'Useful on a trainee page because it reminds people that old broad agents sometimes reappear when options collapse.', trap: 'Do not romanticize it. Hematologic toxicity and limited modern routine use are the point.' },
+    { id: 'MTZ', title: 'Metronidazole', subtitle: 'Anaerobe specialist', route: 'PO/IV', tags: ['anaerobes', 'oral'], summary: 'The clearest anaerobe memory anchor on the page.', shines: 'Important when a trainee needs to fix a regimen that forgot anaerobes.', trap: 'It is not a broad abdominal drug on its own. It usually needs a partner.' },
+    { id: 'AZM', title: 'Azithromycin', subtitle: 'Atypical coverage shortcut', route: 'PO/IV', tags: ['oral', 'atypical'], summary: 'Still one of the easiest ways to remember atypical coverage.', shines: 'Useful when comparing macrolides against fluoroquinolones or doxycycline in atypical pneumonia thinking.', trap: 'It does not rescue beta-lactam failures against resistant typical pathogens.' },
+  ];
+  const organisms = [
+    { id: 'mssa', group: 'gpos', name: 'Staphylococcus aureus', abbr: 'MSSA', note: 'Methicillin-susceptible', pills: [], desc: 'Most community-acquired. Beta-lactam preferred.', act: { AMP:'N',AMC:'F',TZP:'F',SAM:'F',CFZ:'Fâ˜…',CXM:'F',CRO:'F',FEP:'F',CPT:'F',CT:'F',ETP:'F',MEM:'F',IPM:'F',CA:'N',MV:'N',IR:'N',AA:'N',FDC:'N',VAN:'F',DAL:'F',ORI:'F',DAP:'F',LZD:'F',TZD:'F',DOX:'F',TGC:'F',OMA:'F',ERC:'F',GEN:'P',AMK:'P',PLZ:'P',CIP:'F',LVX:'F',MXF:'F',DLX:'F',CST:'N',PMB:'N',SXT:'F',MTZ:'N',CLI:'F',AZM:'P' } },
+    { id: 'mrsa', group: 'gpos mdr', name: 'Staphylococcus aureus', abbr: 'MRSA', note: 'Methicillin-resistant', pills: ['mdr'], desc: 'mecA or mecC-mediated. Vancomycin is the usual baseline. Community and healthcare MRSA behave differently.', act: { AMP:'N',AMC:'N',TZP:'N',SAM:'N',CFZ:'N',CXM:'N',CRO:'N',FEP:'N',CPT:'F',CT:'N',ETP:'N',MEM:'N',IPM:'N',CA:'N',MV:'N',IR:'N',AA:'N',FDC:'N',VAN:'Fâ˜…',DAL:'F',ORI:'F',DAP:'F',LZD:'F',TZD:'F',DOX:'P',TGC:'F',OMA:'F',ERC:'F',GEN:'N',AMK:'N',PLZ:'N',CIP:'N',LVX:'N',MXF:'N',DLX:'F',CST:'N',PMB:'N',SXT:'F',MTZ:'N',CLI:'V',AZM:'N' } },
+    { id: 'vrsa_visa', group: 'gpos mdr', name: 'Staphylococcus aureus', abbr: 'VRSA/VISA', note: 'Vancomycin-resistant or intermediate', pills: ['xdr', 'new', '2025'], desc: 'vanA-driven VRSA is rare but severe. VISA is more common. Daptomycin plus or minus ceftaroline is the memorable rescue concept.', act: { AMP:'N',AMC:'N',TZP:'N',SAM:'N',CFZ:'N',CXM:'N',CRO:'N',FEP:'N',CPT:'F',CT:'N',ETP:'N',MEM:'N',IPM:'N',CA:'N',MV:'N',IR:'N',AA:'N',FDC:'N',VAN:'N',DAL:'P',ORI:'F',DAP:'Fâ˜…',LZD:'F',TZD:'F',DOX:'P',TGC:'F',OMA:'F',ERC:'F',GEN:'N',AMK:'N',PLZ:'N',CIP:'N',LVX:'N',MXF:'N',DLX:'P',CST:'N',PMB:'N',SXT:'V',MTZ:'N',CLI:'N',AZM:'N' } },
+    { id: 'lrsa', group: 'gpos mdr', name: 'Staph. aureus', abbr: 'LRSA', note: 'Linezolid-resistant', pills: ['xdr', 'emerging', '2025'], desc: 'cfr, optrA, and poxtA mechanisms shrink the oxazolidinone space. Think salvage, susceptibility checks, and expert input.', act: { AMP:'N',AMC:'N',TZP:'N',SAM:'N',CFZ:'N',CXM:'N',CRO:'N',FEP:'N',CPT:'F',CT:'N',ETP:'N',MEM:'N',IPM:'N',CA:'N',MV:'N',IR:'N',AA:'N',FDC:'N',VAN:'N',DAL:'P',ORI:'F',DAP:'Fâ˜…',LZD:'N',TZD:'N',DOX:'P',TGC:'F',OMA:'P',ERC:'F',GEN:'N',AMK:'N',PLZ:'N',CIP:'N',LVX:'N',MXF:'N',DLX:'P',CST:'N',PMB:'N',SXT:'V',MTZ:'N',CLI:'N',AZM:'N' } },
+    { id: 'drsp', group: 'gpos', name: 'Streptococcus pneumoniae', abbr: 'DRSP', note: 'Drug-resistant pneumococcus', pills: ['mdr'], desc: 'Penicillin-binding protein shifts change beta-lactam performance. Ceftriaxone often still works. Check the actual MIC context.', act: { AMP:'V',AMC:'V',TZP:'V',SAM:'V',CFZ:'P',CXM:'P',CRO:'F',FEP:'F',CPT:'F',CT:'N',ETP:'F',MEM:'F',IPM:'F',CA:'N',MV:'N',IR:'N',AA:'N',FDC:'N',VAN:'Fâ˜…',DAL:'F',ORI:'F',DAP:'N',LZD:'F',TZD:'F',DOX:'V',TGC:'F',OMA:'F',ERC:'F',GEN:'N',AMK:'N',PLZ:'N',CIP:'N',LVX:'F',MXF:'F',DLX:'F',CST:'N',PMB:'N',SXT:'V',MTZ:'N',CLI:'V',AZM:'V' } },
+    { id: 'e_faecalis', group: 'gpos', name: 'Enterococcus faecalis', abbr: 'E. faecalis', note: '', pills: [], desc: 'Intrinsically resistant to cephalosporins. Ampicillin remains the big memory anchor. Endocarditis is where synergy teaching matters.', act: { AMP:'Fâ˜…',AMC:'F',TZP:'F',SAM:'F',CFZ:'N',CXM:'N',CRO:'N',FEP:'N',CPT:'N',CT:'N',ETP:'N',MEM:'N',IPM:'P',CA:'N',MV:'N',IR:'N',AA:'N',FDC:'N',VAN:'F',DAL:'F',ORI:'F',DAP:'F',LZD:'F',TZD:'F',DOX:'N',TGC:'P',OMA:'N',ERC:'F',GEN:'C',AMK:'C',PLZ:'C',CIP:'P',LVX:'P',MXF:'P',DLX:'P',CST:'N',PMB:'N',SXT:'N',MTZ:'N',CLI:'N',AZM:'N' } },
+    { id: 'vre', group: 'gpos mdr', name: 'Enterococcus faecium', abbr: 'VRE', note: 'Vancomycin-resistant', pills: ['mdr', 'sepsis'], desc: 'vanA and vanB matter. Very limited options. Think daptomycin, linezolid, and select long-acting glycopeptides where appropriate.', act: { AMP:'N',AMC:'N',TZP:'N',SAM:'N',CFZ:'N',CXM:'N',CRO:'N',FEP:'N',CPT:'N',CT:'N',ETP:'N',MEM:'N',IPM:'N',CA:'N',MV:'N',IR:'N',AA:'N',FDC:'N',VAN:'N',DAL:'F',ORI:'F',DAP:'Fâ˜…',LZD:'F',TZD:'F',DOX:'N',TGC:'F',OMA:'N',ERC:'F',GEN:'N',AMK:'N',PLZ:'N',CIP:'N',LVX:'N',MXF:'N',DLX:'N',CST:'N',PMB:'N',SXT:'N',MTZ:'N',CLI:'N',AZM:'N' } },
+    { id: 'e_coli', group: 'gneg', name: 'Escherichia coli', abbr: 'Standard E. coli', note: 'ESBL-negative', pills: [], desc: 'Classic UTI and biliary organism. TMP-SMX and fluoroquinolone susceptibility is increasingly variable by local data.', act: { AMP:'V',AMC:'F',TZP:'F',SAM:'F',CFZ:'F',CXM:'F',CRO:'F',FEP:'F',CPT:'N',CT:'F',ETP:'F',MEM:'F',IPM:'F',CA:'F',MV:'F',IR:'F',AA:'N',FDC:'F',VAN:'N',DAL:'N',ORI:'N',DAP:'N',LZD:'N',TZD:'N',DOX:'V',TGC:'F',OMA:'F',ERC:'F',GEN:'F',AMK:'F',PLZ:'F',CIP:'F',LVX:'F',MXF:'F',DLX:'F',CST:'F',PMB:'F',SXT:'V',MTZ:'N',CLI:'N',AZM:'N' } },
+    { id: 'esbl_e', group: 'gneg mdr', name: 'ESBL-producing Enterobacterales', abbr: 'ESBL-E', note: 'E. coli or K. pneumoniae', pills: ['mdr'], desc: 'CTX-M, TEM, and SHV enzymes reshape the beta-lactam field. Carbapenems remain the serious-infection mental benchmark.', act: { AMP:'N',AMC:'N',TZP:'V',SAM:'N',CFZ:'N',CXM:'N',CRO:'N',FEP:'P',CPT:'N',CT:'N',ETP:'Fâ˜…',MEM:'Fâ˜…',IPM:'Fâ˜…',CA:'F',MV:'F',IR:'F',AA:'N',FDC:'F',VAN:'N',DAL:'N',ORI:'N',DAP:'N',LZD:'N',TZD:'N',DOX:'N',TGC:'F',OMA:'F',ERC:'F',GEN:'V',AMK:'F',PLZ:'F',CIP:'N',LVX:'N',MXF:'N',DLX:'N',CST:'F',PMB:'F',SXT:'N',MTZ:'N',CLI:'N',AZM:'N' } },
+    { id: 'kpc_cre', group: 'gneg mdr', name: 'CRE - KPC-producing', abbr: 'KPC-Kp', note: 'Carbapenem-resistant', pills: ['xdr', 'sepsis'], desc: 'Serine carbapenemase logic. Ceftazidime-avibactam stays the simplest teaching anchor, though resistance can emerge under pressure.', act: { AMP:'N',AMC:'N',TZP:'N',SAM:'N',CFZ:'N',CXM:'N',CRO:'N',FEP:'N',CPT:'N',CT:'N',ETP:'N',MEM:'N',IPM:'N',CA:'Fâ˜…',MV:'Fâ˜…',IR:'F',AA:'I',FDC:'F',VAN:'N',DAL:'N',ORI:'N',DAP:'N',LZD:'N',TZD:'N',DOX:'N',TGC:'F',OMA:'P',ERC:'F',GEN:'N',AMK:'V',PLZ:'F',CIP:'N',LVX:'N',MXF:'N',DLX:'N',CST:'F',PMB:'F',SXT:'N',MTZ:'N',CLI:'N',AZM:'N' } },
+    { id: 'ndm_cre', group: 'gneg mdr', name: 'CRE - NDM-producing', abbr: 'NDM-Kp/Ec', note: 'Carbapenem-resistant MBL', pills: ['xdr', 'sepsis', 'emerging'], desc: 'NDM is the big mechanism trainees should not mix up with KPC. The key teaching idea is that avibactam does not inhibit MBLs.', act: { AMP:'N',AMC:'N',TZP:'N',SAM:'N',CFZ:'N',CXM:'N',CRO:'N',FEP:'N',CPT:'N',CT:'N',ETP:'N',MEM:'N',IPM:'N',CA:'N',MV:'N',IR:'N',AA:'Fâ˜…',FDC:'F',VAN:'N',DAL:'N',ORI:'N',DAP:'N',LZD:'N',TZD:'N',DOX:'N',TGC:'F',OMA:'P',ERC:'F',GEN:'N',AMK:'V',PLZ:'F',CIP:'N',LVX:'N',MXF:'N',DLX:'N',CST:'F',PMB:'F',SXT:'N',MTZ:'N',CLI:'N',AZM:'N' } },
+    { id: 'oxa48_cre', group: 'gneg mdr', name: 'CRE - OXA-48-like', abbr: 'OXA-48', note: 'Carbapenem-resistant OXA', pills: ['xdr', 'emerging', '2025'], desc: 'Often hides with ESBLs and may present in community-onset settings. Mechanism and co-resistance matter more than the short label.', act: { AMP:'N',AMC:'N',TZP:'N',SAM:'N',CFZ:'N',CXM:'N',CRO:'N',FEP:'N',CPT:'N',CT:'N',ETP:'N',MEM:'N',IPM:'N',CA:'F',MV:'P',IR:'P',AA:'F',FDC:'F',VAN:'N',DAL:'N',ORI:'N',DAP:'N',LZD:'N',TZD:'N',DOX:'N',TGC:'F',OMA:'P',ERC:'F',GEN:'N',AMK:'V',PLZ:'P',CIP:'N',LVX:'N',MXF:'N',DLX:'N',CST:'F',PMB:'F',SXT:'N',MTZ:'N',CLI:'N',AZM:'N' } },
+    { id: 'ecc_mdr', group: 'gneg mdr', name: 'Enterobacter cloacae complex', abbr: 'ECC-MDR', note: 'AmpC plus ESBL warning', pills: ['mdr', 'sepsis', '2025'], desc: 'The classic warning organism for inducible AmpC and why ceftriaxone can betray you despite a pretty lab report.', act: { AMP:'N',AMC:'N',TZP:'V',SAM:'N',CFZ:'N',CXM:'N',CRO:'N',FEP:'F',CPT:'N',CT:'F',ETP:'F',MEM:'F',IPM:'F',CA:'F',MV:'F',IR:'F',AA:'I',FDC:'F',VAN:'N',DAL:'N',ORI:'N',DAP:'N',LZD:'N',TZD:'N',DOX:'N',TGC:'F',OMA:'F',ERC:'F',GEN:'V',AMK:'F',PLZ:'F',CIP:'V',LVX:'V',MXF:'N',DLX:'N',CST:'F',PMB:'F',SXT:'V',MTZ:'N',CLI:'N',AZM:'N' } },
+    { id: 'pa', group: 'gneg', name: 'Pseudomonas aeruginosa', abbr: 'Standard PA', note: 'Susceptible', pills: [], desc: 'Intrinsic resistance patterns matter from the start. Anti-pseudomonal agents are not interchangeable with the rest of the cephalosporins.', act: { AMP:'N',AMC:'N',TZP:'F',SAM:'N',CFZ:'N',CXM:'N',CRO:'N',FEP:'F',CPT:'N',CT:'F',ETP:'N',MEM:'F',IPM:'F',CA:'N',MV:'N',IR:'F',AA:'N',FDC:'F',VAN:'N',DAL:'N',ORI:'N',DAP:'N',LZD:'N',TZD:'N',DOX:'N',TGC:'N',OMA:'N',ERC:'N',GEN:'F',AMK:'F',PLZ:'F',CIP:'F',LVX:'F',MXF:'N',DLX:'F',CST:'F',PMB:'F',SXT:'N',MTZ:'N',CLI:'N',AZM:'N' } },
+    { id: 'mdr_pa', group: 'gneg mdr', name: 'MDR Pseudomonas aeruginosa', abbr: 'MDR-PA', note: 'Multidrug resistant', pills: ['mdr', 'sepsis'], desc: 'Efflux, porin loss, and AmpC overproduction quickly reduce the usual anti-pseudomonal shortlist.', act: { AMP:'N',AMC:'N',TZP:'N',SAM:'N',CFZ:'N',CXM:'N',CRO:'N',FEP:'V',CPT:'N',CT:'Fâ˜…',ETP:'N',MEM:'V',IPM:'V',CA:'V',MV:'N',IR:'F',AA:'N',FDC:'F',VAN:'N',DAL:'N',ORI:'N',DAP:'N',LZD:'N',TZD:'N',DOX:'N',TGC:'N',OMA:'N',ERC:'N',GEN:'V',AMK:'V',PLZ:'P',CIP:'V',LVX:'V',MXF:'N',DLX:'V',CST:'F',PMB:'F',SXT:'N',MTZ:'N',CLI:'N',AZM:'N' } },
+    { id: 'ndm_pa', group: 'gneg mdr', name: 'XDR Pseudomonas', abbr: 'NDM-PA', note: 'NDM or MBL, ST235 emphasis', pills: ['xdr', 'new', 'sepsis', 'emerging'], desc: 'The ST235 NDM story is one of the major recent teaching alerts. Think salvage therapy, combination strategy, and specialist-level review.', act: { AMP:'N',AMC:'N',TZP:'N',SAM:'N',CFZ:'N',CXM:'N',CRO:'N',FEP:'N',CPT:'N',CT:'N',ETP:'N',MEM:'N',IPM:'N',CA:'N',MV:'N',IR:'N',AA:'Fâ˜…',FDC:'F',VAN:'N',DAL:'N',ORI:'N',DAP:'N',LZD:'N',TZD:'N',DOX:'N',TGC:'N',OMA:'N',ERC:'N',GEN:'N',AMK:'N',PLZ:'I',CIP:'N',LVX:'N',MXF:'N',DLX:'N',CST:'F',PMB:'F',SXT:'N',MTZ:'N',CLI:'N',AZM:'N' } },
+    { id: 'crab', group: 'gneg mdr', name: 'Acinetobacter baumannii', abbr: 'CRAB', note: 'Carbapenem-resistant', pills: ['xdr', 'sepsis'], desc: 'A key 2025 carry-forward lesson: sulbactam is the memorable active idea, not just the beta-lactam wrapper around it.', act: { AMP:'N',AMC:'N',TZP:'N',SAM:'F',CFZ:'N',CXM:'N',CRO:'N',FEP:'N',CPT:'N',CT:'N',ETP:'N',MEM:'N',IPM:'N',CA:'N',MV:'N',IR:'N',AA:'N',FDC:'F',VAN:'N',DAL:'N',ORI:'N',DAP:'N',LZD:'N',TZD:'N',DOX:'P',TGC:'F',OMA:'P',ERC:'F',GEN:'N',AMK:'N',PLZ:'I',CIP:'N',LVX:'N',MXF:'N',DLX:'N',CST:'Fâ˜…',PMB:'Fâ˜…',SXT:'V',MTZ:'N',CLI:'N',AZM:'N' } },
+    { id: 'steno', group: 'gneg mdr', name: 'Stenotrophomonas maltophilia', abbr: 'S. malt.', note: 'Intrinsically MDR', pills: ['mdr'], desc: 'A classic organism for teaching why carbapenems can be completely wrong despite severe illness.', act: { AMP:'N',AMC:'N',TZP:'N',SAM:'N',CFZ:'N',CXM:'N',CRO:'N',FEP:'N',CPT:'N',CT:'N',ETP:'N',MEM:'N',IPM:'N',CA:'N',MV:'N',IR:'N',AA:'N',FDC:'I',VAN:'N',DAL:'N',ORI:'N',DAP:'N',LZD:'N',TZD:'N',DOX:'F',TGC:'F',OMA:'F',ERC:'F',GEN:'N',AMK:'N',PLZ:'N',CIP:'P',LVX:'F',MXF:'F',DLX:'F',CST:'N',PMB:'N',SXT:'Fâ˜…',MTZ:'N',CLI:'N',AZM:'N' } },
+    { id: 'hflu', group: 'gneg', name: 'Haemophilus influenzae', abbr: 'H. influenzae', note: '', pills: [], desc: 'A reminder that not every respiratory Gram-negative needs a hospital-level broad-spectrum answer.', act: { AMP:'V',AMC:'F',TZP:'F',SAM:'F',CFZ:'N',CXM:'F',CRO:'Fâ˜…',FEP:'F',CPT:'N',CT:'N',ETP:'F',MEM:'F',IPM:'F',CA:'N',MV:'N',IR:'N',AA:'N',FDC:'N',VAN:'N',DAL:'N',ORI:'N',DAP:'N',LZD:'N',TZD:'N',DOX:'F',TGC:'F',OMA:'F',ERC:'F',GEN:'F',AMK:'F',PLZ:'N',CIP:'F',LVX:'F',MXF:'F',DLX:'F',CST:'N',PMB:'N',SXT:'V',MTZ:'N',CLI:'N',AZM:'F' } },
+    { id: 'b_fragilis', group: 'anaerobe', name: 'Bacteroides fragilis', abbr: 'B. fragilis', note: '', pills: [], desc: 'The anaerobe that forces regimen corrections when someone forgets abdominal coverage.', act: { AMP:'N',AMC:'F',TZP:'Fâ˜…',SAM:'F',CFZ:'N',CXM:'N',CRO:'N',FEP:'N',CPT:'N',CT:'N',ETP:'Fâ˜…',MEM:'F',IPM:'F',CA:'F',MV:'F',IR:'F',AA:'N',FDC:'N',VAN:'N',DAL:'N',ORI:'N',DAP:'N',LZD:'N',TZD:'N',DOX:'N',TGC:'F',OMA:'F',ERC:'F',GEN:'N',AMK:'N',PLZ:'N',CIP:'N',LVX:'N',MXF:'F',DLX:'N',CST:'N',PMB:'N',SXT:'N',MTZ:'Fâ˜…',CLI:'V',AZM:'N' } },
+    { id: 'c_diff', group: 'anaerobe', name: 'Clostridioides difficile', abbr: 'C. diff', note: '', pills: [], desc: 'Kept here mainly to remind the trainee that oral vancomycin is a different clinical use case from IV vancomycin.', act: { AMP:'N',AMC:'N',TZP:'N',SAM:'N',CFZ:'N',CXM:'N',CRO:'N',FEP:'N',CPT:'N',CT:'N',ETP:'N',MEM:'N',IPM:'N',CA:'N',MV:'N',IR:'N',AA:'N',FDC:'N',VAN:'Fâ˜…',DAL:'N',ORI:'N',DAP:'N',LZD:'N',TZD:'N',DOX:'N',TGC:'N',OMA:'N',ERC:'N',GEN:'N',AMK:'N',PLZ:'N',CIP:'N',LVX:'N',MXF:'N',DLX:'N',CST:'N',PMB:'N',SXT:'N',MTZ:'P',CLI:'N',AZM:'N' } },
+    { id: 'mycoplasma', group: 'atypical', name: 'Mycoplasma pneumoniae', abbr: 'Mycoplasma', note: '', pills: [], desc: 'Atypical logic starter: no cell wall, so beta-lactams are out from the start.', act: { AMP:'N',AMC:'N',TZP:'N',SAM:'N',CFZ:'N',CXM:'N',CRO:'N',FEP:'N',CPT:'N',CT:'N',ETP:'N',MEM:'N',IPM:'N',CA:'N',MV:'N',IR:'N',AA:'N',FDC:'N',VAN:'N',DAL:'N',ORI:'N',DAP:'N',LZD:'F',TZD:'F',DOX:'F',TGC:'F',OMA:'Fâ˜…',ERC:'F',GEN:'N',AMK:'N',PLZ:'N',CIP:'F',LVX:'F',MXF:'F',DLX:'F',CST:'N',PMB:'N',SXT:'N',MTZ:'N',CLI:'N',AZM:'F' } },
+    { id: 'legionella', group: 'atypical', name: 'Legionella pneumophila', abbr: 'Legionella', note: '', pills: [], desc: 'Intracellular atypical organism where fluoroquinolones and macrolides dominate the antibiotic thinking.', act: { AMP:'N',AMC:'N',TZP:'N',SAM:'N',CFZ:'N',CXM:'N',CRO:'N',FEP:'N',CPT:'N',CT:'N',ETP:'N',MEM:'N',IPM:'N',CA:'N',MV:'N',IR:'N',AA:'N',FDC:'N',VAN:'N',DAL:'N',ORI:'N',DAP:'N',LZD:'F',TZD:'N',DOX:'F',TGC:'F',OMA:'F',ERC:'F',GEN:'N',AMK:'N',PLZ:'N',CIP:'Fâ˜…',LVX:'Fâ˜…',MXF:'F',DLX:'F',CST:'N',PMB:'N',SXT:'N',MTZ:'N',CLI:'N',AZM:'F' } },
+  ];
+
+  const combinationPlaybook = [
+    { key: 'AMP|GEN', title: 'Ampicillin + gentamicin', badge: 'Synergy', body: 'Classic teaching pair for Enterococcus faecalis endocarditis when aminoglycoside synergy is still appropriate and high-level aminoglycoside resistance is not blocking the plan.', why: 'Cell-wall activity increases aminoglycoside uptake. The second drug is not there to look broad. It is there to create synergy.', caution: 'Renal and ototoxicity risk matter. This is not a casual add-on.' },
+    { key: 'AMP|CRO', title: 'Ampicillin + ceftriaxone', badge: 'Dual beta-lactam', body: 'High-yield trainee pair for E. faecalis endocarditis when you want to avoid aminoglycoside toxicity.', why: 'The teaching pearl is targeted dual beta-lactam synergy, not broad empiric coverage.', caution: 'This is organism-specific thinking. Do not copy it into unrelated syndromes.' },
+    { key: 'DAP|CPT', title: 'Daptomycin + ceftaroline', badge: 'Salvage MRSA combo', body: 'Memorable salvage pair for persistent MRSA bacteremia and difficult VISA or VRSA-type situations.', why: 'Ceftaroline changes the membrane or cell-wall context and can help daptomycin perform better in selected salvage scenarios.', caution: 'This lives in specialist territory, especially when bacteremia is persistent.' },
+    { key: 'CRO|MTZ', title: 'Ceftriaxone + metronidazole', badge: 'Broadening', body: 'A practical teaching pair for intra-abdominal coverage when ceftriaxone alone forgot anaerobes.', why: 'The second drug fixes a spectrum gap. It is not a fancy synergy story.', caution: 'If you already chose a single agent with solid anaerobe coverage, this may be duplicate thinking.' },
+    { key: 'SAM|PMB', title: 'Ampicillin-sulbactam + polymyxin B', badge: 'CRAB salvage frame', body: 'Useful as a teaching frame for CRAB: sulbactam matters, and polymyxin exposure may be part of salvage strategies.', why: 'This pair reflects how CRAB often forces mechanism-based thinking instead of routine broad-spectrum defaults.', caution: 'Toxicity and regional susceptibility patterns matter. This is not a beginner regimen.' },
+    { key: 'FDC|PMB', title: 'Cefiderocol + polymyxin B', badge: 'Reserve salvage', body: 'A reserve-space pair used when XDR Gram-negative options are running out and the team wants more than one active mechanism.', why: 'The idea is not automatic synergy. It is risk management in an organism space with very few remaining moves.', caution: 'If cefiderocol is clearly active and source control is strong, combination logic still needs deliberate review rather than reflex use.' },
+    { key: 'TZP|VAN', title: 'Piperacillin-tazobactam + vancomycin', badge: 'Common but watchful', body: 'Very common empiric pairing because it quickly covers MRSA plus many Gram-negatives and anaerobes.', why: 'This is broadening, not targeted synergy. It buys time while cultures settle the picture.', caution: 'Broad empiric use should narrow quickly, and nephrotoxicity concerns matter when vancomycin is involved.' },
+  ];
+
+  const updates = [
+    { date: 'January 2, 2026', label: 'EUCAST', title: 'Version 16.0 added gepotidacin breakpoints and revised TMP-SMX logic', body: 'The practical implication for a trainee page is simple: breakpoint language moved in 2026, so antibiotic cards and UTI teaching points should acknowledge gepotidacin and the revised trimethoprim or TMP-SMX context rather than staying frozen in 2025.', linkLabel: 'EUCAST news', link: 'https://www.eucast.org/about-eucast/news/' },
+    { date: 'March 11, 2026', label: 'WHO', title: 'WHO published target product profiles for new antibacterial agents', body: 'This matters because it shifts the conversation from what was just approved to what kind of antibiotics the world still needs, especially for severe MDR Gram-negatives, high-risk Gram-positive infections, and bacterial meningitis.', linkLabel: 'WHO publication', link: 'https://www.who.int/publications/i/item/9789240121188' },
+    { date: 'December 12, 2025', label: 'FDA', title: 'Two oral gonorrhea therapies were approved: zoliflodacin and gepotidacin', body: 'Even though this was not a 2026 approval, it belongs on a 2026 antibiotic update page because it changes the recent oral options conversation and gives the page a reason to include a true new-oral-agents lane.', linkLabel: 'FDA press release', link: 'https://www.fda.gov/news-events/press-announcements/fda-approves-two-oral-therapies-treat-gonorrhea' },
+    { date: 'March 25, 2025', label: 'FDA', title: 'Blujepa was approved for uncomplicated UTI', body: 'This is the clearest recent oral UTI antibiotic signal worth carrying forward into 2026. It gives the drug-card section a concrete reason to discuss new oral outpatient options instead of only reserve IV salvage agents.', linkLabel: 'FDA drug snapshot', link: 'https://www.fda.gov/drugs/drug-approvals-and-databases/drug-trials-snapshots-blujepa' },
+    { date: 'October 2, 2025', label: 'WHO', title: 'WHO reported the clinical antibacterial pipeline fell from 97 to 90', body: 'WHO also highlighted gaps in pediatric formulations, oral outpatient options, and combination strategies. That is almost a direct product brief for this redesigned page.', linkLabel: 'WHO pipeline update', link: 'https://www.who.int/news/item/02-10-2025-who-releases-new-reports-on-new-tests-and-treatments-in-development-for-bacterial-infections' },
+    { date: '2026 teaching point', label: 'Practice', title: 'Some older agents are back, but usually as selective or susceptibility-driven tools', body: 'Fosfomycin is most useful when the syndrome and isolate fit, especially urinary MDR Enterobacterales. Moxifloxacin still matters in selected respiratory and atypical spaces. Chloramphenicol remains a niche salvage discussion rather than a routine comeback drug. This page now shows them, but deliberately flags them as legacy-return agents.', linkLabel: 'WHO AWaRe antibiotic book', link: 'https://www.who.int/publications/i/item/9789240062382' },
+  ];
+
+  const carryForwardAlerts = [
+    { tone: 'danger', title: 'NDM-producing Pseudomonas ST235 remains a major red flag', body: 'The current chart already called this out. It still belongs on the modern page because it is one of the clearest examples of why mechanism-first antibiotic thinking matters in 2026.' },
+    { tone: 'danger', title: 'Linezolid-resistant S. aureus deserves its own teaching space', body: 'It helps trainees understand that linezolid covers MRSA is no longer a universally safe mental shortcut.' },
+    { tone: 'warn', title: 'Community-onset OXA-48 stories matter because they change pretest thinking', body: 'Travel history, previous healthcare exposure, and early mechanism suspicion increasingly matter even before the final susceptibility panel lands.' },
+    { tone: 'info', title: 'CRAB teaching should center on sulbactam, not just polymyxins and hope', body: 'That is one of the most useful practical pearls from the old page and absolutely worth preserving.' },
+    { tone: 'new', title: 'Newer oral-capable agents change the trainee conversation', body: 'The redesigned page gives these drugs a dedicated place instead of burying them inside a giant matrix.' },
+  ];
+
+  const legacyActivityByOrganism = {
+    mssa: { FOS: 'V', CHL: 'P' },
+    mrsa: { FOS: 'C', CHL: 'P' },
+    vrsa_visa: { FOS: 'C', CHL: 'I' },
+    lrsa: { FOS: 'C', CHL: 'I' },
+    drsp: { FOS: 'N', CHL: 'P' },
+    e_faecalis: { FOS: 'P', CHL: 'P' },
+    vre: { FOS: 'P', CHL: 'P' },
+    e_coli: { FOS: 'F', CHL: 'N' },
+    esbl_e: { FOS: 'P', CHL: 'N' },
+    kpc_cre: { FOS: 'I', CHL: 'N' },
+    ndm_cre: { FOS: 'I', CHL: 'N' },
+    oxa48_cre: { FOS: 'P', CHL: 'N' },
+    ecc_mdr: { FOS: 'P', CHL: 'N' },
+    pa: { FOS: 'N', CHL: 'N' },
+    mdr_pa: { FOS: 'I', CHL: 'N' },
+    ndm_pa: { FOS: 'I', CHL: 'N' },
+    crab: { FOS: 'I', CHL: 'I' },
+    steno: { FOS: 'N', CHL: 'P' },
+    hflu: { FOS: 'N', CHL: 'F' },
+    b_fragilis: { FOS: 'N', CHL: 'P' },
+    c_diff: { FOS: 'N', CHL: 'N' },
+    mycoplasma: { FOS: 'N', CHL: 'P' },
+    legionella: { FOS: 'N', CHL: 'P' },
+  };
+  function normalizeCode(rawCode) {
+    const code = String(rawCode || 'N');
+    if (code.startsWith('F') && (code.includes('â˜') || code.includes('*') || code.includes('★'))) return 'FD';
+    if (code.startsWith('F')) return 'F';
+    if (code === 'P') return 'P';
+    if (code === 'V') return 'V';
+    if (code === 'C') return 'C';
+    if (code === 'I') return 'I';
+    return 'N';
+  }
+
+  function activityLabel(code) {
+    return {
+      FD: 'Drug of choice',
+      F: 'Active',
+      P: 'Partial activity',
+      V: 'Variable activity',
+      C: 'Combination-only logic',
+      I: 'In vitro or limited clinical support',
+      N: 'Not reliable',
+    }[normalizeCode(code)];
+  }
+
+  function activityRank(code) {
+    return {
+      FD: 4,
+      F: 3,
+      P: 2,
+      V: 1.5,
+      C: 1,
+      I: 0.75,
+      N: 0,
+    }[normalizeCode(code)];
+  }
+
+  function activityText(code) {
+    return {
+      FD: 'DOC',
+      F: 'A',
+      P: 'P',
+      V: 'V',
+      C: 'C',
+      I: 'I',
+      N: '-',
+    }[normalizeCode(code)];
+  }
+
+  function getDrug(drugId) {
+    return drugs.find((drug) => drug.id === drugId);
+  }
+
+  function applyTheme(theme) {
+    state.theme = theme;
+    document.body.classList.toggle('light-theme', theme === 'light');
+    const button = document.getElementById('theme-toggle');
+    if (button) {
+      button.textContent = `Theme: ${theme === 'dark' ? 'Dark' : 'Light'}`;
+      button.setAttribute('aria-pressed', String(theme === 'light'));
+    }
+  }
+
+  function escapeHtml(value) {
+    return String(value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function escapeTooltipAttr(value) {
+    return escapeHtml(value).replace(/\n/g, '&#10;');
+  }
+
+  let activeTooltipTarget = null;
+
+  function getTooltipEl() {
+    return document.getElementById('hover-tooltip');
+  }
+
+  function positionTooltip(x, y) {
+    const tooltip = getTooltipEl();
+    if (!tooltip || !tooltip.classList.contains('is-visible')) return;
+
+    const pad = 12;
+    const rect = tooltip.getBoundingClientRect();
+    let left = x + 18;
+    let top = y + 18;
+
+    if (left + rect.width > window.innerWidth - pad) {
+      left = x - rect.width - 18;
+    }
+    if (top + rect.height > window.innerHeight - pad) {
+      top = y - rect.height - 18;
     }
 
-    // Group separator
-    const groups = org.group.split(' ');
-    const primaryGroup = groups[0];
-    if (primaryGroup !== lastGroup) {
-      lastGroup = primaryGroup;
-      const sep = document.createElement('div');
-      sep.style.cssText = 'display:flex;align-items:center;gap:10px;margin:14px 0 6px;';
-      
-      const groupColors = {gpos:'var(--gpos)',gneg:'var(--gneg)',anaerobe:'var(--anaerobe)',atypical:'var(--atypical)'};
-      const groupLabels = {gpos:'GRAM-POSITIVE',gneg:'GRAM-NEGATIVE',anaerobe:'ANAEROBES',atypical:'ATYPICALS'};
-      
-      sep.innerHTML = `
-        <div style="font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:${groupColors[primaryGroup] || 'var(--text)'};letter-spacing:1px;">${groupLabels[primaryGroup] || primaryGroup.toUpperCase()}</div>
-        <div style="flex:1;height:1px;background:linear-gradient(90deg,${groupColors[primaryGroup] || 'var(--border)'}40,transparent);"></div>
-      `;
-      container.appendChild(sep);
-    }
+    tooltip.style.left = `${Math.max(pad, left)}px`;
+    tooltip.style.top = `${Math.max(pad, top)}px`;
+  }
 
-    // Organism row
-    const row = document.createElement('div');
-    row.style.cssText = 'display:flex;align-items:stretch;gap:2px;margin-bottom:2px;';
-    row.onmouseenter = () => row.style.background = '#ffffff08';
-    row.onmouseleave = () => row.style.background = '';
+  function showTooltip(target, x, y) {
+    const tooltipText = target?.getAttribute('data-tooltip');
+    const tooltip = getTooltipEl();
+    if (!tooltipText || !tooltip) return;
 
-    // Organism name cell
-    const groupColors = {gpos:'var(--gpos)',gneg:'var(--gneg)',anaerobe:'var(--anaerobe)',atypical:'var(--atypical)'};
-    const orgGroups = org.group.split(' ');
-    const primaryOrgGroup = orgGroups[0];
-    const hasMdr = orgGroups.includes('mdr');
-    
-    const nameCell = document.createElement('div');
-    nameCell.style.cssText = `min-width:230px;max-width:230px;padding:5px 8px;background:var(--surface);border-radius:2px;border-left:3px solid ${hasMdr ? 'var(--mdr)' : (groupColors[primaryOrgGroup] || 'var(--border)')};cursor:pointer;`;
-    
-    let pillsHtml = org.pills.map(p => {
-      const pillMap = {mdr:'pill-mdr',xdr:'pill-xdr',new:'pill-new',sepsis:'pill-sepsis',emerging:'pill-emerging','2025':'pill-2025'};
-      return `<span class="org-pill ${pillMap[p] || ''}">${p.toUpperCase()}</span>`;
-    }).join('');
+    activeTooltipTarget = target;
+    tooltip.innerHTML = escapeHtml(tooltipText).replace(/\n/g, '<br>');
+    tooltip.classList.add('is-visible');
+    tooltip.setAttribute('aria-hidden', 'false');
+    positionTooltip(x, y);
+  }
 
-    nameCell.innerHTML = `
-      <div style="font-size:10px;font-style:italic;color:${hasMdr ? 'var(--mdr)' : (groupColors[primaryOrgGroup] || 'var(--text)')};line-height:1.2;">${org.name}</div>
-      <div style="font-size:8px;color:var(--text-dim);font-style:normal;margin-top:1px;">${org.abbr}${org.note ? ' · ' + org.note : ''}</div>
-      <div style="display:flex;gap:3px;flex-wrap:wrap;margin-top:3px;">${pillsHtml}</div>
-    `;
-    nameCell.title = org.desc;
-    row.appendChild(nameCell);
+  function hideTooltip() {
+    const tooltip = getTooltipEl();
+    if (!tooltip) return;
+    activeTooltipTarget = null;
+    tooltip.classList.remove('is-visible');
+    tooltip.setAttribute('aria-hidden', 'true');
+  }
 
-    // Activity cells
-    drugs.forEach(drug => {
-      const key = getActKey(drug.s);
-      const code = org.act[key] || 'N';
-      
-      const cell = document.createElement('div');
-      cell.className = `activity-cell ${getCellClass(code)}`;
-      if (code === 'F★') cell.classList.add('cell-doc');
-      cell.textContent = getCellText(code);
-      cell.title = `${drug.f} vs ${org.abbr}: ${getActivityLabel(code)}`;
-      
-      cell.addEventListener('mouseenter', (e) => showTooltip(e, drug, org, code));
-      cell.addEventListener('mouseleave', hideTooltip);
-      
-      row.appendChild(cell);
+  function getVisibleOrganisms() {
+    const query = state.organismSearch.trim().toLowerCase();
+    const visible = organisms.filter((organism) => {
+      const matchesGroup =
+        state.group === 'all' ||
+        (state.group === 'mdr'
+          ? organism.group.split(' ').includes('mdr')
+          : organism.group.split(' ').includes(state.group));
+
+      if (!matchesGroup) return false;
+      if (!query) return true;
+
+      return [organism.name, organism.abbr, organism.note, organism.desc]
+        .filter(Boolean)
+        .some((value) => value.toLowerCase().includes(query));
     });
 
-    container.appendChild(row);
-  });
-}
+    visible.sort((a, b) => {
+      const groupDiff = groupOrder.indexOf(a.group.split(' ')[0]) - groupOrder.indexOf(b.group.split(' ')[0]);
+      if (groupDiff !== 0) return groupDiff;
+      return a.name.localeCompare(b.name);
+    });
 
-function getActivityLabel(code) {
-  const map = {'F':'Active','F★':'Drug of Choice','P':'Partial Activity','V':'Variable','C':'Combo only','I':'In vitro only','N':'Not Active'};
-  return map[code] || 'Not Active';
-}
-
-let tooltip = null;
-function showTooltip(e, drug, org, code) {
-  if (!tooltip) {
-    tooltip = document.createElement('div');
-    tooltip.className = 'tooltip';
-    document.body.appendChild(tooltip);
+    return visible;
   }
-  tooltip.innerHTML = `<strong>${drug.f}</strong><br><em>${org.name}</em> (${org.abbr})<br><span style="color:var(--accent)">Activity: ${getActivityLabel(code)}</span>${org.desc ? '<br><br>' + org.desc : ''}`;
-  tooltip.style.display = 'block';
-  positionTooltip(e);
-}
 
-function positionTooltip(e) {
-  if (!tooltip) return;
-  const x = Math.min(e.clientX + 12, window.innerWidth - 220);
-  const y = Math.min(e.clientY + 12, window.innerHeight - 120);
-  tooltip.style.left = x + 'px';
-  tooltip.style.top = y + 'px';
-}
+  function ensureSelectedOrganism() {
+    const visible = getVisibleOrganisms();
+    if (!visible.length) return;
+    if (!visible.some((organism) => organism.id === state.selectedOrganismId)) {
+      state.selectedOrganismId = visible[0].id;
+    }
+  }
 
-function hideTooltip() {
-  if (tooltip) tooltip.style.display = 'none';
-}
+  function renderGroupFilters() {
+    ['group-filters', 'visual-group-filters'].forEach((id) => {
+      const container = document.getElementById(id);
+      if (!container) return;
+      container.innerHTML = '';
+      ['all', 'gpos', 'gneg', 'anaerobe', 'atypical', 'mdr'].forEach((group) => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = `filter-button${state.group === group ? ' is-active' : ''}`;
+        button.textContent = groupLabels[group];
+        button.addEventListener('click', () => {
+          state.group = group;
+          ensureSelectedOrganism();
+          renderSpectrum();
+          renderVisualSpectrum();
+        });
+        container.appendChild(button);
+      });
+    });
+  }
 
-document.addEventListener('mousemove', positionTooltip);
+  function getTopDrugs(organism, kinds) {
+    return drugs
+      .map((drug) => ({ drug, code: normalizeCode(organism.act[drug.id]) }))
+      .filter((entry) => kinds.includes(entry.code))
+      .slice(0, 6);
+  }
 
-function filterView(f) {
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  event.target.classList.add('active');
-  renderTable(f);
-}
+  function renderOrganismList() {
+    const container = document.getElementById('organism-list');
+    const visible = getVisibleOrganisms();
+    container.innerHTML = '';
 
-// Initial render
-document.addEventListener('DOMContentLoaded', () => renderTable('all'));
+    if (!visible.length) {
+      container.innerHTML = '<div class="empty-state">No organisms matched the current search and filter.</div>';
+      return;
+    }
+
+    visible.forEach((organism) => {
+      const strong = getTopDrugs(organism, ['FD', 'F']).map((entry) => entry.drug.short);
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = `organism-card${state.selectedOrganismId === organism.id ? ' is-active' : ''}`;
+      button.addEventListener('click', () => {
+        state.selectedOrganismId = organism.id;
+        renderSpectrum();
+      });
+
+      const primaryGroup = organism.group.split(' ')[0];
+      const pills = organism.pills
+        .map((pill) => `<span class="tag ${pillClassMap[pill] || 'tag-new'}">${pill.toUpperCase()}</span>`)
+        .join('');
+
+      button.innerHTML = `
+        <div class="organism-top">
+          <div>
+            <div class="kicker">${organism.abbr}${organism.note ? ` - ${organism.note}` : ''}</div>
+            <h3 class="organism-name"><em>${organism.name}</em></h3>
+          </div>
+          <span class="badge ${groupClassMap[primaryGroup]}">${groupLabels[primaryGroup]}</span>
+        </div>
+        <p class="body-copy">${organism.desc}</p>
+        <div class="detail-chip-row" style="margin-top:12px;">${pills}</div>
+        <div class="chip-row" style="margin-top:12px;">
+          ${strong.length ? strong.map((short) => `<span class="chip">${short}</span>`).join('') : '<span class="chip">No clear front-runner on this page</span>'}
+        </div>
+      `;
+      container.appendChild(button);
+    });
+  }
+
+  function renderDrugChip(drug, code, className) {
+    const label = activityLabel(code);
+    const docTag = normalizeCode(code) === 'FD' ? '<span class="meta-chip">preferred</span>' : '';
+    const tooltip = `${drug.name}\n${drug.class} - ${drug.route}\n${label}${drug.legacy ? '\nLegacy-return agent' : ''}`;
+    return `
+      <div class="drug-chip ${className}" data-tooltip="${escapeTooltipAttr(tooltip)}">
+        <strong>${drug.short} - ${drug.name}</strong>
+        <span>${label} - ${drug.class} - ${drug.route}</span>
+        <div class="profile-meta" style="margin-top:10px;">
+          <span class="meta-chip">${drug.class}</span>
+          <span class="meta-chip">${drug.route}</span>
+          ${docTag}
+        </div>
+      </div>
+    `;
+  }
+
+  function renderDetail() {
+    const container = document.getElementById('organism-detail');
+    const organism = organisms.find((item) => item.id === state.selectedOrganismId);
+    if (!organism) {
+      container.innerHTML = '<div class="detail-card"><div class="empty-state">Select an organism to inspect the antibiotics.</div></div>';
+      return;
+    }
+
+    const primaryGroup = organism.group.split(' ')[0];
+    const strong = drugs.map((drug) => ({ drug, code: normalizeCode(organism.act[drug.id]) })).filter((entry) => ['FD', 'F'].includes(entry.code));
+    const situational = drugs.map((drug) => ({ drug, code: normalizeCode(organism.act[drug.id]) })).filter((entry) => ['P', 'V'].includes(entry.code));
+    const comboOnly = drugs.map((drug) => ({ drug, code: normalizeCode(organism.act[drug.id]) })).filter((entry) => ['C', 'I'].includes(entry.code));
+    const pills = organism.pills.map((pill) => `<span class="tag ${pillClassMap[pill] || 'tag-new'}">${pill.toUpperCase()}</span>`).join('');
+
+    container.innerHTML = `
+      <div class="detail-card">
+        <div class="detail-top">
+          <div>
+            <div class="kicker">${organism.abbr}${organism.note ? ` - ${organism.note}` : ''}</div>
+            <h3 class="detail-name"><em>${organism.name}</em></h3>
+          </div>
+          <span class="badge ${groupClassMap[primaryGroup]}">${groupLabels[primaryGroup]}</span>
+        </div>
+        <div class="detail-chip-row" style="margin-top:14px;">${pills || '<span class="chip">No special tags</span>'}</div>
+        <p class="detail-summary">${organism.desc}</p>
+        <div class="detail-block">
+          <h4>Strong choices</h4>
+          <div class="detail-drugs">${strong.length ? strong.map((entry) => renderDrugChip(entry.drug, entry.code, 'activity-strong')).join('') : '<div class="empty-state">No strong options surfaced in this curated drug set.</div>'}</div>
+        </div>
+        <div class="detail-block">
+          <h4>Situational or variable</h4>
+          <div class="detail-drugs">${situational.length ? situational.map((entry) => renderDrugChip(entry.drug, entry.code, 'activity-partial')).join('') : '<div class="empty-state">Nothing notable in the partial or variable bucket.</div>'}</div>
+        </div>
+        <div class="detail-block">
+          <h4>Combination-only or weak-evidence lane</h4>
+          <div class="detail-drugs">${comboOnly.length ? comboOnly.map((entry) => renderDrugChip(entry.drug, entry.code, 'activity-combo')).join('') : '<div class="empty-state">No combination-only or in-vitro flags in the current curated set.</div>'}</div>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderMatrix() {
+    const container = document.getElementById('matrix-wrap');
+    const visible = getVisibleOrganisms();
+    if (!visible.length) {
+      container.innerHTML = '<div class="empty-state">No rows to render.</div>';
+      return;
+    }
+
+    let html = '<table><thead><tr><th>Organism</th>';
+    drugs.forEach((drug) => {
+      const headerTip = `${drug.name}\n${drug.class} - ${drug.route}${drug.legacy ? '\nLegacy-return agent' : ''}`;
+      html += `<th data-tooltip="${escapeTooltipAttr(headerTip)}">${drug.short}</th>`;
+    });
+    html += '</tr></thead><tbody>';
+
+    visible.forEach((organism) => {
+      const primaryGroup = organism.group.split(' ')[0];
+      html += '<tr>';
+      html += `<td class="matrix-name"><div class="kicker">${organism.abbr}${organism.note ? ` - ${organism.note}` : ''}</div><strong><em>${organism.name}</em></strong><div class="subtle">${groupLabels[primaryGroup]}</div></td>`;
+      drugs.forEach((drug) => {
+        const code = normalizeCode(organism.act[drug.id]);
+        const cellTip = `${drug.name} vs ${organism.abbr}\n${activityLabel(code)}${drug.legacy ? '\nLegacy-return agent' : ''}`;
+        html += `<td class="matrix-code code-${code}" data-tooltip="${escapeTooltipAttr(cellTip)}">${activityText(code)}</td>`;
+      });
+      html += '</tr>';
+    });
+
+    html += '</tbody></table>';
+    container.innerHTML = html;
+  }
+
+  function renderSpectrum() {
+    ensureSelectedOrganism();
+    renderGroupFilters();
+    renderOrganismList();
+    renderDetail();
+    renderMatrix();
+  }
+
+  function renderVisualSpectrum() {
+    const container = document.getElementById('visual-spectrum-grid');
+    if (!container) return;
+
+    const visible = getVisibleOrganisms();
+    if (!visible.length) {
+      container.innerHTML = '<div class="empty-state">No organisms matched the current filter for the visual spectrum view.</div>';
+      return;
+    }
+
+    let html = '<div class="visual-scroll"><div class="visual-grid">';
+    html += '<div class="visual-header-row"><div class="visual-name-spacer"></div>';
+    drugs.forEach((drug) => {
+      const headerTip = `${drug.name}\n${drug.class} - ${drug.route}${drug.legacy ? '\nLegacy-return agent' : ''}`;
+      html += `<div class="visual-drug-label${drug.legacy ? ' is-legacy' : ''}" data-tooltip="${escapeTooltipAttr(headerTip)}">${drug.short}</div>`;
+    });
+    html += '</div>';
+
+    let currentGroup = null;
+    visible.forEach((organism) => {
+      const primaryGroup = organism.group.split(' ')[0];
+      if (primaryGroup !== currentGroup) {
+        currentGroup = primaryGroup;
+        html += `
+          <div class="visual-group-divider">
+            <h3>${groupLabels[primaryGroup]}</h3>
+            <div class="line"></div>
+          </div>
+        `;
+      }
+
+      html += `<div class="visual-row">`;
+      html += `
+        <button class="visual-name-button${state.selectedOrganismId === organism.id ? ' is-active' : ''}" data-organism-id="${organism.id}" data-tooltip="${escapeTooltipAttr(`${organism.name}\n${organism.abbr}${organism.note ? ` - ${organism.note}` : ''}\n${organism.desc}`)}" type="button">
+          <div class="kicker">${organism.abbr}${organism.note ? ` - ${organism.note}` : ''}</div>
+          <em>${organism.name}</em>
+          <small>${organism.desc}</small>
+        </button>
+      `;
+
+      drugs.forEach((drug) => {
+        const code = normalizeCode(organism.act[drug.id]);
+        const cellTip = `${drug.name} vs ${organism.abbr}\n${activityLabel(code)}${drug.legacy ? '\nLegacy-return agent' : ''}`;
+        html += `<div class="visual-activity-cell code-${code}" data-tooltip="${escapeTooltipAttr(cellTip)}">${activityText(code)}</div>`;
+      });
+
+      html += '</div>';
+    });
+
+    html += '</div></div>';
+    container.innerHTML = html;
+
+    container.querySelectorAll('[data-organism-id]').forEach((button) => {
+      button.addEventListener('click', () => {
+        state.selectedOrganismId = button.dataset.organismId;
+        renderSpectrum();
+        renderVisualSpectrum();
+      });
+    });
+  }
+  function comboKey(a, b) {
+    return [a, b].sort().join('|');
+  }
+
+  function renderComboSelects() {
+    const selectA = document.getElementById('combo-a');
+    const selectB = document.getElementById('combo-b');
+    const options = drugs.map((drug) => `<option value="${drug.id}">${drug.short} - ${drug.name}</option>`).join('');
+    selectA.innerHTML = options;
+    selectB.innerHTML = options;
+    selectA.value = state.comboA;
+    selectB.value = state.comboB;
+  }
+
+  function summarizePair() {
+    const pairA = getDrug(state.comboA);
+    const pairB = getDrug(state.comboB);
+    const buckets = { sharedStrong: [], expanded: [], partial: [], combo: [], offTarget: [] };
+
+    organisms.forEach((organism) => {
+      const codeA = normalizeCode(organism.act[state.comboA]);
+      const codeB = normalizeCode(organism.act[state.comboB]);
+      const rankA = activityRank(codeA);
+      const rankB = activityRank(codeB);
+
+      if (rankA >= 3 && rankB >= 3) {
+        buckets.sharedStrong.push(organism.abbr);
+      } else if (Math.max(rankA, rankB) >= 3) {
+        buckets.expanded.push(organism.abbr);
+      } else if (['C', 'I'].includes(codeA) || ['C', 'I'].includes(codeB)) {
+        buckets.combo.push(organism.abbr);
+      } else if (Math.max(rankA, rankB) >= 1.5) {
+        buckets.partial.push(organism.abbr);
+      } else {
+        buckets.offTarget.push(organism.abbr);
+      }
+    });
+
+    const coverageCount = buckets.sharedStrong.length + buckets.expanded.length;
+    const summary = `${pairA.name} plus ${pairB.name} shows strong combined coverage across ${coverageCount} of ${organisms.length} carried-over organisms. ${buckets.sharedStrong.length} organisms are strongly covered by both drugs, while ${buckets.expanded.length} mainly reflect one drug filling a gap left by the other.`;
+
+    return { pairA, pairB, buckets, summary };
+  }
+
+  function renderPairCoverage() {
+    const { buckets } = summarizePair();
+    const container = document.getElementById('pair-coverage');
+    const cards = [
+      { title: 'Strong in both drugs', list: buckets.sharedStrong, tone: 'new', copy: 'Useful for seeing when the second agent mostly duplicates existing activity.' },
+      { title: 'Gap filled by one drug', list: buckets.expanded, tone: 'info', copy: 'This is where a pair broadens coverage rather than creating true synergy.' },
+      { title: 'Only partial or weak support', list: buckets.partial, tone: 'warn', copy: 'Worth slowing down. These are often the misleading rows if you only glance at a chart.' },
+      { title: 'Combo-only or limited-data signal', list: buckets.combo, tone: 'info', copy: 'Mechanistic rationale or limited evidence may exist, but this is not the same as dependable coverage.' },
+      { title: 'Not really covered here', list: buckets.offTarget, tone: 'danger', copy: 'A second drug does not magically solve an organism when both agents are poor fits.' },
+    ];
+
+    container.innerHTML = cards.map((card) => `
+      <div class="note-card ${card.tone}">
+        <div class="note-top">
+          <h3>${card.title}</h3>
+          <span class="timeline-badge">${card.list.length}</span>
+        </div>
+        <p class="body-copy">${card.copy}</p>
+        <div class="coverage-row" style="margin-top:12px;">
+          ${card.list.length ? card.list.map((item) => `<span class="coverage-pill">${item}</span>`).join('') : '<span class="coverage-pill">None</span>'}
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function renderComboBuilder() {
+    const pairCode = document.getElementById('pair-code');
+    const pairSummary = document.getElementById('pair-summary');
+    const playbook = document.getElementById('pair-playbook');
+    const { pairA, pairB, summary } = summarizePair();
+    pairCode.textContent = `${pairA.short} + ${pairB.short}`;
+    pairSummary.textContent = summary;
+
+    if (state.comboA === state.comboB) {
+      playbook.innerHTML = `
+        <div class="pair-top">
+          <h3>Duplicate drug selected</h3>
+          <span class="timeline-badge">Adjust</span>
+        </div>
+        <p class="pair-copy">Pick two different antibiotics if the goal is combination thinking. Duplicate selection is still useful as a reminder that more of the same is not combination therapy.</p>
+      `;
+      renderPairCoverage();
+      return;
+    }
+
+    const entry = combinationPlaybook.find((item) => item.key === comboKey(state.comboA, state.comboB));
+    if (!entry) {
+      playbook.innerHTML = `
+        <div class="pair-top">
+          <h3>No curated playbook for this pair</h3>
+          <span class="timeline-badge">Generic view</span>
+        </div>
+        <p class="pair-copy">This pair may still broaden coverage, but the page has no curated high-yield teaching note for it. Use the coverage buckets below to decide whether the second drug is actually adding value or just duplicating work.</p>
+      `;
+      renderPairCoverage();
+      return;
+    }
+
+    playbook.innerHTML = `
+      <div class="pair-top">
+        <h3>${entry.title}</h3>
+        <span class="timeline-badge">${entry.badge}</span>
+      </div>
+      <p class="pair-copy">${entry.body}</p>
+      <div class="profile-section" style="margin-top:16px;">
+        <strong>Why it matters</strong>
+        <div class="body-copy">${entry.why}</div>
+      </div>
+      <div class="profile-section" style="margin-top:16px;">
+        <strong>Main caution</strong>
+        <div class="body-copy">${entry.caution}</div>
+      </div>
+    `;
+
+    renderPairCoverage();
+  }
+
+  function renderDrugFilters() {
+    const container = document.getElementById('drug-filters');
+    const filters = [
+      { id: 'all', label: 'All cards' },
+      { id: 'oral', label: 'Oral-capable' },
+      { id: 'mrsa', label: 'Anti-MRSA' },
+      { id: 'pseudomonas', label: 'Anti-Pseudomonas' },
+      { id: 'anaerobes', label: 'Anaerobes' },
+      { id: 'reserve', label: 'Reserve-space' },
+      { id: 'legacy', label: 'Legacy return' },
+    ];
+
+    container.innerHTML = '';
+    filters.forEach((filter) => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = `filter-button${state.drugFocus === filter.id ? ' is-active' : ''}`;
+      button.textContent = filter.label;
+      button.addEventListener('click', () => {
+        state.drugFocus = filter.id;
+        renderDrugCards();
+      });
+      container.appendChild(button);
+    });
+  }
+
+  function getVisibleDrugProfiles() {
+    const query = state.drugSearch.trim().toLowerCase();
+    return drugProfiles.filter((profile) => {
+      const matchesQuery =
+        !query ||
+        [profile.title, profile.subtitle, profile.summary, profile.shines, profile.trap, profile.tags.join(' ')].join(' ').toLowerCase().includes(query);
+
+      if (!matchesQuery) return false;
+      if (state.drugFocus === 'all') return true;
+      if (state.drugFocus === 'oral') return profile.route.includes('PO');
+      return profile.tags.includes(state.drugFocus);
+    });
+  }
+
+  function renderDrugCards() {
+    renderDrugFilters();
+    const container = document.getElementById('drug-cards');
+    const visible = getVisibleDrugProfiles();
+
+    if (!visible.length) {
+      container.innerHTML = '<div class="empty-state">No antibiotic cards matched the current search and focus filter.</div>';
+      return;
+    }
+
+    container.innerHTML = visible.map((profile) => `
+      <article class="card">
+        <div class="profile-top">
+          <div>
+            <div class="kicker">${profile.subtitle}</div>
+            <h3 class="profile-name">${profile.title}</h3>
+          </div>
+          <span class="timeline-badge">${profile.route}</span>
+        </div>
+        <p class="body-copy">${profile.summary}</p>
+        <div class="profile-meta">${profile.tags.map((tag) => `<span class="meta-chip">${tag}</span>`).join('')}</div>
+        <div class="profile-section">
+          <strong>When it shines</strong>
+          <div class="body-copy">${profile.shines}</div>
+        </div>
+        <div class="profile-section">
+          <strong>Common trap</strong>
+          <div class="body-copy">${profile.trap}</div>
+        </div>
+      </article>
+    `).join('');
+  }
+
+  function renderUpdates() {
+    document.getElementById('updates-grid').innerHTML = updates.map((item) => `
+      <article class="timeline-card">
+        <div class="timeline-top">
+          <h3>${item.title}</h3>
+          <span class="timeline-badge">${item.label}</span>
+        </div>
+        <div class="profile-meta" style="margin-top:12px;"><span class="meta-chip">${item.date}</span></div>
+        <p class="body-copy">${item.body}</p>
+        <p class="body-copy"><a href="${item.link}" target="_blank" rel="noreferrer">${item.linkLabel}</a></p>
+      </article>
+    `).join('');
+
+    document.getElementById('alert-grid').innerHTML = carryForwardAlerts.map((item) => `
+      <article class="note-card ${item.tone}">
+        <h3>${item.title}</h3>
+        <p class="body-copy">${item.body}</p>
+      </article>
+    `).join('');
+  }
+
+  function switchTab(nextTab) {
+    state.tab = nextTab;
+    document.querySelectorAll('[data-tab-target]').forEach((button) => {
+      button.classList.toggle('is-active', button.dataset.tabTarget === nextTab);
+    });
+    document.querySelectorAll('[data-tab-panel]').forEach((panel) => {
+      panel.classList.toggle('is-active', panel.dataset.tabPanel === nextTab);
+    });
+  }
+
+  function bindEvents() {
+    document.querySelectorAll('[data-tab-target]').forEach((button) => {
+      button.addEventListener('click', () => switchTab(button.dataset.tabTarget));
+    });
+
+    document.getElementById('theme-toggle').addEventListener('click', () => {
+      const nextTheme = state.theme === 'dark' ? 'light' : 'dark';
+      applyTheme(nextTheme);
+      localStorage.setItem('antibioticHubTheme', nextTheme);
+    });
+
+    document.getElementById('organism-search').addEventListener('input', (event) => {
+      state.organismSearch = event.target.value;
+      ensureSelectedOrganism();
+      renderSpectrum();
+      renderVisualSpectrum();
+    });
+
+    document.getElementById('combo-a').addEventListener('change', (event) => {
+      state.comboA = event.target.value;
+      renderComboBuilder();
+    });
+
+    document.getElementById('combo-b').addEventListener('change', (event) => {
+      state.comboB = event.target.value;
+      renderComboBuilder();
+    });
+
+    document.getElementById('drug-search').addEventListener('input', (event) => {
+      state.drugSearch = event.target.value;
+      renderDrugCards();
+    });
+
+    document.addEventListener('mouseover', (event) => {
+      const target = event.target.closest('[data-tooltip]');
+      if (!target) return;
+      showTooltip(target, event.clientX, event.clientY);
+    });
+
+    document.addEventListener('mousemove', (event) => {
+      if (activeTooltipTarget) {
+        positionTooltip(event.clientX, event.clientY);
+      }
+    });
+
+    document.addEventListener('mouseout', (event) => {
+      if (!activeTooltipTarget) return;
+      const nextTarget = event.relatedTarget;
+      if (!nextTarget || !nextTarget.closest || !nextTarget.closest('[data-tooltip]')) {
+        hideTooltip();
+      }
+    });
+
+    window.addEventListener('scroll', hideTooltip, true);
+  }
+
+  function init() {
+    const savedTheme = localStorage.getItem('antibioticHubTheme');
+    applyTheme(savedTheme === 'light' ? 'light' : 'dark');
+
+    organisms.forEach((organism) => {
+      if (legacyActivityByOrganism[organism.id]) {
+        Object.assign(organism.act, legacyActivityByOrganism[organism.id]);
+      }
+    });
+
+    document.getElementById('stat-organisms').textContent = organisms.length;
+    document.getElementById('stat-drugs').textContent = drugs.length;
+    renderComboSelects();
+    renderSpectrum();
+    renderVisualSpectrum();
+    renderComboBuilder();
+    renderDrugCards();
+    renderUpdates();
+    bindEvents();
+  }
+
+  init();
 </script>
-
-<div id="spectrum-grid"></div>
-
-</div><!-- table-container -->
-
-<!-- CLINICAL NOTES -->
-<div class="notes-panel">
-  <div class="notes-title">⚕ 2024–2025 CLINICAL HIGHLIGHTS & RESISTANCE UPDATES</div>
-  <div class="notes-grid">
-    <div class="note-card danger">
-      <div class="note-card-title">🔴 NDM-PA (ST235) — Critical 2025</div>
-      <div class="note-card-body">NDM-producing <em>Pseudomonas aeruginosa</em> (ST235 clone) now detected across SE Asia, Middle East, and Europe. Resistant to ALL β-lactams, carbapenems, fluoroquinolones, aminoglycosides. <strong>Aztreonam-Avibactam</strong> (Emblaveo™) is the key agent — aztreonam resists MBL hydrolysis; avibactam blocks co-harbored ESBL/KPC. <strong>Cefiderocol</strong> (siderophore cephalosporin) active via iron-transporter uptake. Combination therapy recommended; ID specialist mandatory.</div>
-    </div>
-    <div class="note-card danger">
-      <div class="note-card-title">🔴 LRSA — Linezolid-Resistant Staph. aureus</div>
-      <div class="note-card-body">cfr, optrA, and poxtA genes confer resistance to linezolid and tedizolid. LRSA isolates increasingly found in livestock-associated settings, long-term care, and hospitals (Spain, Denmark, Brazil, China). Options are extremely limited: <strong>Oritavancin</strong>, <strong>Daptomycin + Ceftaroline</strong> (synergistic for VISA/VRSA too), <strong>Eravacycline</strong>. Vancomycin may be co-resistant (VRSA/VISA overlap). Culture + susceptibility testing is mandatory.</div>
-    </div>
-    <div class="note-card danger">
-      <div class="note-card-title">🔴 VRSA / VISA — Vancomycin-Resistant Staph. aureus</div>
-      <div class="note-card-body">VRSA (vanA from enterococci; MIC ≥16) remains rare but devastating. VISA (MIC 4–8) more common, often missed. Both resistant to vancomycin, often linezolid (overlap clones). <strong>Daptomycin + Ceftaroline</strong> is synergistic gold standard. <strong>Oritavancin</strong> shows activity against VISA. TP5 glycan-thickening mechanism. ICU sepsis mortality >50%.</div>
-    </div>
-    <div class="note-card warn">
-      <div class="note-card-title">⚠ CRE — Community Spread of OXA-48</div>
-      <div class="note-card-body">OXA-48 and OXA-244 producing <em>K. pneumoniae</em> / <em>E. coli</em> increasingly detected in community-onset UTIs (2024 EU surveillance). Travel-associated from Turkey, N. Africa, Indian subcontinent. Key: C/A active only if no co-ESBL; M/V limited. <strong>Cefiderocol</strong> retains activity. Combination (C/A + Fosfomycin; or Cefiderocol + TGC) for serious infections. Check for co-resistance to polymyxins.</div>
-    </div>
-    <div class="note-card warn">
-      <div class="note-card-title">⚠ KPC C/A Resistance Emerging</div>
-      <div class="note-card-body">Ceftazidime-Avibactam resistance in KPC-producing <em>K. pneumoniae</em> now well-documented via: (1) KPC mutation (Asp179Tyr etc.), (2) OmpK35/36 porin loss, (3) MBL co-acquisition. Backup options: <strong>Cefiderocol</strong>, <strong>Meropenem-Vaborbactam</strong> (if no MBL), <strong>Aztreonam-Avibactam</strong> (if NDM). Repeat susceptibility testing of all CRE isolates during therapy.</div>
-    </div>
-    <div class="note-card new">
-      <div class="note-card-title">✦ New Agents 2020–2025</div>
-      <div class="note-card-body"><strong>Aztreonam-Avibactam</strong> (2024 EU; 2023 FDA for NDM): the MBL solution. <strong>Cefiderocol</strong>: siderophore cephalosporin, CRAB/XDR-PA/NDM active. <strong>Sulbactam-Durlobactam</strong> (2023): CRAB-specific. <strong>Omadacycline</strong>: oral/IV, MRSA + atypicals. <strong>Delafloxacin</strong>: MRSA-active FQ. <strong>Oritavancin/Dalbavancin</strong>: long-acting glycopeptides, single-dose SSTI. <strong>Plazomicin</strong>: CRE-active aminoglycoside.</div>
-    </div>
-    <div class="note-card info">
-      <div class="note-card-title">ℹ CRAB Treatment — Sulbactam is Key</div>
-      <div class="note-card-body">Carbapenem-resistant <em>Acinetobacter baumannii</em> (CRAB): OXA-23/24/58 ubiquitous. Sulbactam (in Ampicillin-Sulbactam or novel Sulbactam-Durlobactam) inhibits PBP2 directly — it is the active agent, not the β-lactam. <strong>Cefiderocol</strong> + Colistin + Rifampin triple therapy for severe infections. Avoid monotherapy. Tigecycline + Colistin combination used but toxicity significant. Sulbactam-Durlobactam (FDA 2023) is now preferred where available.</div>
-    </div>
-    <div class="note-card info">
-      <div class="note-card-title">ℹ Enterobacter — Never Use Narrow Cephalosporins</div>
-      <div class="note-card-body"><em>Enterobacter cloacae</em> complex and <em>Serratia marcescens</em> harbor inducible AmpC. 1st/2nd/3rd-gen cephalosporins (including ceftriaxone) may appear susceptible in vitro but select de-repressed mutants during therapy → clinical failure. Use <strong>Cefepime</strong> (high dose 2g q8h), carbapenems, or new BL/BLI. ESBL co-production in ECC rising sharply 2024 (ECDC report).</div>
-    </div>
-  </div>
-</div>
-
-<div style="padding:12px 32px 30px;font-size:8.5px;color:var(--text-dim);border-top:1px solid var(--border);margin-top:10px;line-height:1.8;">
-  ⚕ <strong style="color:var(--text)">Clinical Disclaimer:</strong> This spectrum chart is for educational and clinical reference only. Susceptibility patterns vary by region, institution, and patient. Always correlate with local antibiogram data and microbiological susceptibility testing. Consult Infectious Disease specialist for XDR/PDR organisms and novel agents. ★ = commonly preferred; does not substitute for individualized clinical judgment. Sources: EUCAST 2024, CLSI 2024, IDSA guidelines, WHO Critical Priority Pathogens 2024.
-</div>
-
-<div id="tooltip" class="tooltip"></div>
-
 </body>
 </html>
