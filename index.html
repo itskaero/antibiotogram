@@ -8,517 +8,707 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
+  /* ═══════════════════════════════════════════════════════════════
+     DESIGN TOKENS — GitHub-inspired dark/light with cleaner palette
+  ═══════════════════════════════════════════════════════════════ */
   :root {
-    --bg: #0d1117;
-    --canvas: #0d1117;
-    --canvas-subtle: #161b22;
-    --surface: #111827;
-    --surface-strong: #161b22;
-    --border: #30363d;
-    --border-strong: #484f58;
-    --text: #e6edf3;
-    --muted: #98a6b5;
-    --secondary-text: #c0cad5;
-    --accent: #58a6ff;
-    --accent-strong: #79c0ff;
-    --success: #3fb950;
-    --warning: #d29922;
-    --danger: #f85149;
-    --violet: #bc8cff;
-    --mint: #3fb950;
-    --shadow: 0 1px 2px rgba(0, 0, 0, 0.36), 0 18px 36px rgba(0, 0, 0, 0.28);
-    --body-gradient:
-      radial-gradient(circle at top left, rgba(56, 139, 253, 0.16), transparent 26rem),
-      radial-gradient(circle at top right, rgba(63, 185, 80, 0.12), transparent 24rem),
-      linear-gradient(180deg, #0b1016 0%, #0d1117 35%, #111827 100%);
-    --panel-bg: rgba(13, 17, 23, 0.92);
-    --hero-gradient:
-      linear-gradient(135deg, rgba(56, 139, 253, 0.16), rgba(188, 140, 255, 0.08) 45%, rgba(63, 185, 80, 0.10)),
-      linear-gradient(180deg, #0d1117, #161b22);
-    --hero-grid-line: rgba(48, 54, 61, 0.5);
-    --pill-bg: rgba(22, 27, 34, 0.9);
-    --control-bg: #0d1117;
-    --card-gradient: linear-gradient(180deg, #161b22, #111827);
-    --card-highlight: linear-gradient(180deg, rgba(56, 139, 253, 0.18), #111827);
-    --detail-gradient: linear-gradient(180deg, rgba(22, 27, 34, 0.98), rgba(13, 17, 23, 0.96));
-    --table-grid: #21262d;
-    --matrix-cell-bg: #0d1117;
-    --matrix-head-bg: #161b22;
-    --visual-scroll-bg: linear-gradient(180deg, #111827, #0f1722);
-    --visual-header-gradient: linear-gradient(180deg, #111827 0%, rgba(17, 24, 39, 0.96) 80%, transparent 100%);
-    --tooltip-bg: #1c2128;
-    --tooltip-border: rgba(121, 192, 255, 0.32);
-    --active-control-bg: linear-gradient(180deg, rgba(56, 139, 253, 0.22), rgba(31, 111, 235, 0.14));
-    --active-control-border: rgba(121, 192, 255, 0.38);
-    --active-card-bg: linear-gradient(180deg, rgba(56, 139, 253, 0.16), rgba(17, 24, 39, 0.98));
-    --radius: 16px;
+    /* Surfaces */
+    --bg:             #0d1117;
+    --surface:        rgba(22,27,34,0.72);
+    --surface-raised: rgba(28,33,40,0.78);
+    --border:         rgba(48,54,61,0.9);
+    --border-subtle:  rgba(33,38,45,0.9);
+    --border-strong:  #484f58;
+    /* Text */
+    --text:           #e6edf3;
+    --text-secondary: #8b949e;
+    --text-muted:     #6e7681;
+    /* Accents */
+    --accent:         #58a6ff;
+    --accent-hover:   #79c0ff;
+    --success:        #3fb950;
+    --success-subtle: rgba(63,185,80,0.12);
+    --warn:           #d29922;
+    --warn-subtle:    rgba(210,153,34,0.12);
+    --danger:         #f85149;
+    --danger-subtle:  rgba(248,81,73,0.12);
+    --violet:         #bc8cff;
+    --violet-subtle:  rgba(188,140,255,0.12);
+    --mint:           #3fb950;
+    /* Component tokens */
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.4);
+    --shadow-md: 0 4px 16px rgba(0,0,0,0.36);
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
     --mono: "JetBrains Mono", monospace;
     --sans: "Manrope", sans-serif;
+    /* Interactive */
+    --btn-bg:        #21262d;
+    --btn-border:    #30363d;
+    --btn-hover-bg:  #30363d;
+    --active-bg:     rgba(56,139,253,0.14);
+    --active-border: rgba(88,166,255,0.4);
+    /* Inputs */
+    --input-bg:      #0d1117;
+    --input-border:  #30363d;
+    --input-focus-shadow: 0 0 0 3px rgba(56,139,253,0.25);
   }
 
   body.light-theme {
-    --bg: #f6f8fa;
-    --canvas: #ffffff;
-    --canvas-subtle: #f6f8fa;
-    --surface: #ffffff;
-    --surface-strong: #f3f4f6;
-    --border: #d0d7de;
-    --border-strong: #afb8c1;
-    --text: #1f2328;
-    --muted: #57606a;
-    --secondary-text: #57606a;
-    --accent: #0969da;
-    --accent-strong: #0550ae;
-    --success: #1a7f37;
-    --warning: #9a6700;
-    --danger: #cf222e;
-    --violet: #8250df;
-    --mint: #1f883d;
-    --shadow: 0 1px 2px rgba(31, 35, 40, 0.08), 0 8px 24px rgba(140, 149, 159, 0.12);
-    --body-gradient:
-      radial-gradient(circle at top left, rgba(9, 105, 218, 0.10), transparent 26rem),
-      radial-gradient(circle at top right, rgba(31, 136, 61, 0.10), transparent 24rem),
-      linear-gradient(180deg, #ffffff 0%, #f6f8fa 28%, #eef2f6 100%);
-    --panel-bg: rgba(255, 255, 255, 0.94);
-    --hero-gradient:
-      linear-gradient(135deg, rgba(9, 105, 218, 0.08), rgba(130, 80, 223, 0.04) 45%, rgba(31, 136, 61, 0.06)),
-      linear-gradient(180deg, #ffffff, #f6f8fa);
-    --hero-grid-line: rgba(208, 215, 222, 0.35);
-    --pill-bg: rgba(255, 255, 255, 0.85);
-    --control-bg: #ffffff;
-    --card-gradient: linear-gradient(180deg, #ffffff, #f8fafc);
-    --card-highlight: linear-gradient(180deg, rgba(221, 244, 255, 0.86), #ffffff);
-    --detail-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(246, 248, 250, 0.96));
-    --table-grid: #eaeef2;
-    --matrix-cell-bg: #ffffff;
-    --matrix-head-bg: #f6f8fa;
-    --visual-scroll-bg: linear-gradient(180deg, #ffffff, #f8fafc);
-    --visual-header-gradient: linear-gradient(180deg, #ffffff 0%, rgba(255, 255, 255, 0.96) 80%, transparent 100%);
-    --tooltip-bg: #ffffff;
-    --tooltip-border: rgba(9, 105, 218, 0.22);
-    --active-control-bg: linear-gradient(180deg, rgba(221, 244, 255, 0.95), rgba(221, 244, 255, 0.72));
-    --active-control-border: rgba(9, 105, 218, 0.25);
-    --active-card-bg: linear-gradient(180deg, rgba(221, 244, 255, 0.86), #ffffff);
+    --bg:             #f6f8fa;
+    --surface:        rgba(255,255,255,0.72);
+    --surface-raised: rgba(246,248,250,0.78);
+    --border:         rgba(208,215,222,0.9);
+    --border-subtle:  rgba(234,238,242,0.9);
+    --border-strong:  #bbc0c4;
+    --text:           #1f2328;
+    --text-secondary: #57606a;
+    --text-muted:     #8c959f;
+    --accent:         #0969da;
+    --accent-hover:   #0550ae;
+    --success:        #1a7f37;
+    --success-subtle: rgba(26,127,55,0.10);
+    --warn:           #7d4e00;
+    --warn-subtle:    rgba(125,78,0,0.10);
+    --danger:         #cf222e;
+    --danger-subtle:  rgba(207,34,46,0.10);
+    --violet:         #8250df;
+    --violet-subtle:  rgba(130,80,223,0.10);
+    --mint:           #1a7f37;
+    --shadow-sm: 0 1px 3px rgba(31,35,40,0.1);
+    --shadow-md: 0 4px 16px rgba(140,149,159,0.15);
+    --btn-bg:        #f6f8fa;
+    --btn-border:    #d0d7de;
+    --btn-hover-bg:  #eaeef2;
+    --active-bg:     rgba(9,105,218,0.10);
+    --active-border: rgba(9,105,218,0.3);
+    --input-bg:      #ffffff;
+    --input-border:  #d0d7de;
+    --input-focus-shadow: 0 0 0 3px rgba(9,105,218,0.18);
   }
 
-  * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
+  /* ─── Reset & base ──────────────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; font-size: 16px; }
 
   body {
-    margin: 0;
     min-height: 100vh;
-    background: var(--body-gradient);
+    background-color: var(--bg);
     color: var(--text);
     font-family: var(--sans);
-    transition: background 0.2s ease, color 0.2s ease;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    transition: background-color 0.2s, color 0.2s;
   }
 
   a { color: var(--accent); text-decoration: none; }
-  a:hover { text-decoration: underline; }
+  a:hover { text-decoration: underline; color: var(--accent-hover); }
 
-  .app-shell {
-    width: min(1360px, calc(100vw - 32px));
-    margin: 24px auto 40px;
-  }
-
-  .hero,
-  .panel,
-  .card,
-  .matrix-shell,
-  .footnote {
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    background: var(--panel-bg);
-    box-shadow: var(--shadow);
-  }
-
-  .hero {
-    position: relative;
-    overflow: hidden;
-    border-radius: 24px;
-    background: var(--hero-gradient);
-    padding: 28px;
-  }
-
-  .hero::after {
-    content: "";
-    position: absolute;
+  /* ─── Canvas background ─────────────────────────────────────── */
+  #bg-canvas {
+    position: fixed;
     inset: 0;
-    background-image:
-      linear-gradient(var(--hero-grid-line) 1px, transparent 1px),
-      linear-gradient(90deg, var(--hero-grid-line) 1px, transparent 1px);
-    background-size: 34px 34px;
-    mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.65), transparent 85%);
+    width: 100%;
+    height: 100%;
     pointer-events: none;
+    z-index: 0;
+    opacity: 0.8;
   }
 
-  .hero-row {
+  /* ─── Glassmorphism: backdrop-filter on key surfaces ──────── */
+  .top-bar, .panel, .matrix-shell, .detail-card,
+  .card, .news-card, .visual-scroll, .combo-scroll,
+  .footnote, .empty-state, .hover-tooltip {
+    -webkit-backdrop-filter: blur(10px) saturate(130%);
+    backdrop-filter: blur(10px) saturate(130%);
+  }
+
+  /* ─── App shell ─────────────────────────────────────────────── */
+  .app-shell {
     position: relative;
     z-index: 1;
-    display: grid;
-    grid-template-columns: minmax(0, 1.8fr) minmax(280px, 1fr);
-    gap: 20px;
-    align-items: start;
+    width: min(1320px, calc(100vw - 32px));
+    margin: 0 auto;
+    padding: 20px 0 48px;
   }
 
-  .eyebrow {
-    display: inline-flex;
+  /* ─── Top bar / nav ─────────────────────────────────────────── */
+  .top-bar {
+    display: flex;
     align-items: center;
     gap: 8px;
-    padding: 8px 12px;
-    border-radius: 999px;
-    border: 1px solid rgba(9, 105, 218, 0.16);
-    background: color-mix(in srgb, var(--accent) 14%, transparent);
-    color: var(--accent-strong);
-    font: 700 12px/1.2 var(--mono);
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-  }
-
-  h1 {
-    margin: 16px 0 10px;
-    font-size: clamp(2rem, 4vw, 3.4rem);
-    line-height: 1.02;
-    letter-spacing: -0.04em;
-  }
-
-  .hero-copy,
-  .panel-copy,
-  .body-copy,
-  .pair-copy,
-  .detail-summary,
-  .footnote {
-    color: var(--secondary-text);
-    line-height: 1.7;
-  }
-
-  .hero-pills,
-  .stat-grid,
-  .chip-row,
-  .detail-chip-row,
-  .coverage-row,
-  .profile-meta {
-    display: flex;
+    padding: 0 0 20px;
+    border-bottom: 1px solid var(--border-subtle);
+    margin-bottom: 24px;
     flex-wrap: wrap;
-    gap: 10px;
   }
 
-  .hero-pill,
-  .chip,
-  .coverage-pill,
-  .meta-chip {
-    display: inline-flex;
+  .logo-mark {
+    display: flex;
     align-items: center;
-    min-height: 34px;
-    padding: 8px 12px;
-    border-radius: 999px;
-    border: 1px solid var(--border);
-    background: var(--pill-bg);
+    gap: 10px;
+    margin-right: 12px;
+  }
+
+  .logo-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #388bfd 0%, #bc8cff 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .logo-text {
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
     color: var(--text);
-    font-size: 0.84rem;
-    font-weight: 600;
   }
 
-  .hero-card {
-    position: relative;
-    z-index: 1;
-    padding: 18px;
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    background: var(--panel-bg);
+  .top-divider {
+    width: 1px;
+    height: 20px;
+    background: var(--border);
+    margin: 0 4px;
+    flex-shrink: 0;
   }
 
-  .hero-card h2,
-  .panel-head h2,
-  .panel-head h3 {
-    margin: 0;
-  }
-
-  .stat-grid { margin-top: 16px; }
-
-  .stat {
-    flex: 1 1 150px;
-    padding: 14px;
-    border-radius: 14px;
-    border: 1px solid var(--border);
-    background: var(--card-gradient);
-  }
-
-  .stat strong {
-    display: block;
-    font-size: 1.8rem;
-    line-height: 1;
-    letter-spacing: -0.04em;
-    margin-bottom: 6px;
-  }
-
-  .tab-bar {
+  .nav-tabs {
     display: flex;
+    gap: 2px;
+    flex: 1;
     flex-wrap: wrap;
-    gap: 10px;
-    margin: 18px 0 16px;
-    align-items: center;
   }
 
-  .tab-button,
-  .filter-button {
+  .tab-button {
     appearance: none;
-    border: 1px solid var(--border);
-    background: var(--control-bg);
-    color: var(--text);
-    padding: 10px 14px;
-    border-radius: 12px;
-    font: 600 0.92rem/1.1 var(--sans);
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+    font: 600 0.875rem/1.4 var(--sans);
     cursor: pointer;
-    transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    transition: background 0.12s, color 0.12s;
+    white-space: nowrap;
   }
 
-  .tab-button:hover,
-  .filter-button:hover,
-  .organism-card:hover {
-    transform: translateY(-1px);
-    border-color: var(--border-strong);
-    box-shadow: 0 8px 20px rgba(140, 149, 159, 0.16);
-  }
+  .tab-button:hover { background: var(--btn-hover-bg); color: var(--text); }
 
-  .tab-button.is-active,
-  .filter-button.is-active {
-    border-color: var(--active-control-border);
-    background: var(--active-control-bg);
-    color: var(--text);
+  .tab-button.is-active {
+    background: var(--active-bg);
+    color: var(--accent-hover);
   }
 
   .theme-toggle {
     margin-left: auto;
-  }
-
-  .quick-link-card {
-    margin-top: 16px;
-    padding: 14px;
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
     border: 1px solid var(--border);
-    border-radius: 14px;
-    background: var(--card-gradient);
+    background: var(--btn-bg);
+    color: var(--text-secondary);
+    font: 600 0.8rem/1.4 var(--sans);
+    cursor: pointer;
+    transition: background 0.12s, color 0.12s;
+    flex-shrink: 0;
+  }
+  .theme-toggle:hover { background: var(--btn-hover-bg); color: var(--text); }
+
+  /* ─── Hero banner ───────────────────────────────────────────── */
+  .hero {
+    padding: 22px 0 18px;
+    margin-bottom: 18px;
+    border-bottom: 1px solid var(--border-subtle);
   }
 
-  .quick-link-card strong {
-    display: block;
-    margin-bottom: 6px;
+  .hero-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
   }
 
-  .quick-link-card p {
-    margin: 0 0 12px;
-    color: var(--secondary-text);
+  .hero h1 {
+    font-size: clamp(1.35rem, 2.6vw, 1.9rem);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1.1;
+    margin: 0;
+    background: linear-gradient(120deg, var(--text) 0%, var(--text-secondary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-stat-row {
+    display: flex;
+    gap: 28px;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .hero-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .hero-stat strong {
+    font-size: 1.4rem;
+    font-weight: 800;
+    letter-spacing: -0.05em;
+    line-height: 1;
+    color: var(--accent-hover);
+  }
+
+  .hero-stat span {
+    font: 700 0.6rem/1 var(--mono);
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-top: 3px;
+  }
+
+  .hero-sub {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
     line-height: 1.6;
-    font-size: 0.9rem;
+    margin: 0 0 12px;
   }
 
-  .quick-link-button {
+  .hero-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .hero-chip {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    padding: 10px 12px;
-    border-radius: 12px;
+    gap: 4px;
+    padding: 3px 9px;
+    border-radius: 6px;
     border: 1px solid var(--border);
-    background: var(--control-bg);
-    color: var(--text);
-    font: 700 0.84rem/1 var(--sans);
-    text-decoration: none;
+    background: var(--surface-raised);
+    color: var(--text-muted);
+    font-size: 0.76rem;
+    font-weight: 600;
   }
 
-  .quick-link-button:hover {
-    border-color: var(--active-control-border);
-    background: var(--active-control-bg);
-    text-decoration: none;
-  }
-
+  /* ─── Panels ────────────────────────────────────────────────── */
   .tab-panel { display: none; }
   .tab-panel.is-active { display: block; }
-  .panel { padding: 20px; }
-  .panel + .panel { margin-top: 16px; }
+
+  .panel {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    padding: 20px 22px;
+    box-shadow: var(--shadow-sm);
+  }
+  .panel + .panel { margin-top: 14px; }
 
   .panel-head {
     display: flex;
-    flex-wrap: wrap;
+    align-items: flex-start;
     justify-content: space-between;
     gap: 16px;
-    margin-bottom: 18px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+
+  .panel-head h2 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text);
+  }
+
+  .panel-head h3 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .panel-copy {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    line-height: 1.6;
+    margin-top: 4px;
+  }
+
+  /* ─── Section label ─────────────────────────────────────────── */
+  .section-label {
+    font: 700 0.7rem/1 var(--mono);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+
+  /* ─── Controls (input, select, buttons) ─────────────────────── */
+  label {
+    display: block;
+    font: 600 0.8rem/1 var(--sans);
+    color: var(--text-muted);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  input, select {
+    width: 100%;
+    border: 1px solid var(--input-border);
+    border-radius: var(--radius-sm);
+    background: var(--input-bg);
+    color: var(--text);
+    padding: 8px 12px;
+    font: 500 0.9rem/1.4 var(--sans);
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+
+  input::placeholder { color: var(--text-muted); }
+  input:focus, select:focus {
+    border-color: var(--accent);
+    box-shadow: var(--input-focus-shadow);
+  }
+
+  .filter-button, .scope-btn {
+    appearance: none;
+    border: 1px solid var(--btn-border);
+    background: var(--btn-bg);
+    color: var(--text-secondary);
+    padding: 5px 11px;
+    border-radius: var(--radius-sm);
+    font: 600 0.82rem/1.4 var(--sans);
+    cursor: pointer;
+    transition: background 0.12s, color 0.12s, border-color 0.12s;
+    white-space: nowrap;
+  }
+
+  .filter-button:hover, .scope-btn:hover { background: var(--btn-hover-bg); color: var(--text); }
+
+  .filter-button.is-active, .scope-btn.is-active {
+    border-color: var(--active-border);
+    background: var(--active-bg);
+    color: var(--accent-hover);
   }
 
   .toolbar {
     display: grid;
-    grid-template-columns: minmax(220px, 1fr) auto;
-    gap: 16px;
+    grid-template-columns: minmax(200px, 1fr) auto;
+    gap: 14px;
     align-items: start;
-    margin-bottom: 18px;
+    margin-bottom: 14px;
   }
 
-  .toolbar-stack {
+  .toolbar-stack { display: flex; flex-direction: column; gap: 10px; }
+
+  .chip-row, .detail-chip-row {
     display: flex;
-    flex-direction: column;
-    gap: 10px;
+    flex-wrap: wrap;
+    gap: 6px;
   }
 
-  label {
-    display: block;
-    font-size: 0.84rem;
-    font-weight: 700;
-    color: var(--muted);
-    margin-bottom: 6px;
+  /* ─── Drug scope toggle ─────────────────────────────────────── */
+  .scope-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    padding: 10px 14px;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    background: var(--surface-raised);
+    margin-bottom: 16px;
   }
 
-  input,
-  select {
-    width: 100%;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    background: var(--control-bg);
-    color: var(--text);
-    padding: 12px 14px;
-    font: 500 0.95rem/1.2 var(--sans);
-    outline: none;
+  .scope-label {
+    font: 700 0.7rem/1 var(--mono);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    margin-right: 4px;
   }
 
-  input:focus,
-  select:focus {
-    border-color: rgba(9, 105, 218, 0.4);
-    box-shadow: 0 0 0 4px rgba(9, 105, 218, 0.12);
-  }
-
+  /* ─── Spectrum layout ───────────────────────────────────────── */
   .spectrum-layout {
     display: grid;
-    grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
-    gap: 18px;
+    grid-template-columns: 300px minmax(0, 1fr);
+    gap: 14px;
+    align-items: start;
   }
 
+  /* ─── Organism list ─────────────────────────────────────────── */
   .organism-list {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 4px;
   }
 
   .organism-card {
     appearance: none;
     width: 100%;
     text-align: left;
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    background: var(--card-gradient);
-    padding: 16px;
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    padding: 10px 12px;
     cursor: pointer;
-    transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+    transition: background 0.1s, border-color 0.1s;
+  }
+
+  .organism-card:hover {
+    background: var(--surface-raised);
+    border-color: var(--border-subtle);
   }
 
   .organism-card.is-active {
-    border-color: rgba(9, 105, 218, 0.32);
-    background: var(--active-card-bg);
+    border-color: var(--active-border);
+    background: var(--active-bg);
   }
 
-  .organism-top,
-  .detail-top,
-  .pair-top,
-  .profile-top,
-  .timeline-top,
-  .note-top {
+  .ocard-top {
     display: flex;
-    flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    gap: 12px;
+    gap: 8px;
+    margin-bottom: 2px;
   }
 
-  .organism-name,
-  .detail-name,
-  .profile-name {
+  .ocard-name {
+    font-size: 0.88rem;
+    font-weight: 700;
+    font-style: italic;
+    color: var(--text);
     margin: 0;
-    font-size: 1.05rem;
-    line-height: 1.2;
-    letter-spacing: -0.02em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
-  .organism-name em,
-  .detail-name em { font-style: italic; }
+  .ocard-abbr {
+    font: 700 0.68rem/1 var(--mono);
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
 
-  .kicker {
-    font: 700 0.76rem/1 var(--mono);
+  .ocard-drugs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 5px;
+  }
+
+  .ocard-drug-tag {
+    font: 700 0.64rem/1.2 var(--mono);
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: var(--success-subtle);
+    color: var(--success);
+    border: 1px solid rgba(63,185,80,0.18);
+  }
+
+  /* Group header in organism list */
+  .org-group-header {
+    padding: 8px 12px 4px;
+    font: 700 0.68rem/1 var(--mono);
     text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--muted);
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border-subtle);
+    margin-bottom: 2px;
+    margin-top: 8px;
+  }
+  .org-group-header:first-child { margin-top: 0; }
+
+  /* ─── Detail pane ───────────────────────────────────────────── */
+  .detail-pane {
+    position: sticky;
+    top: 12px;
   }
 
-  .badge,
-  .tag,
-  .timeline-badge {
-    display: inline-flex;
-    align-items: center;
-    padding: 6px 10px;
-    border-radius: 999px;
-    border: 1px solid transparent;
-    font: 700 0.76rem/1 var(--mono);
+  .detail-card {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    overflow: hidden;
+  }
+
+  .detail-header {
+    padding: 16px 18px;
+    border-bottom: 1px solid var(--border-subtle);
+    background: var(--surface-raised);
+  }
+
+  .detail-header-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+
+  .detail-name {
+    font-size: 1.05rem;
+    font-weight: 700;
+    font-style: italic;
+    color: var(--text);
+    margin: 0;
+    line-height: 1.3;
+  }
+
+  .detail-abbr {
+    font: 700 0.72rem/1.4 var(--mono);
+    color: var(--text-muted);
+    margin-bottom: 2px;
     text-transform: uppercase;
     letter-spacing: 0.04em;
   }
 
-  .badge-gpos { background: rgba(130, 80, 223, 0.10); color: var(--violet); border-color: rgba(130, 80, 223, 0.18); }
-  .badge-gneg { background: rgba(9, 105, 218, 0.10); color: var(--accent-strong); border-color: rgba(9, 105, 218, 0.18); }
-  .badge-anaerobe { background: rgba(31, 136, 61, 0.10); color: var(--mint); border-color: rgba(31, 136, 61, 0.18); }
-  .badge-atypical { background: rgba(154, 103, 0, 0.10); color: var(--warning); border-color: rgba(154, 103, 0, 0.18); }
-  .tag-mdr { background: rgba(207, 34, 46, 0.10); color: var(--danger); border-color: rgba(207, 34, 46, 0.18); }
-  .tag-new { background: rgba(31, 136, 61, 0.10); color: var(--mint); border-color: rgba(31, 136, 61, 0.18); }
-  .tag-emerging { background: rgba(154, 103, 0, 0.10); color: var(--warning); border-color: rgba(154, 103, 0, 0.18); }
-  .tag-sepsis { background: rgba(207, 34, 46, 0.10); color: var(--danger); border-color: rgba(207, 34, 46, 0.18); }
-
-  .detail-card {
-    position: sticky;
-    top: 18px;
-    min-height: 520px;
-    padding: 20px;
-    border: 1px solid var(--border);
-    border-radius: 18px;
-    background: var(--detail-gradient);
+  .detail-desc {
+    color: var(--text-secondary);
+    font-size: 0.835rem;
+    line-height: 1.6;
+    margin-top: 6px;
   }
 
-  .detail-block { margin-top: 20px; }
-  .detail-block h4 {
-    margin: 0 0 10px;
-    font-size: 0.9rem;
+  .detail-body { padding: 16px 18px; }
+
+  .detail-section { margin-bottom: 18px; }
+  .detail-section:last-child { margin-bottom: 0; }
+
+  .detail-section-title {
+    font: 700 0.7rem/1 var(--mono);
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--muted);
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .detail-section-title::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--border-subtle);
   }
 
   .detail-drugs {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .drug-row {
+    display: flex;
+    align-items: center;
     gap: 10px;
+    padding: 8px 10px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-subtle);
+    background: var(--surface-raised);
+    transition: border-color 0.1s;
   }
 
-  .drug-chip {
-    min-width: 190px;
-    padding: 12px 13px;
-    border-radius: 14px;
+  .drug-row:hover { border-color: var(--border); }
+
+  .drug-row-code {
+    flex-shrink: 0;
+    width: 32px;
+    height: 22px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font: 700 0.64rem/1 var(--mono);
+  }
+
+  .drug-row-code.code-FD { background: rgba(63,185,80,0.22); color: var(--success); }
+  .drug-row-code.code-F  { background: var(--success-subtle); color: var(--success); }
+  .drug-row-code.code-P  { background: var(--warn-subtle); color: var(--warn); }
+  .drug-row-code.code-V  { background: rgba(210,153,34,0.08); color: var(--warn); }
+  .drug-row-code.code-C  { background: rgba(56,139,253,0.14); color: var(--accent-hover); }
+  .drug-row-code.code-I  { background: rgba(56,139,253,0.08); color: var(--accent); }
+
+  .drug-row-info { flex: 1; min-width: 0; }
+  .drug-row-name { font-size: 0.84rem; font-weight: 700; color: var(--text); }
+  .drug-row-meta { font-size: 0.75rem; color: var(--text-muted); margin-top: 1px; }
+
+  .drug-row-tag {
+    flex-shrink: 0;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font: 700 0.65rem/1.4 var(--mono);
+  }
+  .drug-row-tag.doc { background: rgba(63,185,80,0.18); color: var(--success); }
+  .drug-row-tag.partial { background: var(--warn-subtle); color: var(--warn); }
+  .drug-row-tag.combo { background: rgba(56,139,253,0.14); color: var(--accent-hover); }
+
+  /* ─── Badges & tags ─────────────────────────────────────────── */
+  .badge, .tag, .timeline-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 8px;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    font: 700 0.7rem/1.4 var(--mono);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+
+  .badge-gpos     { background: var(--violet-subtle);  color: var(--violet); border-color: rgba(188,140,255,0.22); }
+  .badge-gneg     { background: rgba(56,139,253,0.12); color: var(--accent-hover); border-color: rgba(56,139,253,0.22); }
+  .badge-anaerobe { background: var(--success-subtle); color: var(--success); border-color: rgba(63,185,80,0.22); }
+  .badge-atypical { background: var(--warn-subtle);    color: var(--warn);    border-color: rgba(210,153,34,0.22); }
+  .badge-fungal   { background: rgba(188,140,255,0.14); color: var(--violet); border-color: rgba(188,140,255,0.28); }
+  .badge-viral    { background: rgba(63,185,80,0.12);  color: var(--mint);   border-color: rgba(63,185,80,0.26); }
+  .tag-mdr        { background: var(--danger-subtle);  color: var(--danger); border-color: rgba(248,81,73,0.22); }
+  .tag-new        { background: var(--success-subtle); color: var(--success); border-color: rgba(63,185,80,0.22); }
+  .tag-emerging   { background: var(--warn-subtle);    color: var(--warn);   border-color: rgba(210,153,34,0.22); }
+  .tag-sepsis     { background: var(--danger-subtle);  color: var(--danger); border-color: rgba(248,81,73,0.22); }
+
+  /* ─── Kicker / label text ───────────────────────────────────── */
+  .kicker {
+    font: 700 0.68rem/1 var(--mono);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    margin-bottom: 2px;
+  }
+
+  /* ─── Matrix table ──────────────────────────────────────────── */
+  .matrix-shell {
     border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
     background: var(--surface);
+    padding: 16px 18px;
+    margin-top: 14px;
+    box-shadow: var(--shadow-sm);
   }
 
-  .drug-chip strong {
-    display: block;
-    font-size: 0.95rem;
-    margin-bottom: 4px;
+  .matrix-shell summary {
+    cursor: pointer;
+    font: 700 0.875rem/1.4 var(--sans);
+    color: var(--text-secondary);
+    padding: 2px 0;
+    user-select: none;
   }
 
-  .drug-chip span {
-    color: var(--secondary-text);
-    font-size: 0.86rem;
-    line-height: 1.5;
-  }
-
-  .activity-strong { border-color: rgba(31, 136, 61, 0.18); background: rgba(46, 160, 67, 0.06); }
-  .activity-partial { border-color: rgba(154, 103, 0, 0.18); background: rgba(212, 167, 44, 0.08); }
-  .activity-combo { border-color: rgba(9, 105, 218, 0.18); background: rgba(221, 244, 255, 0.74); }
-
-  .matrix-shell { padding: 16px 18px; }
-  .matrix-shell summary { cursor: pointer; font-weight: 700; }
-  .matrix-wrap { overflow: auto; margin-top: 14px; border-radius: 14px; border: 1px solid var(--border); }
+  .matrix-shell summary:hover { color: var(--text); }
+  .matrix-wrap { overflow: auto; margin-top: 14px; border-radius: var(--radius-md); border: 1px solid var(--border); }
 
   table {
     width: 100%;
@@ -528,99 +718,92 @@
     font-size: 0.82rem;
   }
 
-  th,
-  td {
-    border-bottom: 1px solid var(--table-grid);
-    border-right: 1px solid var(--table-grid);
+  th, td {
+    border-bottom: 1px solid var(--border-subtle);
+    border-right: 1px solid var(--border-subtle);
     padding: 0;
     text-align: center;
-    background: var(--matrix-cell-bg);
+    background: var(--surface);
   }
 
   th {
     position: sticky;
     top: 0;
     z-index: 2;
-    padding: 10px 8px;
-    background: var(--matrix-head-bg);
-    color: var(--muted);
-    font: 700 0.72rem/1.3 var(--mono);
+    padding: 9px 8px;
+    background: var(--surface-raised);
+    color: var(--text-muted);
+    font: 700 0.68rem/1.3 var(--mono);
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.04em;
   }
 
-  th:first-child,
-  td:first-child {
+  th:first-child, td:first-child {
     position: sticky;
     left: 0;
     z-index: 1;
-    background: var(--matrix-cell-bg);
+    background: var(--surface);
   }
 
-  th:first-child { z-index: 3; background: var(--matrix-head-bg); }
+  th:first-child { z-index: 3; background: var(--surface-raised); }
 
   .matrix-name {
-    min-width: 250px;
-    padding: 12px 14px;
+    min-width: 240px;
+    padding: 10px 13px;
     text-align: left;
   }
 
   .matrix-code {
-    width: 42px;
-    min-width: 42px;
-    height: 42px;
-    font: 700 0.8rem/1 var(--mono);
+    width: 38px;
+    min-width: 38px;
+    height: 38px;
+    font: 700 0.72rem/1 var(--mono);
   }
 
-  .code-FD,
-  .code-F { background: rgba(46, 160, 67, 0.10); color: var(--success); }
-  .code-P,
-  .code-V { background: rgba(212, 167, 44, 0.12); color: var(--warning); }
-  .code-C,
-  .code-I { background: rgba(221, 244, 255, 0.86); color: var(--accent-strong); }
-  .code-N { color: var(--muted); }
+  .code-FD { background: rgba(63,185,80,0.2);  color: var(--success); }
+  .code-F  { background: rgba(63,185,80,0.1);  color: var(--success); }
+  .code-P  { background: var(--warn-subtle);   color: var(--warn); }
+  .code-V  { background: rgba(210,153,34,0.07); color: var(--warn); }
+  .code-C  { background: rgba(56,139,253,0.12); color: var(--accent-hover); }
+  .code-I  { background: rgba(56,139,253,0.07); color: var(--accent); }
+  .code-N  { color: var(--border-strong); }
 
+  /* ─── Visual spectrum ───────────────────────────────────────── */
   .visual-legend {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 14px;
+    gap: 6px;
+    margin-bottom: 12px;
   }
 
   .legend-pill {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    padding: 8px 12px;
+    gap: 6px;
+    padding: 4px 10px;
     border-radius: 999px;
     border: 1px solid var(--border);
-    background: var(--surface);
-    color: var(--muted);
-    font: 700 0.76rem/1 var(--mono);
+    background: var(--surface-raised);
+    color: var(--text-muted);
+    font: 700 0.72rem/1 var(--mono);
     text-transform: uppercase;
     letter-spacing: 0.04em;
   }
 
-  .legend-pill strong {
-    color: var(--text);
-  }
+  .legend-pill strong { color: var(--text); }
 
   .visual-scroll {
     overflow: auto;
     border: 1px solid var(--border);
-    border-radius: 16px;
-    background: var(--visual-scroll-bg);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
   }
 
-  .visual-grid {
-    min-width: 1280px;
-    padding: 16px;
-  }
+  .visual-grid { min-width: 1280px; padding: 14px; }
 
-  .visual-header-row,
-  .visual-row {
+  .visual-header-row, .visual-row {
     display: flex;
-    gap: 6px;
+    gap: 5px;
     align-items: stretch;
   }
 
@@ -628,325 +811,376 @@
     position: sticky;
     top: 0;
     z-index: 4;
-    padding-bottom: 12px;
-    margin-bottom: 8px;
-    background: var(--visual-header-gradient);
+    padding-bottom: 10px;
+    margin-bottom: 6px;
+    background: linear-gradient(180deg, var(--surface) 80%, transparent 100%);
   }
 
-  .visual-name-spacer,
-  .visual-name-button {
-    width: 248px;
-    min-width: 248px;
-  }
+  .visual-name-spacer, .visual-name-button { width: 240px; min-width: 240px; }
 
   .visual-drug-label {
-    width: 44px;
-    min-width: 44px;
-    height: 96px;
-    padding: 8px 4px;
+    width: 40px;
+    min-width: 40px;
+    height: 90px;
+    padding: 6px 4px;
     border: 1px solid var(--border);
-    border-radius: 14px;
-    background: var(--surface);
-    color: var(--muted);
+    border-radius: var(--radius-sm);
+    background: var(--surface-raised);
+    color: var(--text-muted);
     display: flex;
     align-items: center;
     justify-content: center;
     writing-mode: vertical-rl;
     transform: rotate(180deg);
-    font: 700 0.72rem/1 var(--mono);
+    font: 700 0.68rem/1 var(--mono);
     text-transform: uppercase;
     letter-spacing: 0.04em;
   }
 
   .visual-drug-label.is-legacy {
     border-style: dashed;
-    background: rgba(154, 103, 0, 0.06);
-    color: var(--warning);
+    background: var(--warn-subtle);
+    color: var(--warn);
   }
 
   .visual-group-divider {
     display: flex;
     align-items: center;
-    gap: 12px;
-    margin: 18px 0 10px;
+    gap: 10px;
+    margin: 14px 0 8px;
   }
 
   .visual-group-divider h3 {
     margin: 0;
-    font-size: 0.88rem;
+    font-size: 0.78rem;
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.08em;
+    color: var(--text-muted);
+    white-space: nowrap;
   }
 
   .visual-group-divider .line {
     flex: 1;
     height: 1px;
-    background: linear-gradient(90deg, rgba(9, 105, 218, 0.2), transparent);
+    background: var(--border-subtle);
   }
 
   .visual-name-button {
     appearance: none;
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    background: var(--surface);
-    padding: 12px 14px;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    background: var(--surface-raised);
+    padding: 9px 12px;
     text-align: left;
     cursor: pointer;
+    transition: background 0.1s, border-color 0.1s;
   }
 
-  .visual-name-button.is-active {
-    border-color: rgba(9, 105, 218, 0.35);
-    background: var(--active-card-bg);
-  }
+  .visual-name-button:hover { background: var(--btn-hover-bg); border-color: var(--border); }
+  .visual-name-button.is-active { border-color: var(--active-border); background: var(--active-bg); }
 
-  .visual-name-button em {
-    display: block;
-    font-style: italic;
-    font-weight: 700;
-    color: var(--text);
-  }
-
-  .visual-name-button small {
-    display: block;
-    margin-top: 4px;
-    color: var(--secondary-text);
-    font-size: 0.82rem;
-  }
+  .visual-name-button em { display: block; font-style: italic; font-weight: 700; color: var(--text); font-size: 0.84rem; }
+  .visual-name-button small { display: block; margin-top: 3px; color: var(--text-muted); font-size: 0.75rem; }
 
   .visual-activity-cell {
-    width: 44px;
-    min-width: 44px;
-    height: 44px;
-    border-radius: 12px;
-    border: 1px solid var(--border);
+    width: 40px;
+    min-width: 40px;
+    height: 40px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-subtle);
     display: flex;
     align-items: center;
     justify-content: center;
-    font: 700 0.76rem/1 var(--mono);
-    background: var(--surface);
-    color: var(--muted);
+    font: 700 0.68rem/1 var(--mono);
+    background: var(--surface-raised);
+    color: var(--text-muted);
   }
 
   .visual-activity-cell.code-FD,
-  .visual-activity-cell.code-F {
-    background: rgba(46, 160, 67, 0.12);
-  }
-
+  .visual-activity-cell.code-F  { background: rgba(63,185,80,0.12); }
   .visual-activity-cell.code-P,
-  .visual-activity-cell.code-V {
-    background: rgba(212, 167, 44, 0.14);
-  }
-
+  .visual-activity-cell.code-V  { background: var(--warn-subtle); }
   .visual-activity-cell.code-C,
-  .visual-activity-cell.code-I {
-    background: rgba(221, 244, 255, 0.92);
-  }
+  .visual-activity-cell.code-I  { background: rgba(56,139,253,0.1); }
 
-  .combo-grid,
-  .card-grid,
-  .timeline-grid,
-  .notes-grid {
-    display: grid;
-    gap: 16px;
-  }
+  /* ─── Cards ─────────────────────────────────────────────────── */
+  .card-grid    { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 12px; }
+  .timeline-grid, .notes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
 
-  .combo-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .card-grid { grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); }
-  .timeline-grid,
-  .notes-grid { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
-
-  .card,
-  .timeline-card,
-  .note-card,
-  .pair-card { padding: 18px; }
-
-  .pair-card,
-  .timeline-card,
-  .note-card {
+  .card, .timeline-card, .note-card, .pair-card {
+    padding: 16px 18px;
     border: 1px solid var(--border);
-    border-radius: 16px;
-    background: var(--card-gradient);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+  }
+
+  .card { box-shadow: var(--shadow-sm); transition: box-shadow 0.15s, border-color 0.15s; }
+  .card:hover { box-shadow: var(--shadow-md); border-color: var(--border-strong); }
+
+  .profile-top, .timeline-top, .pair-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+  }
+
+  .profile-name { font-size: 0.95rem; font-weight: 700; color: var(--text); margin: 2px 0 0; }
+  .body-copy, .pair-copy, .detail-summary { color: var(--text-secondary); font-size: 0.875rem; line-height: 1.65; }
+  .profile-section { margin-top: 12px; }
+  .profile-section strong { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted); font-weight: 700; }
+  .profile-section .body-copy { margin-top: 4px; }
+  .profile-meta { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+
+  .meta-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 8px;
+    border-radius: 5px;
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    font: 600 0.72rem/1.4 var(--mono);
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 8px;
+    border-radius: 5px;
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    font-size: 0.78rem;
+    font-weight: 600;
   }
 
   .code-pair {
     display: inline-flex;
     align-items: center;
-    padding: 8px 12px;
+    padding: 4px 10px;
     border-radius: 999px;
-    background: rgba(221, 244, 255, 0.84);
-    color: var(--accent-strong);
-    border: 1px solid rgba(9, 105, 218, 0.16);
-    font: 700 0.8rem/1 var(--mono);
-  }
-
-  .meta-chip {
-    background: var(--canvas-subtle);
-    color: var(--muted);
-    font: 700 0.76rem/1 var(--mono);
+    background: rgba(56,139,253,0.14);
+    color: var(--accent-hover);
+    border: 1px solid rgba(56,139,253,0.22);
+    font: 700 0.78rem/1 var(--mono);
   }
 
   .timeline-badge {
-    background: rgba(221, 244, 255, 0.8);
-    color: var(--accent-strong);
-    border-color: rgba(9, 105, 218, 0.18);
+    background: rgba(56,139,253,0.12);
+    color: var(--accent-hover);
+    border-color: rgba(56,139,253,0.20);
+    flex-shrink: 0;
   }
 
-  .note-card.danger { border-color: rgba(207, 34, 46, 0.18); }
-  .note-card.warn { border-color: rgba(154, 103, 0, 0.18); }
-  .note-card.info { border-color: rgba(9, 105, 218, 0.18); }
-  .note-card.new { border-color: rgba(31, 136, 61, 0.18); }
+  .note-card.danger { border-color: rgba(248,81,73,0.3); background: rgba(248,81,73,0.04); }
+  .note-card.warn   { border-color: rgba(210,153,34,0.3); background: rgba(210,153,34,0.04); }
+  .note-card.info   { border-color: rgba(56,139,253,0.3); background: rgba(56,139,253,0.04); }
+  .note-card.new    { border-color: rgba(63,185,80,0.3);  background: rgba(63,185,80,0.04); }
 
+  /* ─── Combination builder ───────────────────────────────────── */
+  .combo-layout { display: grid; grid-template-columns: minmax(270px,320px) minmax(0,1fr); gap: 14px; align-items: start; }
+  @media (max-width: 960px) { .combo-layout { grid-template-columns: 1fr; } }
+
+  .combo-scroll { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--surface); }
+  .combo-cov-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; min-width: 480px; }
+  .combo-cov-table th {
+    padding: 9px 11px; background: var(--surface-raised); color: var(--text-muted);
+    font: 700 0.68rem/1.2 var(--mono); text-transform: uppercase; letter-spacing: 0.04em;
+    border-bottom: 1px solid var(--border); text-align: center;
+    position: sticky; top: 0; z-index: 2;
+  }
+  .combo-cov-table th:first-child { text-align: left; min-width: 170px; z-index: 3; }
+  .combo-cov-table td { padding: 7px 10px; border-bottom: 1px solid var(--border-subtle); text-align: center; vertical-align: middle; }
+  .combo-cov-table td.org-td { text-align: left; font-style: italic; font-weight: 600; color: var(--text); font-size: 0.84rem; }
+  .cpill { display: inline-flex; align-items: center; justify-content: center; min-width: 32px; height: 22px; padding: 0 5px; border-radius: 4px; font: 700 0.65rem/1 var(--mono); border: 1px solid transparent; }
+  .cpill-doc  { background: rgba(63,185,80,0.22);  color: var(--success); }
+  .cpill-act  { background: var(--success-subtle); color: var(--success); }
+  .cpill-par  { background: var(--warn-subtle);    color: var(--warn); }
+  .cpill-var  { background: rgba(210,153,34,0.08); color: var(--warn); }
+  .cpill-com  { background: rgba(56,139,253,0.12); color: var(--accent-hover); }
+  .cpill-none { background: transparent; color: var(--text-muted); border-color: var(--border); }
+  .ccell-syn   { display:inline-block; background: rgba(56,139,253,0.16); color: var(--accent-hover); border-radius:4px; padding:2px 6px; font:700 0.65rem var(--mono); }
+  .ccell-broad { display:inline-block; background: var(--success-subtle);  color: var(--success);      border-radius:4px; padding:2px 6px; font:700 0.65rem var(--mono); }
+  .ccell-redun { display:inline-block; background: var(--warn-subtle);     color: var(--warn);          border-radius:4px; padding:2px 6px; font:700 0.65rem var(--mono); }
+  .ccell-none  { color: var(--text-muted); font: 0.68rem var(--mono); }
+
+  .combo-rating { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 999px; font: 700 0.78rem/1 var(--mono); text-transform: uppercase; letter-spacing: 0.04em; }
+  .rating-syn  { background: rgba(56,139,253,0.14); color: var(--accent-hover); border: 1px solid rgba(56,139,253,0.24); }
+  .rating-brd  { background: var(--success-subtle); color: var(--success);       border: 1px solid rgba(63,185,80,0.24); }
+  .rating-red  { background: var(--warn-subtle);    color: var(--warn);           border: 1px solid rgba(210,153,34,0.22); }
+  .rating-cau  { background: var(--danger-subtle);  color: var(--danger);         border: 1px solid rgba(248,81,73,0.22); }
+
+  .combo-stats { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+  .combo-stat { flex: 1 1 80px; padding: 10px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--surface-raised); text-align: center; }
+  .combo-stat strong { display: block; font-size: 1.5rem; letter-spacing: -0.04em; line-height: 1; margin-bottom: 3px; }
+  .combo-stat span { font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; font-family: var(--mono); }
+
+  /* ─── News ──────────────────────────────────────────────────── */
+  .news-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+  .news-card {
+    padding: 16px; border: 1px solid var(--border); border-radius: var(--radius-lg);
+    background: var(--surface); display: flex; flex-direction: column; gap: 8px;
+    transition: box-shadow 0.15s, border-color 0.15s;
+  }
+  .news-card:hover { box-shadow: var(--shadow-md); border-color: var(--border-strong); }
+  .news-source { font: 700 0.68rem/1 var(--mono); text-transform: uppercase; letter-spacing: 0.06em; padding: 2px 8px; border-radius: 999px; border: 1px solid; width: fit-content; }
+  .ns-who    { color: var(--accent-hover);  background: rgba(56,139,253,0.1);   border-color: rgba(56,139,253,0.22); }
+  .ns-cdc    { color: var(--danger);        background: var(--danger-subtle);   border-color: rgba(248,81,73,0.22); }
+  .ns-fda    { color: var(--violet);        background: var(--violet-subtle);   border-color: rgba(188,140,255,0.22); }
+  .ns-pubmed { color: var(--mint);          background: var(--success-subtle);  border-color: rgba(63,185,80,0.22); }
+  .ns-idsa   { color: var(--warn);          background: var(--warn-subtle);     border-color: rgba(210,153,34,0.22); }
+  .news-date  { font-size: 0.74rem; color: var(--text-muted); }
+  .news-title { font-size: 0.9rem; font-weight: 700; color: var(--text); line-height: 1.4; }
+  .news-blurb { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.6; flex: 1; }
+  .news-link  { color: var(--accent); font: 600 0.8rem/1 var(--sans); text-decoration: none; margin-top: auto; }
+  .news-link:hover { text-decoration: underline; color: var(--accent-hover); }
+  .news-loading { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 40px; color: var(--text-muted); font-size: 0.875rem; }
+  .news-spinner { width: 16px; height: 16px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .news-err { padding: 20px; color: var(--text-muted); text-align: center; border: 1px dashed var(--border); border-radius: var(--radius-md); font-size: 0.875rem; }
+
+  /* ─── Misc ──────────────────────────────────────────────────── */
   .footnote {
-    margin-top: 18px;
-    padding: 18px 20px;
+    margin-top: 16px;
+    padding: 14px 18px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    line-height: 1.65;
+  }
+
+  .empty-state {
+    padding: 24px;
+    border: 1px dashed var(--border);
+    border-radius: var(--radius-md);
+    color: var(--text-muted);
+    text-align: center;
+    font-size: 0.875rem;
   }
 
   .hover-tooltip {
     position: fixed;
     z-index: 1400;
-    max-width: 280px;
-    padding: 10px 12px;
-    border-radius: 12px;
-    border: 1px solid var(--tooltip-border);
-    background: var(--tooltip-bg);
+    max-width: 260px;
+    padding: 8px 11px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-strong);
+    background: var(--surface-raised);
     color: var(--text);
-    box-shadow: var(--shadow);
-    font-size: 0.82rem;
+    box-shadow: var(--shadow-md);
+    font-size: 0.8rem;
     line-height: 1.55;
     pointer-events: none;
     opacity: 0;
     transform: translateY(4px);
-    transition: opacity 0.12s ease, transform 0.12s ease;
+    transition: opacity 0.1s ease, transform 0.1s ease;
   }
 
-  .hover-tooltip.is-visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  .hover-tooltip.is-visible { opacity: 1; transform: translateY(0); }
+  [data-tooltip] { cursor: help; }
 
-  [data-tooltip] {
-    cursor: help;
-  }
-
-  .empty-state {
-    padding: 28px;
-    border: 1px dashed var(--border-strong);
-    border-radius: 16px;
-    background: rgba(246, 248, 250, 0.9);
-    color: var(--muted);
-    text-align: center;
-  }
-
-  @media (max-width: 1120px) {
-    .hero-row,
-    .spectrum-layout,
-    .combo-grid { grid-template-columns: 1fr; }
-    .detail-card { position: static; min-height: 0; }
+  /* ─── Responsive ────────────────────────────────────────────── */
+  @media (max-width: 1100px) {
+    .spectrum-layout { grid-template-columns: 260px minmax(0,1fr); }
   }
 
   @media (max-width: 900px) {
-    .app-shell { width: min(100vw - 20px, 1360px); margin: 10px auto 28px; }
-    .hero,
-    .panel,
-    .matrix-shell,
-    .footnote { padding: 16px; }
-    .toolbar { grid-template-columns: 1fr; }
+    .app-shell { width: min(100vw - 16px, 1320px); }
+    .spectrum-layout { grid-template-columns: 1fr; }
+    .detail-pane { position: static; }
     .matrix-shell { display: none; }
-    .theme-toggle { margin-left: 0; }
+    .toolbar { grid-template-columns: 1fr; }
   }
 
   @media (max-width: 640px) {
-    .organism-card,
-    .card,
-    .timeline-card,
-    .note-card,
-    .pair-card { padding: 14px; }
-    .drug-chip { min-width: 100%; }
+    .top-bar { gap: 6px; }
+    .nav-tabs { gap: 0; }
+    .tab-button { padding: 5px 9px; font-size: 0.8rem; }
+    .card, .pair-card, .timeline-card, .note-card { padding: 14px; }
   }
 </style>
 </head>
 <body>
+<canvas id="bg-canvas" aria-hidden="true"></canvas>
 <div class="app-shell">
+
+  <!-- Top bar: logo + nav tabs -->
+  <nav class="top-bar" aria-label="Primary navigation">
+    <div class="logo-mark">
+      <div class="logo-icon" aria-hidden="true">🧫</div>
+      <span class="logo-text">Antibiotic Hub</span>
+    </div>
+    <div class="top-divider" aria-hidden="true"></div>
+    <div class="nav-tabs" role="tablist">
+      <button class="tab-button is-active" data-tab-target="spectrum" role="tab">Spectrum</button>
+      <button class="tab-button" data-tab-target="visual" role="tab">Visual</button>
+      <button class="tab-button" data-tab-target="combos" role="tab">Combinations</button>
+      <button class="tab-button" data-tab-target="drugs" role="tab">Drug Cards</button>
+      <button class="tab-button" data-tab-target="updates" role="tab">2026 Updates</button>
+      <button class="tab-button" data-tab-target="news" role="tab">Live News</button>
+    </div>
+    <button class="theme-toggle" id="theme-toggle" type="button">🌙 Dark</button>
+  </nav>
+
+  <!-- Hero -->
   <header class="hero">
-    <div class="hero-row">
-      <div>
-        <div class="eyebrow">Antibiotics only - Separate modern page</div>
-        <h1>Antibiotic Hub</h1>
-        <p class="hero-copy">A lighter, mobile-friendly companion page for the existing spectrum chart. It carries over the useful coverage content, adds a combination tab, surfaces late-2025 and 2026 updates with dates, and turns the old hover-heavy layout into a cleaner GitHub-style explorer.</p>
-        <div class="hero-pills">
-          <div class="hero-pill">Spectrum explorer</div>
-          <div class="hero-pill">Combination making</div>
-          <div class="hero-pill">Drug cards for trainees</div>
-          <div class="hero-pill">What changed in 2026</div>
-        </div>
+    <div class="hero-title-row">
+      <h1>Antibiotic Hub</h1>
+      <div class="hero-stat-row">
+        <div class="hero-stat"><strong id="stat-organisms">40</strong><span>Organisms</span></div>
+        <div class="hero-stat"><strong id="stat-drugs">33</strong><span>Drugs</span></div>
+        <div class="hero-stat"><strong>7</strong><span>Combos</span></div>
       </div>
-      <aside class="hero-card">
-        <h2>Page Snapshot</h2>
-        <div class="stat-grid">
-          <div class="stat">
-            <strong id="stat-organisms">23</strong>
-            <span>organisms carried over from the current page</span>
-          </div>
-          <div class="stat">
-            <strong id="stat-drugs">30</strong>
-            <span>antibiotics rendered in the matrix and explorer</span>
-          </div>
-          <div class="stat">
-            <strong>7</strong>
-            <span>curated combination playbooks</span>
-          </div>
-          <div class="stat">
-            <strong>5</strong>
-            <span>official late-2025 to 2026 updates with source links</span>
-          </div>
-        </div>
-        <div class="quick-link-card">
-          <strong>Original spectrum page</strong>
-          <p>The older dense grid is still available if you want the previous single-page reference beside this newer layout.</p>
-          <a class="quick-link-button" href="spectrum.html">Open previous spectrum file</a>
-        </div>
-      </aside>
+    </div>
+    <p class="hero-sub">Spectrum explorer, combination analysis, drug cards and live AMR news. Covers antibacterials, antifungals and antivirals.</p>
+    <div class="hero-chips">
+      <span class="hero-chip">🔬 Spectrum explorer</span>
+      <span class="hero-chip">⚗️ Combination builder</span>
+      <span class="hero-chip">💊 Drug cards</span>
+      <span class="hero-chip">🦠 Fungi &amp; Virals</span>
+      <span class="hero-chip">📰 Live AMR news</span>
     </div>
   </header>
-
-  <nav class="tab-bar" aria-label="Primary sections">
-    <button class="tab-button is-active" data-tab-target="spectrum">Spectrum</button>
-    <button class="tab-button" data-tab-target="visual">Visual Spectrum</button>
-    <button class="tab-button" data-tab-target="combos">Combinations</button>
-    <button class="tab-button" data-tab-target="drugs">Drug Cards</button>
-    <button class="tab-button" data-tab-target="updates">What&apos;s New 2026</button>
-    <button class="tab-button theme-toggle" id="theme-toggle" type="button">Theme: Dark</button>
-  </nav>
 
   <main>
     <section class="tab-panel is-active" data-tab-panel="spectrum">
       <div class="panel">
-        <div class="panel-head">
-          <div>
-            <h2>Spectrum Explorer</h2>
-            <p class="panel-copy">Search organisms, filter by group, and inspect the antibiotic choices without relying on hover tooltips. The explorer is the primary mobile layout. The full matrix is kept below for desktop reference.</p>
+        <!-- Search + scope row -->
+        <div style="display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap;align-items:flex-end;">
+          <div style="flex:1;min-width:180px;">
+            <label for="organism-search">Search organisms</label>
+            <input id="organism-search" type="search" placeholder="MRSA, Candida, Influenza, CRE…">
           </div>
-        </div>
-        <div class="toolbar">
-          <div class="toolbar-stack">
-            <div>
-              <label for="organism-search">Search organisms</label>
-              <input id="organism-search" type="search" placeholder="MRSA, Enterococcus, CRE, Legionella">
+          <div>
+            <label>Drug class</label>
+            <div class="scope-row" style="margin-bottom:0;padding:5px 8px;">
+              <button class="scope-btn is-active" data-scope="antibacterial" type="button">Antibacterials</button>
+              <button class="scope-btn" data-scope="antifungal" type="button">Antifungals</button>
+              <button class="scope-btn" data-scope="antiviral" type="button">Antivirals</button>
             </div>
           </div>
           <div>
-            <label>Group filter</label>
+            <label>Group</label>
             <div class="chip-row" id="group-filters"></div>
           </div>
         </div>
+
+        <!-- Spectrum layout: sidebar list + detail panel -->
         <div class="spectrum-layout">
-          <div class="organism-list" id="organism-list"></div>
+          <div>
+            <div class="organism-list" id="organism-list"></div>
+          </div>
           <div class="detail-pane" id="organism-detail"></div>
         </div>
       </div>
 
       <details class="matrix-shell" open>
-        <summary>Desktop spectrum matrix</summary>
+        <summary>Full matrix (desktop)</summary>
         <div class="matrix-wrap" id="matrix-wrap"></div>
       </details>
     </section>
@@ -956,15 +1190,12 @@
         <div class="panel-head">
           <div>
             <h2>Visual Spectrum</h2>
-            <p class="panel-copy">A dedicated spectrum chart inspired by the original page, but cleaned up for the newer UI. The explorer tab remains the best small-screen view. This tab is for scanning coverage patterns side by side.</p>
+            <p class="panel-copy">Side-by-side coverage heatmap. Hover any cell for details. Use the group filter to focus on a subset.</p>
           </div>
         </div>
-        <div class="toolbar">
-          <div>
-            <label>Shared group filter</label>
-            <div class="chip-row" id="visual-group-filters"></div>
-          </div>
-          <div class="body-copy">Legacy-return agents are shown with dashed headers so they stand out from the core modern shortlist.</div>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px;">
+          <div class="chip-row" id="visual-group-filters"></div>
+          <span class="kicker" style="margin-left:auto;">Dashed = legacy agent</span>
         </div>
         <div class="visual-legend">
           <span class="legend-pill"><strong>DOC</strong> preferred</span>
@@ -983,16 +1214,16 @@
         <div class="panel-head">
           <div>
             <h2>Combination Builder</h2>
-            <p class="panel-copy">Pick two antibiotics to see how their combined coverage behaves across the carried-over organisms. When the pair matches a known high-yield regimen, the page also shows the practical reasoning and the main caution.</p>
+            <p class="panel-copy">Select two antibiotics to see real combined coverage across all organisms, whether the pairing is known to be synergistic, merely broadening, or redundant — plus the main clinical caution.</p>
           </div>
         </div>
-        <div class="combo-grid">
+        <div class="combo-layout">
           <div class="pair-card">
             <div class="pair-top">
               <h3>Select a pair</h3>
               <span class="code-pair" id="pair-code">DAP + CPT</span>
             </div>
-            <div class="toolbar-stack" style="margin-top: 16px;">
+            <div class="toolbar-stack" style="margin-top:16px;">
               <div>
                 <label for="combo-a">First antibiotic</label>
                 <select id="combo-a"></select>
@@ -1002,7 +1233,9 @@
                 <select id="combo-b"></select>
               </div>
             </div>
-            <p class="pair-copy" id="pair-summary"></p>
+            <div id="combo-rating-block" style="margin-top:14px;"></div>
+            <div class="combo-stats" id="combo-stats"></div>
+            <p class="pair-copy" id="pair-summary" style="margin-top:12px;"></p>
           </div>
           <div class="pair-card" id="pair-playbook"></div>
         </div>
@@ -1011,11 +1244,11 @@
       <div class="panel">
         <div class="panel-head">
           <div>
-            <h3>Coverage by pair</h3>
-            <p class="panel-copy">This is a coverage-oriented view, not a treatment recommendation engine. It helps trainees see when a second drug genuinely adds something and when it mostly duplicates what is already covered.</p>
+            <h3>Coverage comparison by organism</h3>
+            <p class="panel-copy">Each row shows Drug A activity, Drug B activity, combined effective coverage, and the relationship (Synergy · Broadens · Redundant). Green = the pair is genuinely useful for that organism. Orange = redundancy (both active, no synergy gain). Grey = not covered regardless.</p>
           </div>
         </div>
-        <div class="notes-grid" id="pair-coverage"></div>
+        <div class="combo-scroll"><table class="combo-cov-table" id="combo-cov-table"></table></div>
       </div>
     </section>
 
@@ -1024,16 +1257,16 @@
         <div class="panel-head">
           <div>
             <h2>Drug Cards</h2>
-            <p class="panel-copy">A trainee-facing antibiotic view. These are not dosing sheets. They are memory anchors: route, biggest coverage hooks, when the drug shines, and what usually trips people up.</p>
+            <p class="panel-copy">Memory anchors for trainees — coverage hooks, when it shines, and common traps. Not dosing references.</p>
           </div>
         </div>
-        <div class="toolbar">
-          <div>
-            <label for="drug-search">Search antibiotic cards</label>
+        <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-bottom:14px;">
+          <div style="flex:1;min-width:180px;">
+            <label for="drug-search">Search</label>
             <input id="drug-search" type="search" placeholder="cefiderocol, anaerobes, oral step-down">
           </div>
           <div>
-            <label>Card focus</label>
+            <label>Focus</label>
             <div class="chip-row" id="drug-filters"></div>
           </div>
         </div>
@@ -1044,22 +1277,32 @@
     <section class="tab-panel" data-tab-panel="updates">
       <div class="panel">
         <div class="panel-head">
-          <div>
-            <h2>What&apos;s New 2026</h2>
-            <p class="panel-copy">These items use specific dates because the old page still hard-codes 2025. As of April 7, 2026, the page should talk about breakpoints, oral options, pipeline signals, and resistance trends instead of pretending there was already a major new 2026 approval.</p>
-          </div>
+          <div><h2>What's New — 2026</h2>
+          <p class="panel-copy">Verified approvals, EUCAST updates, WHO pipeline signals and breakpoint changes as of April 2026.</p></div>
         </div>
         <div class="timeline-grid" id="updates-grid"></div>
       </div>
+      <div class="panel">
+        <div class="panel-head"><div><h3>Carried-forward clinical alerts</h3></div></div>
+        <div class="notes-grid" id="alert-grid"></div>
+      </div>
+    </section>
 
+    <section class="tab-panel" data-tab-panel="news">
       <div class="panel">
         <div class="panel-head">
           <div>
-            <h3>Carried forward clinical alerts</h3>
-            <p class="panel-copy">These are the high-yield notes copied forward from the current chart and reframed into cleaner cards.</p>
+            <h2>Live AMR News</h2>
+            <p class="panel-copy">Recent PubMed research + curated WHO/FDA/CDC alerts. Auto-fetches when you open this tab.</p>
           </div>
+          <button class="filter-button" id="news-refresh-btn" type="button">↻ Refresh</button>
         </div>
-        <div class="notes-grid" id="alert-grid"></div>
+        <div class="section-label" style="margin-bottom:10px;">PubMed — recent research</div>
+        <div id="news-pubmed-grid" class="news-grid"></div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><div><h3>Curated alerts &amp; approvals</h3></div></div>
+        <div id="news-curated-grid" class="news-grid"></div>
       </div>
     </section>
   </main>
@@ -1074,6 +1317,7 @@
     tab: 'spectrum',
     theme: 'dark',
     group: 'all',
+    drugScope: 'antibacterial',
     organismSearch: '',
     selectedOrganismId: 'mssa',
     comboA: 'DAP',
@@ -1082,13 +1326,15 @@
     drugFocus: 'all',
   };
 
-  const groupOrder = ['gpos', 'gneg', 'anaerobe', 'atypical'];
+  const groupOrder = ['gpos', 'gneg', 'anaerobe', 'atypical', 'fungal', 'viral'];
   const groupLabels = {
     all: 'All organisms',
     gpos: 'Gram-positive',
     gneg: 'Gram-negative',
     anaerobe: 'Anaerobes',
     atypical: 'Atypicals',
+    fungal: 'Fungi / Parasites',
+    viral: 'Virals',
     mdr: 'MDR only',
   };
 
@@ -1106,6 +1352,8 @@
     gneg: 'badge-gneg',
     anaerobe: 'badge-anaerobe',
     atypical: 'badge-atypical',
+    fungal: 'badge-fungal',
+    viral: 'badge-viral',
   };
 
   const drugs = [
@@ -1142,6 +1390,32 @@
     { id: 'MTZ', short: 'MTZ', name: 'Metronidazole', class: 'Nitroimidazole', route: 'PO/IV', matrix: true },
     { id: 'AZM', short: 'AZM', name: 'Azithromycin', class: 'Macrolide', route: 'PO/IV', matrix: true },
     { id: 'PMB', short: 'PMB', name: 'Polymyxin B', class: 'Polymyxin', route: 'IV', matrix: true },
+    // ── Antifungals ──────────────────────────────────────────────────────
+    { id: 'FLU', short: 'FLU', name: 'Fluconazole',       class: 'Triazole',              route: 'PO/IV',    matrix: false, category: 'antifungal' },
+    { id: 'VOR', short: 'VOR', name: 'Voriconazole',      class: 'Triazole',              route: 'PO/IV',    matrix: false, category: 'antifungal' },
+    { id: 'POS', short: 'POS', name: 'Posaconazole',      class: 'Triazole',              route: 'PO/IV',    matrix: false, category: 'antifungal' },
+    { id: 'ISA', short: 'ISA', name: 'Isavuconazole',     class: 'Triazole',              route: 'PO/IV',    matrix: false, category: 'antifungal' },
+    { id: 'CAS', short: 'CAS', name: 'Caspofungin',       class: 'Echinocandin',          route: 'IV',       matrix: false, category: 'antifungal' },
+    { id: 'MIC', short: 'MIC', name: 'Micafungin',        class: 'Echinocandin',          route: 'IV',       matrix: false, category: 'antifungal' },
+    { id: 'ANID',short: 'ANID',name: 'Anidulafungin',     class: 'Echinocandin',          route: 'IV',       matrix: false, category: 'antifungal' },
+    { id: 'AMB', short: 'AMB', name: 'Amphotericin B',    class: 'Polyene',               route: 'IV',       matrix: false, category: 'antifungal' },
+    { id: 'LAMB',short: 'LAmB',name: 'Liposomal AmB',     class: 'Polyene',               route: 'IV',       matrix: false, category: 'antifungal' },
+    { id: 'FLUCY',short:'5-FC', name: 'Flucytosine',      class: 'Pyrimidine analogue',   route: 'PO',       matrix: false, category: 'antifungal' },
+    { id: 'PEN', short: 'PEN', name: 'Pentamidine',       class: 'Antiprotozoal',         route: 'IV/Inh.',  matrix: false, category: 'antifungal' },
+    { id: 'ATO', short: 'ATO', name: 'Atovaquone',        class: 'Antiprotozoal',         route: 'PO',       matrix: false, category: 'antifungal' },
+    // ── Antivirals ───────────────────────────────────────────────────────
+    { id: 'OSE', short: 'OSE', name: 'Oseltamivir',       class: 'Neuraminidase inh.',    route: 'PO',       matrix: false, category: 'antiviral' },
+    { id: 'BAL', short: 'BAL', name: 'Baloxavir',         class: 'Cap-endo. inh.',        route: 'PO',       matrix: false, category: 'antiviral' },
+    { id: 'NIM', short: 'NIM', name: 'Nirmatrelvir/r',    class: 'Protease inh.',         route: 'PO',       matrix: false, category: 'antiviral' },
+    { id: 'REM', short: 'REM', name: 'Remdesivir',        class: 'RNA-pol. inh.',         route: 'IV',       matrix: false, category: 'antiviral' },
+    { id: 'MOL', short: 'MOL', name: 'Molnupiravir',      class: 'RNA-pol. inh.',         route: 'PO',       matrix: false, category: 'antiviral' },
+    { id: 'ACY', short: 'ACY', name: 'Acyclovir',         class: 'Nucleoside analogue',   route: 'PO/IV',    matrix: false, category: 'antiviral' },
+    { id: 'VAL', short: 'VAL', name: 'Valacyclovir',      class: 'Nucleoside analogue',   route: 'PO',       matrix: false, category: 'antiviral' },
+    { id: 'GAN', short: 'GAN', name: 'Ganciclovir',       class: 'Nucleoside analogue',   route: 'IV',       matrix: false, category: 'antiviral' },
+    { id: 'VGAN',short: 'VGAN',name: 'Valganciclovir',    class: 'Nucleoside analogue',   route: 'PO',       matrix: false, category: 'antiviral' },
+    { id: 'FOS2',short: 'FOSC',name: 'Foscarnet',         class: 'Pyrophosphate analogue',route: 'IV',       matrix: false, category: 'antiviral' },
+    { id: 'MAR', short: 'MAR', name: 'Maribavir',         class: 'Kinase inh.',           route: 'PO',       matrix: false, category: 'antiviral' },
+    { id: 'ZOL', short: 'ZOL', name: 'Zoliflodacin',      class: 'Spiropyrimidine',       route: 'PO',       matrix: false, category: 'antiviral' },
   ];
 
   const drugProfiles = [
@@ -1194,6 +1468,54 @@
     { id: 'c_diff', group: 'anaerobe', name: 'Clostridioides difficile', abbr: 'C. diff', note: '', pills: [], desc: 'Kept here mainly to remind the trainee that oral vancomycin is a different clinical use case from IV vancomycin.', act: { AMP:'N',AMC:'N',TZP:'N',SAM:'N',CFZ:'N',CXM:'N',CRO:'N',FEP:'N',CPT:'N',CT:'N',ETP:'N',MEM:'N',IPM:'N',CA:'N',MV:'N',IR:'N',AA:'N',FDC:'N',VAN:'Fâ˜…',DAL:'N',ORI:'N',DAP:'N',LZD:'N',TZD:'N',DOX:'N',TGC:'N',OMA:'N',ERC:'N',GEN:'N',AMK:'N',PLZ:'N',CIP:'N',LVX:'N',MXF:'N',DLX:'N',CST:'N',PMB:'N',SXT:'N',MTZ:'P',CLI:'N',AZM:'N' } },
     { id: 'mycoplasma', group: 'atypical', name: 'Mycoplasma pneumoniae', abbr: 'Mycoplasma', note: '', pills: [], desc: 'Atypical logic starter: no cell wall, so beta-lactams are out from the start.', act: { AMP:'N',AMC:'N',TZP:'N',SAM:'N',CFZ:'N',CXM:'N',CRO:'N',FEP:'N',CPT:'N',CT:'N',ETP:'N',MEM:'N',IPM:'N',CA:'N',MV:'N',IR:'N',AA:'N',FDC:'N',VAN:'N',DAL:'N',ORI:'N',DAP:'N',LZD:'F',TZD:'F',DOX:'F',TGC:'F',OMA:'Fâ˜…',ERC:'F',GEN:'N',AMK:'N',PLZ:'N',CIP:'F',LVX:'F',MXF:'F',DLX:'F',CST:'N',PMB:'N',SXT:'N',MTZ:'N',CLI:'N',AZM:'F' } },
     { id: 'legionella', group: 'atypical', name: 'Legionella pneumophila', abbr: 'Legionella', note: '', pills: [], desc: 'Intracellular atypical organism where fluoroquinolones and macrolides dominate the antibiotic thinking.', act: { AMP:'N',AMC:'N',TZP:'N',SAM:'N',CFZ:'N',CXM:'N',CRO:'N',FEP:'N',CPT:'N',CT:'N',ETP:'N',MEM:'N',IPM:'N',CA:'N',MV:'N',IR:'N',AA:'N',FDC:'N',VAN:'N',DAL:'N',ORI:'N',DAP:'N',LZD:'F',TZD:'N',DOX:'F',TGC:'F',OMA:'F',ERC:'F',GEN:'N',AMK:'N',PLZ:'N',CIP:'Fâ˜…',LVX:'Fâ˜…',MXF:'F',DLX:'F',CST:'N',PMB:'N',SXT:'N',MTZ:'N',CLI:'N',AZM:'F' } },
+    // ── Fungi & Parasites ────────────────────────────────────────────────
+    { id: 'c_albicans', group: 'fungal', name: 'Candida albicans', abbr: 'C. albicans', note: '', pills: [],
+      desc: 'Most common Candida spp. Echinocandin first-line for invasive/ICU candidemia; fluconazole for stable non-critical patients.',
+      act: { FLU:'F',VOR:'F',POS:'F',ISA:'F',CAS:'F',MIC:'F',ANID:'F',AMB:'F',LAMB:'F',FLUCY:'P',PEN:'N',ATO:'N' } },
+    { id: 'c_glabrata', group: 'fungal', name: 'Nakaseomyces glabrata', abbr: 'C. glabrata', note: 'Reduced azole sensitivity', pills: [],
+      desc: 'Intrinsically less susceptible to fluconazole. Echinocandin first-line for invasive infection. Monitor for echinocandin resistance (FKS mutations).',
+      act: { FLU:'V',VOR:'V',POS:'V',ISA:'V',CAS:'F',MIC:'F',ANID:'F',AMB:'P',LAMB:'P',FLUCY:'P',PEN:'N',ATO:'N' } },
+    { id: 'c_auris', group: 'fungal mdr', name: 'Candida auris', abbr: 'C. auris', note: 'MDR — WHO Critical Priority', pills: ['mdr','emerging'],
+      desc: 'Pan-resistant strains documented globally. Echinocandin first-line; azole resistance ubiquitous; amphotericin resistance variable. Nosocomial spread with environmental persistence — major outbreak pathogen.',
+      act: { FLU:'N',VOR:'N',POS:'P',ISA:'V',CAS:'F',MIC:'F',ANID:'F',AMB:'V',LAMB:'V',FLUCY:'N',PEN:'N',ATO:'N' } },
+    { id: 'aspergillus', group: 'fungal', name: 'Aspergillus fumigatus', abbr: 'A. fumigatus', note: '', pills: [],
+      desc: 'Invasive aspergillosis in immunocompromised hosts. Voriconazole first-line. Isavuconazole alternative. Azole resistance (cyp51A mutations) increasing globally — check susceptibility.',
+      act: { FLU:'N',VOR:'F',POS:'F',ISA:'F',CAS:'F',MIC:'F',ANID:'F',AMB:'F',LAMB:'F',FLUCY:'N',PEN:'N',ATO:'N' } },
+    { id: 'cryptococcus', group: 'fungal', name: 'Cryptococcus neoformans', abbr: 'Cryptococcus', note: '', pills: [],
+      desc: 'AIDS-defining meningitis/meningoencephalitis. Induction: liposomal AmB + flucytosine. Consolidation/maintenance: fluconazole. C. gattii increasingly reported.',
+      act: { FLU:'F',VOR:'F',POS:'F',ISA:'P',CAS:'N',MIC:'N',ANID:'N',AMB:'F',LAMB:'F',FLUCY:'F',PEN:'N',ATO:'N' } },
+    { id: 'mucor', group: 'fungal', name: 'Mucorales (mucormycosis)', abbr: 'Mucor spp.', note: '', pills: ['emerging'],
+      desc: 'Invasive mucormycosis in diabetics, immunocompromised, trauma patients. Liposomal AmB first-line. Posaconazole/isavuconazole alternatives. Voriconazole and echinocandins are NOT active.',
+      act: { FLU:'N',VOR:'N',POS:'F',ISA:'F',CAS:'N',MIC:'N',ANID:'N',AMB:'P',LAMB:'F',FLUCY:'N',PEN:'N',ATO:'N' } },
+    { id: 'pcp', group: 'fungal', name: 'Pneumocystis jirovecii', abbr: 'PCP', note: 'Immunocompromised host', pills: [],
+      desc: 'Atypical fungal pneumonia. No cell wall → azoles/echinocandins/polyenes inactive. TMP-SMX is drug of choice (see antibacterial list: SXT). Alternatives: pentamidine IV, atovaquone PO, primaquine + clindamycin.',
+      act: { FLU:'N',VOR:'N',POS:'N',ISA:'N',CAS:'N',MIC:'N',ANID:'N',AMB:'N',LAMB:'N',FLUCY:'N',PEN:'F',ATO:'F' } },
+
+    // ── Virals ───────────────────────────────────────────────────────────
+    { id: 'influenza', group: 'viral', name: 'Influenza A & B', abbr: 'Influenza A/B', note: '', pills: [],
+      desc: 'Oseltamivir front-line (initiate within 48 h). Baloxavir single-dose alternative. All antibacterials are inactive — co-infection management is separate.',
+      act: { OSE:'F',BAL:'F',NIM:'N',REM:'N',MOL:'N',ACY:'N',VAL:'N',GAN:'N',VGAN:'N',FOS2:'N',MAR:'N',ZOL:'N' } },
+    { id: 'sars_cov2', group: 'viral', name: 'SARS-CoV-2 (COVID-19)', abbr: 'SARS-CoV-2', note: '', pills: [],
+      desc: 'Nirmatrelvir/r (Paxlovid) for high-risk outpatients. Remdesivir IV for hospitalised adults. Molnupiravir lower-efficacy alternative. Paxlovid: major drug-drug interactions via CYP3A4.',
+      act: { OSE:'N',BAL:'N',NIM:'F',REM:'F',MOL:'P',ACY:'N',VAL:'N',GAN:'N',VGAN:'N',FOS2:'N',MAR:'N',ZOL:'N' } },
+    { id: 'hsv', group: 'viral', name: 'Herpes simplex virus (HSV-1/2)', abbr: 'HSV-1/2', note: '', pills: [],
+      desc: 'Acyclovir/valacyclovir first-line for genital herpes and labialis. IV acyclovir for encephalitis. Acyclovir-resistant HSV (TK-deficient): foscarnet IV.',
+      act: { OSE:'N',BAL:'N',NIM:'N',REM:'N',MOL:'N',ACY:'F',VAL:'F',GAN:'P',VGAN:'P',FOS2:'F',MAR:'N',ZOL:'N' } },
+    { id: 'vzv', group: 'viral', name: 'Varicella-zoster virus (VZV)', abbr: 'VZV / Zoster', note: '', pills: [],
+      desc: 'Chickenpox/shingles. Valacyclovir or acyclovir for immunocompetent; IV acyclovir for severe/immunocompromised. Foscarnet for acyclovir-resistant VZV. Vaccination key.',
+      act: { OSE:'N',BAL:'N',NIM:'N',REM:'N',MOL:'N',ACY:'F',VAL:'F',GAN:'F',VGAN:'F',FOS2:'F',MAR:'N',ZOL:'N' } },
+    { id: 'cmv', group: 'viral', name: 'Cytomegalovirus (CMV)', abbr: 'CMV', note: '', pills: [],
+      desc: 'CMV disease in transplant/HIV. Ganciclovir/valganciclovir first-line. Foscarnet or cidofovir for ganciclovir-resistant CMV. Maribavir (FDA 2022) for resistant/refractory CMV post-transplant.',
+      act: { OSE:'N',BAL:'N',NIM:'N',REM:'N',MOL:'N',ACY:'P',VAL:'P',GAN:'F',VGAN:'F',FOS2:'F',MAR:'F',ZOL:'N' } },
+    { id: 'ebv_hhv', group: 'viral', name: 'EBV / HHV-6', abbr: 'EBV/HHV-6', note: '', pills: [],
+      desc: 'Limited antiviral options. Ganciclovir/foscarnet have some HHV-6 activity; no approved therapeutic for EBV. Management primarily via immunosuppression reduction in transplant.',
+      act: { OSE:'N',BAL:'N',NIM:'N',REM:'N',MOL:'N',ACY:'P',VAL:'P',GAN:'P',VGAN:'P',FOS2:'P',MAR:'N',ZOL:'N' } },
+    { id: 'rsv', group: 'viral', name: 'RSV (Respiratory syncytial virus)', abbr: 'RSV', note: 'Prevention: nirsevimab', pills: ['new'],
+      desc: 'Major paediatric and elderly pathogen. Nirsevimab (monoclonal) for prevention 2023. No established small-molecule antiviral for routine adult RSV. Ribavirin limited/investigational.',
+      act: { OSE:'N',BAL:'N',NIM:'N',REM:'N',MOL:'N',ACY:'N',VAL:'N',GAN:'N',VGAN:'N',FOS2:'N',MAR:'N',ZOL:'N' } },
+    { id: 'gonorrhea_bug', group: 'viral', name: 'Neisseria gonorrhoeae', abbr: 'N. gonorrhoeae', note: 'New oral agents 2025', pills: ['new'],
+      desc: 'Not a virus — categorised here as a new-class organism. Zoliflodacin (spiropyrimidine-trione) and gepotidacin (FDA Dec 2025) provide first-in-class oral options for MDR gonorrhoea. Ceftriaxone still standard-of-care.',
+      act: { OSE:'N',BAL:'N',NIM:'N',REM:'N',MOL:'N',ACY:'N',VAL:'N',GAN:'N',VGAN:'N',FOS2:'N',MAR:'N',ZOL:'F' } },
   ];
 
   const combinationPlaybook = [
@@ -1304,7 +1626,7 @@
     document.body.classList.toggle('light-theme', theme === 'light');
     const button = document.getElementById('theme-toggle');
     if (button) {
-      button.textContent = `Theme: ${theme === 'dark' ? 'Dark' : 'Light'}`;
+      button.textContent = theme === 'dark' ? '🌙 Dark' : '☀️ Light';
       button.setAttribute('aria-pressed', String(theme === 'light'));
     }
   }
@@ -1370,12 +1692,27 @@
 
   function getVisibleOrganisms() {
     const query = state.organismSearch.trim().toLowerCase();
+
+    // Scope-to-group mapping: which organism groups belong to which drug scope
+    const scopeGroupMap = {
+      antibacterial: ['gpos', 'gneg', 'anaerobe', 'atypical'],
+      antifungal:    ['fungal'],
+      antiviral:     ['viral'],
+    };
+    const allowedGroups = query ? null : scopeGroupMap[state.drugScope]; // if searching, show all
+
     const visible = organisms.filter((organism) => {
+      const groups = organism.group.split(' ');
+      const primaryGroup = groups[0];
+
+      // Scope filter (only applies when no search query)
+      if (allowedGroups && !allowedGroups.includes(primaryGroup)) return false;
+
       const matchesGroup =
         state.group === 'all' ||
         (state.group === 'mdr'
-          ? organism.group.split(' ').includes('mdr')
-          : organism.group.split(' ').includes(state.group));
+          ? groups.includes('mdr')
+          : groups.includes(state.group));
 
       if (!matchesGroup) return false;
       if (!query) return true;
@@ -1402,12 +1739,24 @@
     }
   }
 
+  function getActiveDrugs() {
+    return drugs.filter(d => (d.category || 'antibacterial') === state.drugScope);
+  }
+
   function renderGroupFilters() {
+    // Groups available depend on drug scope
+    const scopeGroups = {
+      antibacterial: ['all', 'gpos', 'gneg', 'anaerobe', 'atypical', 'mdr'],
+      antifungal: ['all', 'fungal', 'mdr'],
+      antiviral: ['all', 'viral'],
+    };
+    const groups = scopeGroups[state.drugScope] || scopeGroups.antibacterial;
+
     ['group-filters', 'visual-group-filters'].forEach((id) => {
       const container = document.getElementById(id);
       if (!container) return;
       container.innerHTML = '';
-      ['all', 'gpos', 'gneg', 'anaerobe', 'atypical', 'mdr'].forEach((group) => {
+      groups.forEach((group) => {
         const button = document.createElement('button');
         button.type = 'button';
         button.className = `filter-button${state.group === group ? ' is-active' : ''}`;
@@ -1424,7 +1773,7 @@
   }
 
   function getTopDrugs(organism, kinds) {
-    return drugs
+    return getActiveDrugs()
       .map((drug) => ({ drug, code: normalizeCode(organism.act[drug.id]) }))
       .filter((entry) => kinds.includes(entry.code))
       .slice(0, 6);
@@ -1440,8 +1789,22 @@
       return;
     }
 
+    let lastGroup = null;
     visible.forEach((organism) => {
-      const strong = getTopDrugs(organism, ['FD', 'F']).map((entry) => entry.drug.short);
+      const primaryGroup = organism.group.split(' ')[0];
+
+      // Group header
+      if (primaryGroup !== lastGroup) {
+        lastGroup = primaryGroup;
+        const header = document.createElement('div');
+        header.className = 'org-group-header';
+        header.textContent = groupLabels[primaryGroup] || primaryGroup;
+        container.appendChild(header);
+      }
+
+      const topDrugs = getTopDrugs(organism, ['FD', 'F']).map(e => e.drug.short);
+      const tags = organism.pills.map(p => `<span class="tag ${pillClassMap[p] || 'tag-new'}">${p.toUpperCase()}</span>`).join('');
+
       const button = document.createElement('button');
       button.type = 'button';
       button.className = `organism-card${state.selectedOrganismId === organism.id ? ' is-active' : ''}`;
@@ -1450,24 +1813,14 @@
         renderSpectrum();
       });
 
-      const primaryGroup = organism.group.split(' ')[0];
-      const pills = organism.pills
-        .map((pill) => `<span class="tag ${pillClassMap[pill] || 'tag-new'}">${pill.toUpperCase()}</span>`)
-        .join('');
-
       button.innerHTML = `
-        <div class="organism-top">
-          <div>
-            <div class="kicker">${organism.abbr}${organism.note ? ` - ${organism.note}` : ''}</div>
-            <h3 class="organism-name"><em>${organism.name}</em></h3>
-          </div>
-          <span class="badge ${groupClassMap[primaryGroup]}">${groupLabels[primaryGroup]}</span>
+        <div class="ocard-top">
+          <span class="ocard-name"><em>${organism.name}</em></span>
+          <span class="badge ${groupClassMap[primaryGroup] || ''}">${organism.abbr}</span>
         </div>
-        <p class="body-copy">${organism.desc}</p>
-        <div class="detail-chip-row" style="margin-top:12px;">${pills}</div>
-        <div class="chip-row" style="margin-top:12px;">
-          ${strong.length ? strong.map((short) => `<span class="chip">${short}</span>`).join('') : '<span class="chip">No clear front-runner on this page</span>'}
-        </div>
+        ${organism.note ? `<div class="ocard-abbr">${organism.note}</div>` : ''}
+        ${tags ? `<div style="margin-top:4px;display:flex;flex-wrap:wrap;gap:3px;">${tags}</div>` : ''}
+        ${topDrugs.length ? `<div class="ocard-drugs">${topDrugs.map(s => `<span class="ocard-drug-tag">${s}</span>`).join('')}</div>` : ''}
       `;
       container.appendChild(button);
     });
@@ -1494,38 +1847,63 @@
     const container = document.getElementById('organism-detail');
     const organism = organisms.find((item) => item.id === state.selectedOrganismId);
     if (!organism) {
-      container.innerHTML = '<div class="detail-card"><div class="empty-state">Select an organism to inspect the antibiotics.</div></div>';
+      container.innerHTML = '<div class="detail-card"><div class="empty-state" style="margin:20px;">Select an organism to inspect coverage.</div></div>';
       return;
     }
 
     const primaryGroup = organism.group.split(' ')[0];
-    const strong = drugs.map((drug) => ({ drug, code: normalizeCode(organism.act[drug.id]) })).filter((entry) => ['FD', 'F'].includes(entry.code));
-    const situational = drugs.map((drug) => ({ drug, code: normalizeCode(organism.act[drug.id]) })).filter((entry) => ['P', 'V'].includes(entry.code));
-    const comboOnly = drugs.map((drug) => ({ drug, code: normalizeCode(organism.act[drug.id]) })).filter((entry) => ['C', 'I'].includes(entry.code));
-    const pills = organism.pills.map((pill) => `<span class="tag ${pillClassMap[pill] || 'tag-new'}">${pill.toUpperCase()}</span>`).join('');
+    const activeDrugs = getActiveDrugs();
+    const strong    = activeDrugs.map(d => ({ drug: d, code: normalizeCode(organism.act[d.id]) })).filter(e => ['FD','F'].includes(e.code));
+    const situational = activeDrugs.map(d => ({ drug: d, code: normalizeCode(organism.act[d.id]) })).filter(e => ['P','V'].includes(e.code));
+    const comboOnly  = activeDrugs.map(d => ({ drug: d, code: normalizeCode(organism.act[d.id]) })).filter(e => ['C','I'].includes(e.code));
+    const pills = organism.pills.map(p => `<span class="tag ${pillClassMap[p] || 'tag-new'}">${p.toUpperCase()}</span>`).join('');
+
+    function renderDrugRows(entries) {
+      if (!entries.length) return `<div class="empty-state" style="padding:12px;font-size:0.8rem;">None in current drug set</div>`;
+      return entries.map(({ drug, code }) => {
+        const nc = normalizeCode(code);
+        const tag = nc === 'FD' ? '<span class="drug-row-tag doc">DOC</span>' :
+                    nc === 'P' || nc === 'V' ? '<span class="drug-row-tag partial">Partial</span>' :
+                    nc === 'C' || nc === 'I' ? '<span class="drug-row-tag combo">Combo</span>' : '';
+        const tooltip = `${drug.name}\n${drug.class} – ${drug.route}\n${activityLabel(code)}`;
+        return `
+          <div class="drug-row" data-tooltip="${escapeTooltipAttr(tooltip)}">
+            <div class="drug-row-code code-${nc}">${activityText(code)}</div>
+            <div class="drug-row-info">
+              <div class="drug-row-name">${drug.short} — ${drug.name}</div>
+              <div class="drug-row-meta">${drug.class} · ${drug.route}</div>
+            </div>
+            ${tag}
+          </div>`;
+      }).join('');
+    }
 
     container.innerHTML = `
       <div class="detail-card">
-        <div class="detail-top">
-          <div>
-            <div class="kicker">${organism.abbr}${organism.note ? ` - ${organism.note}` : ''}</div>
-            <h3 class="detail-name"><em>${organism.name}</em></h3>
+        <div class="detail-header">
+          <div class="detail-header-top">
+            <div>
+              <div class="detail-abbr">${organism.abbr}${organism.note ? ` · ${organism.note}` : ''}</div>
+              <h3 class="detail-name"><em>${organism.name}</em></h3>
+            </div>
+            <span class="badge ${groupClassMap[primaryGroup] || ''}">${groupLabels[primaryGroup]}</span>
           </div>
-          <span class="badge ${groupClassMap[primaryGroup]}">${groupLabels[primaryGroup]}</span>
+          ${pills ? `<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:8px;">${pills}</div>` : ''}
+          <p class="detail-desc">${organism.desc}</p>
         </div>
-        <div class="detail-chip-row" style="margin-top:14px;">${pills || '<span class="chip">No special tags</span>'}</div>
-        <p class="detail-summary">${organism.desc}</p>
-        <div class="detail-block">
-          <h4>Strong choices</h4>
-          <div class="detail-drugs">${strong.length ? strong.map((entry) => renderDrugChip(entry.drug, entry.code, 'activity-strong')).join('') : '<div class="empty-state">No strong options surfaced in this curated drug set.</div>'}</div>
-        </div>
-        <div class="detail-block">
-          <h4>Situational or variable</h4>
-          <div class="detail-drugs">${situational.length ? situational.map((entry) => renderDrugChip(entry.drug, entry.code, 'activity-partial')).join('') : '<div class="empty-state">Nothing notable in the partial or variable bucket.</div>'}</div>
-        </div>
-        <div class="detail-block">
-          <h4>Combination-only or weak-evidence lane</h4>
-          <div class="detail-drugs">${comboOnly.length ? comboOnly.map((entry) => renderDrugChip(entry.drug, entry.code, 'activity-combo')).join('') : '<div class="empty-state">No combination-only or in-vitro flags in the current curated set.</div>'}</div>
+        <div class="detail-body">
+          <div class="detail-section">
+            <div class="detail-section-title">Strong choices</div>
+            <div class="detail-drugs">${renderDrugRows(strong)}</div>
+          </div>
+          <div class="detail-section">
+            <div class="detail-section-title">Situational / Variable</div>
+            <div class="detail-drugs">${renderDrugRows(situational)}</div>
+          </div>
+          <div class="detail-section">
+            <div class="detail-section-title">Combo-only / Limited evidence</div>
+            <div class="detail-drugs">${renderDrugRows(comboOnly)}</div>
+          </div>
         </div>
       </div>
     `;
@@ -1539,8 +1917,9 @@
       return;
     }
 
+    const activeDrugs = getActiveDrugs();
     let html = '<table><thead><tr><th>Organism</th>';
-    drugs.forEach((drug) => {
+    activeDrugs.forEach((drug) => {
       const headerTip = `${drug.name}\n${drug.class} - ${drug.route}${drug.legacy ? '\nLegacy-return agent' : ''}`;
       html += `<th data-tooltip="${escapeTooltipAttr(headerTip)}">${drug.short}</th>`;
     });
@@ -1550,7 +1929,7 @@
       const primaryGroup = organism.group.split(' ')[0];
       html += '<tr>';
       html += `<td class="matrix-name"><div class="kicker">${organism.abbr}${organism.note ? ` - ${organism.note}` : ''}</div><strong><em>${organism.name}</em></strong><div class="subtle">${groupLabels[primaryGroup]}</div></td>`;
-      drugs.forEach((drug) => {
+      activeDrugs.forEach((drug) => {
         const code = normalizeCode(organism.act[drug.id]);
         const cellTip = `${drug.name} vs ${organism.abbr}\n${activityLabel(code)}${drug.legacy ? '\nLegacy-return agent' : ''}`;
         html += `<td class="matrix-code code-${code}" data-tooltip="${escapeTooltipAttr(cellTip)}">${activityText(code)}</td>`;
@@ -1580,9 +1959,10 @@
       return;
     }
 
+    const activeDrugs = getActiveDrugs();
     let html = '<div class="visual-scroll"><div class="visual-grid">';
     html += '<div class="visual-header-row"><div class="visual-name-spacer"></div>';
-    drugs.forEach((drug) => {
+    activeDrugs.forEach((drug) => {
       const headerTip = `${drug.name}\n${drug.class} - ${drug.route}${drug.legacy ? '\nLegacy-return agent' : ''}`;
       html += `<div class="visual-drug-label${drug.legacy ? ' is-legacy' : ''}" data-tooltip="${escapeTooltipAttr(headerTip)}">${drug.short}</div>`;
     });
@@ -1610,7 +1990,7 @@
         </button>
       `;
 
-      drugs.forEach((drug) => {
+      activeDrugs.forEach((drug) => {
         const code = normalizeCode(organism.act[drug.id]);
         const cellTip = `${drug.name} vs ${organism.abbr}\n${activityLabel(code)}${drug.legacy ? '\nLegacy-return agent' : ''}`;
         html += `<div class="visual-activity-cell code-${code}" data-tooltip="${escapeTooltipAttr(cellTip)}">${activityText(code)}</div>`;
@@ -1634,121 +2014,194 @@
     return [a, b].sort().join('|');
   }
 
+  // Only antibacterial drugs in the combo builder (antifungals/antivirals have separate scope)
+  function getAntibacterialDrugs() {
+    return drugs.filter(d => !d.category || d.category === 'antibacterial');
+  }
+
   function renderComboSelects() {
     const selectA = document.getElementById('combo-a');
     const selectB = document.getElementById('combo-b');
-    const options = drugs.map((drug) => `<option value="${drug.id}">${drug.short} - ${drug.name}</option>`).join('');
+    const options = getAntibacterialDrugs().map((drug) => `<option value="${drug.id}">${drug.short} - ${drug.name}</option>`).join('');
     selectA.innerHTML = options;
     selectB.innerHTML = options;
     selectA.value = state.comboA;
     selectB.value = state.comboB;
   }
 
-  function summarizePair() {
-    const pairA = getDrug(state.comboA);
-    const pairB = getDrug(state.comboB);
-    const buckets = { sharedStrong: [], expanded: [], partial: [], combo: [], offTarget: [] };
-
-    organisms.forEach((organism) => {
-      const codeA = normalizeCode(organism.act[state.comboA]);
-      const codeB = normalizeCode(organism.act[state.comboB]);
-      const rankA = activityRank(codeA);
-      const rankB = activityRank(codeB);
-
-      if (rankA >= 3 && rankB >= 3) {
-        buckets.sharedStrong.push(organism.abbr);
-      } else if (Math.max(rankA, rankB) >= 3) {
-        buckets.expanded.push(organism.abbr);
-      } else if (['C', 'I'].includes(codeA) || ['C', 'I'].includes(codeB)) {
-        buckets.combo.push(organism.abbr);
-      } else if (Math.max(rankA, rankB) >= 1.5) {
-        buckets.partial.push(organism.abbr);
-      } else {
-        buckets.offTarget.push(organism.abbr);
-      }
-    });
-
-    const coverageCount = buckets.sharedStrong.length + buckets.expanded.length;
-    const summary = `${pairA.name} plus ${pairB.name} shows strong combined coverage across ${coverageCount} of ${organisms.length} carried-over organisms. ${buckets.sharedStrong.length} organisms are strongly covered by both drugs, while ${buckets.expanded.length} mainly reflect one drug filling a gap left by the other.`;
-
-    return { pairA, pairB, buckets, summary };
+  function cpillClass(code) {
+    const c = normalizeCode(code);
+    if (c === 'FD') return 'cpill-doc';
+    if (c === 'F')  return 'cpill-act';
+    if (c === 'P')  return 'cpill-par';
+    if (c === 'V')  return 'cpill-var';
+    if (c === 'C')  return 'cpill-com';
+    return 'cpill-none';
   }
 
-  function renderPairCoverage() {
-    const { buckets } = summarizePair();
-    const container = document.getElementById('pair-coverage');
-    const cards = [
-      { title: 'Strong in both drugs', list: buckets.sharedStrong, tone: 'new', copy: 'Useful for seeing when the second agent mostly duplicates existing activity.' },
-      { title: 'Gap filled by one drug', list: buckets.expanded, tone: 'info', copy: 'This is where a pair broadens coverage rather than creating true synergy.' },
-      { title: 'Only partial or weak support', list: buckets.partial, tone: 'warn', copy: 'Worth slowing down. These are often the misleading rows if you only glance at a chart.' },
-      { title: 'Combo-only or limited-data signal', list: buckets.combo, tone: 'info', copy: 'Mechanistic rationale or limited evidence may exist, but this is not the same as dependable coverage.' },
-      { title: 'Not really covered here', list: buckets.offTarget, tone: 'danger', copy: 'A second drug does not magically solve an organism when both agents are poor fits.' },
-    ];
+  function cpillText(code) {
+    const c = normalizeCode(code);
+    if (c === 'FD') return 'DOC';
+    if (c === 'F')  return 'Active';
+    if (c === 'P')  return 'Partial';
+    if (c === 'V')  return 'Variable';
+    if (c === 'C')  return 'Combo';
+    return '—';
+  }
 
-    container.innerHTML = cards.map((card) => `
-      <div class="note-card ${card.tone}">
-        <div class="note-top">
-          <h3>${card.title}</h3>
-          <span class="timeline-badge">${card.list.length}</span>
-        </div>
-        <p class="body-copy">${card.copy}</p>
-        <div class="coverage-row" style="margin-top:12px;">
-          ${card.list.length ? card.list.map((item) => `<span class="coverage-pill">${item}</span>`).join('') : '<span class="coverage-pill">None</span>'}
-        </div>
-      </div>
-    `).join('');
+  // Known true-synergy pairs (mechanism-driven, not just coverage broadening)
+  const synergisticKeys = new Set([
+    'AMP|GEN','AMP|CRO','DAP|CPT','CFZ|GEN','VAN|GEN','VAN|RIF',
+    'CA|MEM','FDC|PMB','MEM|FDC','AA|MEM',
+  ]);
+
+  // Known antagonistic/avoidance pairs
+  const antagonisticKeys = new Set([
+    'DAP|AZM', // AZM can coat surface, reduce DAP binding
+  ]);
+
+  function getCombinedAssessment(codeA, codeB, key) {
+    const rA = activityRank(normalizeCode(codeA));
+    const rB = activityRank(normalizeCode(codeB));
+    if (synergisticKeys.has(key) && (rA >= 1 || rB >= 1)) return 'syn';
+    if (rA >= 3 && rB >= 3) return 'redun';
+    if (rA >= 3 || rB >= 3) return 'broad';
+    return 'none';
+  }
+
+  function computeComboStats(pairA, pairB, key) {
+    const bacterialOrgs = organisms.filter(o => !o.group.includes('fungal') && !o.group.includes('viral'));
+    let syn = 0, broad = 0, redun = 0, neither = 0;
+    bacterialOrgs.forEach(org => {
+      const cA = org.act[pairA.id] || 'N';
+      const cB = org.act[pairB.id] || 'N';
+      const a = getCombinedAssessment(cA, cB, key);
+      if (a === 'syn') syn++;
+      else if (a === 'broad') broad++;
+      else if (a === 'redun') redun++;
+      else neither++;
+    });
+    const total = bacterialOrgs.length;
+    // Compute overall rating
+    let rating, ratingClass, ratingDesc;
+    if (synergisticKeys.has(key) && (syn + broad) > 0) {
+      rating = '⚡ Synergistic'; ratingClass = 'rating-syn';
+      ratingDesc = 'Known mechanism-driven synergy. The second drug is not just broadening — it genuinely enhances activity against shared targets.';
+    } else if ((broad / total) > 0.25) {
+      rating = '✓ Broadens coverage'; ratingClass = 'rating-brd';
+      ratingDesc = 'Good broadening pair. The second drug fills meaningful spectrum gaps not covered by the first. Classic empiric rationale.';
+    } else if ((redun / total) > 0.35) {
+      rating = '≈ Mostly redundant'; ratingClass = 'rating-red';
+      ratingDesc = 'High overlap — the second drug mostly duplicates existing coverage. May increase toxicity without meaningful benefit.';
+    } else {
+      rating = '○ Limited synergy'; ratingClass = 'rating-red';
+      ratingDesc = 'Neither drug contributes much against the other\'s gaps. Consider whether this combination is driven by data or habit.';
+    }
+    if (antagonisticKeys.has(key)) {
+      rating = '⚠ Potential antagonism'; ratingClass = 'rating-cau';
+      ratingDesc = 'Mechanistic antagonism reported for this pair. Avoid unless a specific compelling indication exists.';
+    }
+    return { syn, broad, redun, neither, total, rating, ratingClass, ratingDesc };
+  }
+
+  function renderComboCoverageTable(pairA, pairB, key) {
+    const bacterialOrgs = organisms.filter(o => !o.group.includes('fungal') && !o.group.includes('viral'));
+    const table = document.getElementById('combo-cov-table');
+    if (!table) return;
+    let html = `<thead><tr>
+      <th>Organism</th>
+      <th>${escapeHtml(pairA.short)} — ${escapeHtml(pairA.name)}</th>
+      <th>${escapeHtml(pairB.short)} — ${escapeHtml(pairB.name)}</th>
+      <th>Combined</th>
+      <th>Assessment</th>
+    </tr></thead><tbody>`;
+
+    let lastGroup = null;
+    bacterialOrgs.forEach(org => {
+      const primaryGroup = org.group.split(' ')[0];
+      if (primaryGroup !== lastGroup) {
+        lastGroup = primaryGroup;
+        html += `<tr><td colspan="5" style="background:var(--canvas-subtle);padding:6px 12px;font:700 0.72rem/1 var(--mono);text-transform:uppercase;letter-spacing:0.05em;color:var(--muted);">${groupLabels[primaryGroup] || primaryGroup}</td></tr>`;
+      }
+      const cA = org.act[pairA.id] || 'N';
+      const cB = org.act[pairB.id] || 'N';
+      const rA = activityRank(normalizeCode(cA));
+      const rB = activityRank(normalizeCode(cB));
+      const combinedRank = Math.max(rA, rB);
+      const assessment = getCombinedAssessment(cA, cB, key);
+      let combinedText, assessHtml;
+      if (combinedRank >= 3) combinedText = '✓ Covered';
+      else if (combinedRank >= 1.5) combinedText = '~ Partial';
+      else if (combinedRank >= 0.75) combinedText = 'Combo only';
+      else combinedText = '— Not covered';
+      if (assessment === 'syn')   assessHtml = '<span class="ccell-syn">Synergy</span>';
+      else if (assessment === 'broad') assessHtml = '<span class="ccell-broad">Broadens</span>';
+      else if (assessment === 'redun') assessHtml = '<span class="ccell-redun">Redundant</span>';
+      else assessHtml = '<span class="ccell-none">—</span>';
+
+      html += `<tr>
+        <td class="org-td">${escapeHtml(org.name)} <small style="color:var(--muted);font-style:normal;font-size:0.75rem;">${escapeHtml(org.abbr)}</small></td>
+        <td><span class="cpill ${cpillClass(cA)}">${cpillText(cA)}</span></td>
+        <td><span class="cpill ${cpillClass(cB)}">${cpillText(cB)}</span></td>
+        <td style="font:600 0.8rem/1 var(--sans);color:${combinedRank >= 3 ? 'var(--success)' : combinedRank >= 1 ? 'var(--warning)' : 'var(--muted)'};">${combinedText}</td>
+        <td>${assessHtml}</td>
+      </tr>`;
+    });
+    html += '</tbody>';
+    table.innerHTML = html;
   }
 
   function renderComboBuilder() {
     const pairCode = document.getElementById('pair-code');
     const pairSummary = document.getElementById('pair-summary');
+    const ratingBlock = document.getElementById('combo-rating-block');
+    const statsBlock = document.getElementById('combo-stats');
     const playbook = document.getElementById('pair-playbook');
-    const { pairA, pairB, summary } = summarizePair();
+
+    const pairA = getDrug(state.comboA) || getAntibacterialDrugs()[0];
+    const pairB = getDrug(state.comboB) || getAntibacterialDrugs()[1];
+    if (!pairA || !pairB) return;
+
+    const key = comboKey(state.comboA, state.comboB);
     pairCode.textContent = `${pairA.short} + ${pairB.short}`;
-    pairSummary.textContent = summary;
+
+    const stats = computeComboStats(pairA, pairB, key);
+
+    // Rating badge
+    ratingBlock.innerHTML = `<span class="combo-rating ${stats.ratingClass}">${stats.rating}</span>
+      <p class="pair-copy" style="margin-top:10px;font-size:0.84rem;">${stats.ratingDesc}</p>`;
+
+    // Stats bar
+    statsBlock.innerHTML = `
+      <div class="combo-stat"><strong style="color:var(--accent)">${stats.syn}</strong><span>Synergy</span></div>
+      <div class="combo-stat"><strong style="color:var(--success)">${stats.broad}</strong><span>Broadens</span></div>
+      <div class="combo-stat"><strong style="color:var(--warning)">${stats.redun}</strong><span>Redundant</span></div>
+      <div class="combo-stat"><strong style="color:var(--muted)">${stats.neither}</strong><span>Neither</span></div>
+    `;
+
+    pairSummary.textContent = `${pairA.name} + ${pairB.name}: covers ${stats.syn + stats.broad} organisms usefully (${stats.syn} with synergy, ${stats.broad} by broadening), ${stats.redun} redundant, ${stats.neither} not covered.`;
 
     if (state.comboA === state.comboB) {
       playbook.innerHTML = `
-        <div class="pair-top">
-          <h3>Duplicate drug selected</h3>
-          <span class="timeline-badge">Adjust</span>
-        </div>
-        <p class="pair-copy">Pick two different antibiotics if the goal is combination thinking. Duplicate selection is still useful as a reminder that more of the same is not combination therapy.</p>
-      `;
-      renderPairCoverage();
+        <div class="pair-top"><h3>Same drug selected</h3><span class="timeline-badge">Adjust selection</span></div>
+        <p class="pair-copy">Pick two different antibiotics to analyse true combination effects.</p>`;
+      renderComboCoverageTable(pairA, pairB, key);
       return;
     }
 
-    const entry = combinationPlaybook.find((item) => item.key === comboKey(state.comboA, state.comboB));
+    const entry = combinationPlaybook.find((item) => item.key === key);
     if (!entry) {
       playbook.innerHTML = `
-        <div class="pair-top">
-          <h3>No curated playbook for this pair</h3>
-          <span class="timeline-badge">Generic view</span>
-        </div>
-        <p class="pair-copy">This pair may still broaden coverage, but the page has no curated high-yield teaching note for it. Use the coverage buckets below to decide whether the second drug is actually adding value or just duplicating work.</p>
-      `;
-      renderPairCoverage();
-      return;
+        <div class="pair-top"><h3>No curated playbook entry</h3><span class="timeline-badge">Coverage view</span></div>
+        <p class="pair-copy">No high-yield teaching note for this specific pair. Use the coverage table below to assess whether Drug B genuinely broadens Drug A's gaps or mostly duplicates existing coverage.</p>`;
+    } else {
+      playbook.innerHTML = `
+        <div class="pair-top"><h3>${escapeHtml(entry.title)}</h3><span class="timeline-badge">${escapeHtml(entry.badge)}</span></div>
+        <p class="pair-copy">${escapeHtml(entry.body)}</p>
+        <div class="profile-section" style="margin-top:14px;"><strong>Why it works</strong><div class="body-copy">${escapeHtml(entry.why)}</div></div>
+        <div class="profile-section" style="margin-top:12px;"><strong>Main caution</strong><div class="body-copy">${escapeHtml(entry.caution)}</div></div>`;
     }
-
-    playbook.innerHTML = `
-      <div class="pair-top">
-        <h3>${entry.title}</h3>
-        <span class="timeline-badge">${entry.badge}</span>
-      </div>
-      <p class="pair-copy">${entry.body}</p>
-      <div class="profile-section" style="margin-top:16px;">
-        <strong>Why it matters</strong>
-        <div class="body-copy">${entry.why}</div>
-      </div>
-      <div class="profile-section" style="margin-top:16px;">
-        <strong>Main caution</strong>
-        <div class="body-copy">${entry.caution}</div>
-      </div>
-    `;
-
-    renderPairCoverage();
+    renderComboCoverageTable(pairA, pairB, key);
   }
 
   function renderDrugFilters() {
@@ -1845,6 +2298,82 @@
     `).join('');
   }
 
+  // ── Curated news items (static fallback + supplemental) ─────────────
+  const curatedNews = [
+    { source: 'FDA', sourceClass: 'ns-fda', date: 'Dec 2025', title: 'Zoliflodacin & Gepotidacin approved for gonorrhoea', blurb: 'Two first-in-class oral agents targeting gyrase (gepotidacin) and topoisomerase II (zoliflodacin) approved for uncomplicated gonorrhoea — addressing rising MDR N. gonorrhoeae.', link: 'https://www.fda.gov/news-events/press-announcements/fda-approves-two-oral-therapies-treat-gonorrhea' },
+    { source: 'FDA', sourceClass: 'ns-fda', date: 'Mar 2025', title: 'Blujepa (pivmecillinam) approved for uncomplicated UTI', blurb: 'New oral outpatient UTI option with a different mechanism from fluoroquinolones and TMP-SMX, potentially sparing key drug classes.', link: 'https://www.fda.gov/drugs/drug-approvals-and-databases/drug-trials-snapshots-blujepa' },
+    { source: 'WHO', sourceClass: 'ns-who', date: 'Mar 2026', title: 'WHO Target Product Profiles for new antibacterials', blurb: 'New TPPs prioritise MDR Gram-negative coverage, novel oral options, and paediatric formulations — highlighting global pipeline gaps.', link: 'https://www.who.int/publications/i/item/9789240121188' },
+    { source: 'WHO', sourceClass: 'ns-who', date: 'Jan 2026', title: 'EUCAST v16.0 — gepotidacin breakpoints added', blurb: 'Version 16.0 adds gepotidacin breakpoints and revises TMP-SMX logic. Antibiotic reference pages should update breakpoint language accordingly.', link: 'https://www.eucast.org/about-eucast/news/' },
+    { source: 'WHO', sourceClass: 'ns-who', date: 'Oct 2025', title: 'Clinical antibacterial pipeline dropped to 90 candidates', blurb: 'WHO highlights critical gaps in Gram-negative coverage, paediatric oral formulations and combination strategies for truly resistant pathogens.', link: 'https://www.who.int/news/item/02-10-2025-who-releases-new-reports-on-new-tests-and-treatments-in-development-for-bacterial-infections' },
+    { source: 'CDC', sourceClass: 'ns-cdc', date: '2025', title: 'C. auris — expanding geographic spread documented', blurb: 'Candida auris now detected in 50+ US states and >60 countries. Pan-resistant isolates increasing. Infection prevention focus intensified in LTC and ICU settings.', link: 'https://www.cdc.gov/candida-auris/index.html' },
+    { source: 'IDSA', sourceClass: 'ns-idsa', date: '2025', title: 'Updated IDSA guidance on CRE management', blurb: 'New guidance emphasises mechanism-first approach: distinguish KPC from MBL (NDM) from OXA-48 before selecting BL/BLI therapy. Aztreonam-avibactam highlighted for MBL infections.', link: 'https://www.idsociety.org/practice-guideline/amr-guidance/' },
+    { source: 'WHO', sourceClass: 'ns-who', date: '2025', title: 'AWaRe antibiotic classification update', blurb: 'Several newer beta-lactam/BLI combinations moved to Reserve category. Emphasises restricting ceftazidime-avibactam and cefiderocol to culture-confirmed MDR infections.', link: 'https://www.who.int/publications/i/item/9789240062382' },
+  ];
+
+  function renderCuratedNews() {
+    const grid = document.getElementById('news-curated-grid');
+    if (!grid) return;
+    grid.innerHTML = curatedNews.map(n => `
+      <article class="news-card">
+        <span class="news-source ${n.sourceClass}">${escapeHtml(n.source)}</span>
+        <div class="news-date">${escapeHtml(n.date)}</div>
+        <div class="news-title">${escapeHtml(n.title)}</div>
+        <p class="news-blurb">${escapeHtml(n.blurb)}</p>
+        <a class="news-link" href="${n.link}" target="_blank" rel="noreferrer noopener">Read more →</a>
+      </article>
+    `).join('');
+  }
+
+  async function fetchPubMedNews() {
+    const grid = document.getElementById('news-pubmed-grid');
+    if (!grid) return;
+    grid.innerHTML = '<div class="news-loading"><div class="news-spinner"></div><span>Fetching PubMed…</span></div>';
+
+    // PubMed eutils search — CORS-friendly public API
+    const query = encodeURIComponent('antibiotic resistance[title] OR antimicrobial resistance[title]');
+    const searchUrl = `https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=${query}&sort=pub+date&retmax=8&retmode=json`;
+
+    try {
+      const searchResp = await fetch(searchUrl);
+      if (!searchResp.ok) throw new Error('search failed');
+      const searchData = await searchResp.json();
+      const ids = (searchData.esearchresult?.idlist || []).slice(0, 8).join(',');
+      if (!ids) throw new Error('no ids');
+
+      const summaryUrl = `https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&id=${ids}&retmode=json`;
+      const sumResp = await fetch(summaryUrl);
+      if (!sumResp.ok) throw new Error('summary failed');
+      const sumData = await sumResp.json();
+      const articles = Object.values(sumData.result || {}).filter(a => a.uid);
+
+      if (!articles.length) throw new Error('empty');
+
+      grid.innerHTML = articles.map(a => {
+        const authors = (a.authors || []).slice(0, 2).map(au => au.name).join(', ') + (a.authors?.length > 2 ? ' et al.' : '');
+        const pubDate = a.pubdate || '';
+        const journal = a.source || '';
+        const title = a.title || 'Untitled';
+        const pmid = a.uid;
+        return `
+          <article class="news-card">
+            <span class="news-source ns-pubmed">PubMed</span>
+            <div class="news-date">${escapeHtml(pubDate)} · ${escapeHtml(journal)}</div>
+            <div class="news-title">${escapeHtml(title)}</div>
+            <p class="news-blurb">${escapeHtml(authors)}</p>
+            <a class="news-link" href="https://pubmed.ncbi.nlm.nih.gov/${pmid}/" target="_blank" rel="noreferrer noopener">Open on PubMed →</a>
+          </article>
+        `;
+      }).join('');
+    } catch (err) {
+      grid.innerHTML = `<div class="news-err">Could not fetch PubMed articles — check your connection.<br><small style="opacity:0.6;">PubMed eUtils API · ${escapeHtml(String(err))}</small></div>`;
+    }
+  }
+
+  function renderNews() {
+    renderCuratedNews();
+    fetchPubMedNews();
+  }
+
   function switchTab(nextTab) {
     state.tab = nextTab;
     document.querySelectorAll('[data-tab-target]').forEach((button) => {
@@ -1857,7 +2386,10 @@
 
   function bindEvents() {
     document.querySelectorAll('[data-tab-target]').forEach((button) => {
-      button.addEventListener('click', () => switchTab(button.dataset.tabTarget));
+      button.addEventListener('click', () => {
+        switchTab(button.dataset.tabTarget);
+        if (button.dataset.tabTarget === 'news') renderNews();
+      });
     });
 
     document.getElementById('theme-toggle').addEventListener('click', () => {
@@ -1871,6 +2403,20 @@
       ensureSelectedOrganism();
       renderSpectrum();
       renderVisualSpectrum();
+    });
+
+    // Drug scope selector
+    document.querySelectorAll('[data-scope]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        state.drugScope = btn.dataset.scope;
+        state.group = 'all';
+        // Default selected organism to first in new scope
+        const scopeDefault = { antibacterial: 'mssa', antifungal: 'c_albicans', antiviral: 'influenza' };
+        state.selectedOrganismId = scopeDefault[state.drugScope] || 'mssa';
+        document.querySelectorAll('[data-scope]').forEach(b => b.classList.toggle('is-active', b === btn));
+        renderSpectrum();
+        renderVisualSpectrum();
+      });
     });
 
     document.getElementById('combo-a').addEventListener('change', (event) => {
@@ -1887,6 +2433,9 @@
       state.drugSearch = event.target.value;
       renderDrugCards();
     });
+
+    const newsRefreshBtn = document.getElementById('news-refresh-btn');
+    if (newsRefreshBtn) newsRefreshBtn.addEventListener('click', renderNews);
 
     document.addEventListener('mouseover', (event) => {
       const target = event.target.closest('[data-tooltip]');
@@ -1921,8 +2470,9 @@
       }
     });
 
+    const bacterialOrgs = organisms.filter(o => !o.group.includes('fungal') && !o.group.includes('viral'));
     document.getElementById('stat-organisms').textContent = organisms.length;
-    document.getElementById('stat-drugs').textContent = drugs.length;
+    document.getElementById('stat-drugs').textContent = drugs.filter(d => !d.category || d.category === 'antibacterial').length;
     renderComboSelects();
     renderSpectrum();
     renderVisualSpectrum();
@@ -1930,6 +2480,129 @@
     renderDrugCards();
     renderUpdates();
     bindEvents();
+    initBgCanvas();
+  }
+
+  // ── Background microorganism canvas animation ─────────────────────────
+  function initBgCanvas() {
+    const canvas = document.getElementById('bg-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    let W, H;
+    const TYPES = ['coccus', 'diplo', 'rod', 'spore', 'spiral', 'hypha', 'strep'];
+    // Full rainbow + biologically-inspired palette
+    const HUES  = [0, 22, 45, 80, 120, 160, 185, 210, 240, 270, 300, 330];
+
+    function resize() {
+      W = canvas.width  = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    }
+
+    function mkParticle() {
+      return {
+        x: Math.random() * (W || 1200),
+        y: Math.random() * (H || 800),
+        vx: (Math.random() - 0.5) * 0.30,
+        vy: (Math.random() - 0.5) * 0.20,
+        size: 5 + Math.random() * 13,
+        alpha: 0.055 + Math.random() * 0.10,
+        rot: Math.random() * Math.PI * 2,
+        rotV: (Math.random() - 0.5) * 0.0035,
+        type: TYPES[Math.floor(Math.random() * TYPES.length)],
+        hue:  HUES[Math.floor(Math.random() * HUES.length)],
+        sat:  72 + Math.random() * 22,   // 72–94% saturation
+        lit:  62 + Math.random() * 20,   // 62–82% lightness (dark mode)
+      };
+    }
+
+    resize();
+    const particles = Array.from({ length: 80 }, mkParticle);
+    window.addEventListener('resize', resize);
+
+    function drawShape(p) {
+      const s = p.size;
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rot);
+      ctx.globalAlpha = p.alpha;
+      const dark = !document.body.classList.contains('light-theme');
+      const stroke = dark
+        ? `hsla(${p.hue},${p.sat}%,${p.lit}%,1)`
+        : `hsla(${p.hue},${p.sat - 20}%,${p.lit - 30}%,1)`;
+      ctx.strokeStyle = stroke;
+      ctx.lineWidth = 1.4;
+      ctx.beginPath();
+
+      const fillColor = dark
+        ? `hsla(${p.hue},${p.sat}%,${p.lit}%,0.18)`
+        : `hsla(${p.hue},${p.sat - 20}%,${p.lit - 30}%,0.13)`;
+      ctx.fillStyle = fillColor;
+
+      if (p.type === 'coccus') {
+        ctx.arc(0, 0, s * 0.45, 0, Math.PI * 2);
+        ctx.fill(); ctx.stroke();
+      } else if (p.type === 'diplo') {
+        ctx.arc(-s * 0.38, 0, s * 0.32, 0, Math.PI * 2);
+        ctx.arc( s * 0.38, 0, s * 0.32, 0, Math.PI * 2);
+        ctx.fill(); ctx.stroke();
+      } else if (p.type === 'strep') {
+        // chain of 4 cocci
+        for (let i = -1.5; i <= 1.5; i++) {
+          ctx.moveTo(i * s * 0.5 + s * 0.25, 0);
+          ctx.arc(i * s * 0.5, 0, s * 0.25, 0, Math.PI * 2);
+        }
+        ctx.fill(); ctx.stroke();
+      } else if (p.type === 'rod') {
+        const rw = s * 0.35, rh = s * 0.85, r = rw;
+        ctx.moveTo(-rw, -rh + r);
+        ctx.arcTo(-rw, -rh, 0, -rh, r);
+        ctx.arcTo( rw, -rh, rw, 0, r);
+        ctx.arcTo( rw,  rh, 0,  rh, r);
+        ctx.arcTo(-rw,  rh, -rw, 0, r);
+        ctx.lineTo(-rw, -rh + r);
+        ctx.fill(); ctx.stroke();
+      } else if (p.type === 'spore') {
+        ctx.ellipse(0, 0, s * 0.28, s * 0.52, 0, 0, Math.PI * 2);
+        ctx.fill(); ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(0, -s * 0.52, s * 0.13, 0, Math.PI * 2);
+        ctx.globalAlpha = p.alpha * 0.9;
+        ctx.fill();
+      } else if (p.type === 'spiral') {
+        for (let i = 0; i <= 28; i++) {
+          const t = (i / 28) * Math.PI * 5;
+          const sx = (i / 28 - 0.5) * s * 2.2;
+          const sy = Math.sin(t) * s * 0.3;
+          i === 0 ? ctx.moveTo(sx, sy) : ctx.lineTo(sx, sy);
+        }
+        ctx.stroke();
+      } else { // hypha — branching fungal filament
+        ctx.moveTo(-s * 1.1, 0);
+        ctx.lineTo(s * 1.1, 0);
+        ctx.moveTo(-s * 0.15, 0);
+        ctx.lineTo(-s * 0.15 - s * 0.5, -s * 0.6);
+        ctx.moveTo(s * 0.4, 0);
+        ctx.lineTo(s * 0.4 + s * 0.45, s * 0.55);
+        ctx.moveTo(s * 0.85, 0);
+        ctx.lineTo(s * 0.85 + s * 0.3, -s * 0.42);
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+
+    function frame() {
+      ctx.clearRect(0, 0, W, H);
+      for (const p of particles) {
+        drawShape(p);
+        p.x += p.vx; p.y += p.vy; p.rot += p.rotV;
+        if (p.x < -80) p.x = W + 80;
+        if (p.x > W + 80) p.x = -80;
+        if (p.y < -80) p.y = H + 80;
+        if (p.y > H + 80) p.y = -80;
+      }
+      requestAnimationFrame(frame);
+    }
+    frame();
   }
 
   init();
