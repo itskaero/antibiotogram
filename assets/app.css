@@ -447,3 +447,7 @@ details summary { cursor: pointer; font-weight: 600; font-size: .84rem; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; animation-delay: 0ms !important; transition-duration: .001ms !important; transition-delay: 0ms !important; }
 }
+.dose-table details.quote { margin-top: 4px; }
+.dose-table details.quote summary { font-size: .7rem; font-weight: 600; color: var(--fg-3); }
+.dose-table details.quote q { display: block; margin-top: 4px; font-size: .74rem; color: var(--fg-2); border-left: 2px solid var(--line-2); padding-left: 8px; quotes: none; }
+.dose-table td:nth-child(3) { white-space: nowrap; }

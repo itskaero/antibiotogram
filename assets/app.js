@@ -459,9 +459,15 @@ function vDrugs() {
     <div class="stack">
       <section class="panel"><div class="p-head"><div><h2 class="p-title">Dosing</h2><p class="p-sub">Highlighted row: ${esc(POPS.find((p) => p.id === S.ctx.pop).label)}, renal ${esc(S.ctx.renal)}, hepatic ${esc(S.ctx.hepatic)}. <button type="button" class="btn" data-open-ctx style="height:24px;padding:0 8px">Change</button></p></div></div>
         ${ds.status === 'not-sourced' ? `<div class="banner warn" style="margin-bottom:12px">${svgIcon('<path d="M12 3l9 16H3z"/><path d="M12 10v4M12 17h.01"/>')}<div><b>Doses not yet sourced for ${esc(d.name)}.</b> Each line will be copied from the FDA label${d.kingdom === 'antibacterial' ? ' or the WHO AWaRe book' : ''} with its section and revision date, and checked by a clinician. Until then, use the label or your local formulary.</div></div>` : ''}
-        <div class="table-scroll"><table class="dose-table"><thead><tr><th>Population</th><th>Standard dose</th><th>Renal · ${esc(S.ctx.renal)}</th><th>Hepatic · ${esc(S.ctx.hepatic)}</th><th>Source</th></tr></thead><tbody>
-        ${POPS.map((p) => { const e = ds[p.id]; return `<tr class="${S.ctx.pop === p.id ? 'cur' : ''}"><td><b>${p.label}</b><br><span class="p-sub">${p.range}</span></td><td>${e ? esc(e.text) : '<span class="ns">Not yet sourced</span>'}</td><td>${ds.renal?.[S.ctx.renal] ? esc(ds.renal[S.ctx.renal].text) : '<span class="ns">Not yet sourced</span>'}</td><td>${ds.hepatic?.[S.ctx.hepatic] ? esc(ds.hepatic[S.ctx.hepatic].text) : '<span class="ns">Not yet sourced</span>'}</td><td>${e ? `${srcLink(e.source)} <span class="p-sub">${esc(e.section || '')}</span>` : '<span class="ns">—</span>'}</td></tr>`; }).join('')}
-        </tbody></table></div></section>
+        ${ds.status !== 'not-sourced' ? `<div class="banner info" style="margin-bottom:12px">${svgIcon('<circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v5h1"/>')}<div>Copied from the cited source and re-checked line by line against it${D.dosing.extractedOn ? ` (${esc(D.dosing.extractedOn)})` : ''}. <b>Clinician review: ${ds.reviewedBy ? `${esc(ds.reviewedBy)}, ${esc(ds.reviewedOn)}` : 'pending'}.</b> Confirm against the current label or your formulary before prescribing.${ds.gaps ? `<br><span class="p-sub" style="max-width:none">${esc(ds.gaps)}</span>` : ''}</div></div>` : ''}
+        <div class="table-scroll"><table class="dose-table"><thead><tr><th>Population</th><th>Dose</th><th>Source</th></tr></thead><tbody>
+        ${POPS.map((p) => `<tr class="${S.ctx.pop === p.id ? 'cur' : ''}"><td><b>${p.label}</b><br><span class="p-sub">${p.range}</span></td>${doseCells(ds[p.id], ds.status)}</tr>`).join('')}
+        </tbody></table></div>
+        ${[['Kidney function', 'renal', RENAL, S.ctx.renal], ['Liver function', 'hepatic', HEPATIC.slice(1), S.ctx.hepatic]].map(([title, key, bands, cur]) => {
+          const rows = bands.filter((b) => ds[key]?.[b]);
+          return `<h3 class="kicker" style="margin:18px 0 6px">${title}${key === 'renal' ? ' · as stated in the label, usually for adults' : ''}</h3>${rows.length ? `<div class="table-scroll"><table class="dose-table"><tbody>${rows.map((b) => `<tr class="${cur === b ? 'cur' : ''}"><td><b>${esc(b)}</b></td>${doseCells(ds[key][b], ds.status)}</tr>`).join('')}</tbody></table></div>` : `<p class="p-sub">${ds.status === 'not-sourced' ? 'Not yet sourced.' : 'The sources give no adjustment by band for this drug.'}</p>`}`;
+        }).join('')}
+      </section>
       <section class="panel"><div class="p-head"><div><h2 class="p-title">Spectrum</h2><p class="p-sub">${esc(K(k).label)} in this reference, grouped as in the Spectrum view.</p></div></div>
         <div class="bands-scroll">${bandsHTML(refAdapter(k), [d.id], true)}</div></section>
       ${rules.length ? `<section class="panel"><div class="p-head"><h2 class="p-title">Site of infection</h2></div>${rules.map((r) => `<div class="rule"><span class="site">${esc(r.site)}</span><span class="pill ${r.effect === 'avoid' ? 'bad' : r.effect === 'caution' ? 'warn' : 'ok'}">${r.effect === 'labelled' ? 'Labelled' : r.effect === 'avoid' ? 'Avoid' : 'Caution'}</span><span style="flex:1">${esc(r.note)} <span class="src-list" style="display:inline">${srcLink(r.source)}</span></span></div>`).join('')}</section>` : ''}
@@ -473,6 +479,13 @@ function vDrugs() {
         <ul class="feed" id="lit"></ul></section>
     </div>
   </div>`;
+}
+function doseCells(e, status) {
+  if (!e) return `<td><span class="ns">${status === 'not-sourced' ? 'Not yet sourced' : 'Not stated in the sources'}</span></td><td><span class="ns">—</span></td>`;
+  const url = e.source === 'fda-labels' && e.label ? `https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=${encodeURIComponent(e.label)}` : D.sources[e.source]?.url;
+  const name = e.source === 'fda-labels' ? 'FDA label' : 'WHO AWaRe book';
+  return `<td>${esc(e.text)}${e.indication ? `<br><span class="p-sub">${esc(e.indication)}</span>` : ''}${e.quote ? `<details class="quote"><summary>Source text</summary><q>${esc(e.quote)}</q></details>` : ''}</td>
+    <td><a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${name}</a><br><span class="p-sub">${esc(e.section)}${e.version ? ` · ${esc(e.version)}` : ''}</span></td>`;
 }
 after.drugs = () => {
   const rail = $('#rail'); const sel = $('.dcard[aria-pressed="true"]', rail);
