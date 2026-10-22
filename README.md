@@ -27,7 +27,7 @@ All data is in [`data/`](data/) as JSON so changes can be reviewed in pull reque
 | `drugs.json` | 58 antimicrobials, class, route, WHO AWaRe 2023 group | WHO AWaRe 2023, FDA labels |
 | `organisms.json` | 38 organisms and resistance phenotypes with activity codes per drug | Guideline cited per row in `basis` |
 | `sites.json` | Site-of-infection rules | Only statements made directly in an FDA label or the cited guideline |
-| `dosing.json` | Neonate, infant, child, adult, renal and hepatic dosing | **Schema only for now.** To be filled from FDA labels and the WHO AWaRe book, each entry with section, revision date and reviewer |
+| `dosing.json` | Neonate, infant, child, adult, renal and hepatic dosing for 56 of 58 drugs (39 complete, 17 partial) | Current FDA label on DailyMed (setid, section, effective date) or the WHO AWaRe book (PDF page). Each entry carries a verbatim quote. Extracted and then independently re-checked against the source; clinician review pending. No usable source yet for amphotericin B deoxycholate or molnupiravir |
 | `sources.json` | Every reference with citation and link | — |
 | `curated.json` | Hand-checked approvals and guidance | — |
 | `advances.json` | Weekly literature feed | Written by `scripts/update-advances.mjs` |

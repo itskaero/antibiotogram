@@ -450,4 +450,7 @@ details summary { cursor: pointer; font-weight: 600; font-size: .84rem; }
 .dose-table details.quote { margin-top: 4px; }
 .dose-table details.quote summary { font-size: .7rem; font-weight: 600; color: var(--fg-3); }
 .dose-table details.quote q { display: block; margin-top: 4px; font-size: .74rem; color: var(--fg-2); border-left: 2px solid var(--line-2); padding-left: 8px; quotes: none; }
-.dose-table td:nth-child(3) { white-space: nowrap; }
+.dose-table { table-layout: fixed; }
+.dose-table th:first-child, .dose-table td:first-child { width: 112px; }
+.dose-table th:nth-child(3) { width: 210px; }
+.dose-table td:nth-child(3) { font-size: .78rem; overflow-wrap: anywhere; }
