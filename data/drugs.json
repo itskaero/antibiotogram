@@ -1,0 +1,771 @@
+{
+ "version": "2026.10",
+ "drugs": [
+  {
+   "id": "AMP",
+   "short": "AMP",
+   "name": "Ampicillin",
+   "class": "Penicillin",
+   "kingdom": "antibacterial",
+   "route": "IV",
+   "aware": "Access",
+   "labelQuery": "ampicillin",
+   "terms": [
+    "ampicil"
+   ]
+  },
+  {
+   "id": "AMC",
+   "short": "AMC",
+   "name": "Amoxicillin-clavulanate",
+   "class": "Penicillin",
+   "kingdom": "antibacterial",
+   "route": "PO",
+   "aware": "Access",
+   "labelQuery": "amoxicillin and clavulanate",
+   "terms": [
+    "amoxici",
+    "clavula"
+   ]
+  },
+  {
+   "id": "TZP",
+   "short": "TZP",
+   "name": "Piperacillin-tazobactam",
+   "class": "Penicillin",
+   "kingdom": "antibacterial",
+   "route": "IV",
+   "aware": "Watch",
+   "labelQuery": "piperacillin and tazobactam",
+   "terms": [
+    "piperac",
+    "tazobac"
+   ]
+  },
+  {
+   "id": "SAM",
+   "short": "SAM",
+   "name": "Ampicillin-sulbactam",
+   "class": "Penicillin",
+   "kingdom": "antibacterial",
+   "route": "IV",
+   "aware": "Access",
+   "labelQuery": "ampicillin and sulbactam",
+   "terms": [
+    "ampicil",
+    "sulbact"
+   ]
+  },
+  {
+   "id": "CFZ",
+   "short": "CFZ",
+   "name": "Cefazolin",
+   "class": "Cephalosporin",
+   "kingdom": "antibacterial",
+   "route": "IV",
+   "aware": "Access",
+   "labelQuery": "cefazolin",
+   "terms": [
+    "cefazol"
+   ]
+  },
+  {
+   "id": "CRO",
+   "short": "CRO",
+   "name": "Ceftriaxone",
+   "class": "Cephalosporin",
+   "kingdom": "antibacterial",
+   "route": "IV",
+   "aware": "Watch",
+   "labelQuery": "ceftriaxone",
+   "terms": [
+    "ceftria"
+   ]
+  },
+  {
+   "id": "FEP",
+   "short": "FEP",
+   "name": "Cefepime",
+   "class": "Cephalosporin",
+   "kingdom": "antibacterial",
+   "route": "IV",
+   "aware": "Watch",
+   "labelQuery": "cefepime",
+   "terms": [
+    "cefepim"
+   ]
+  },
+  {
+   "id": "CPT",
+   "short": "CPT",
+   "name": "Ceftaroline",
+   "class": "Cephalosporin",
+   "kingdom": "antibacterial",
+   "route": "IV",
+   "aware": "Reserve",
+   "labelQuery": "ceftaroline",
+   "terms": [
+    "ceftaro"
+   ]
+  },
+  {
+   "id": "CT",
+   "short": "C/T",
+   "name": "Ceftolozane-tazobactam",
+   "class": "Cephalosporin",
+   "kingdom": "antibacterial",
+   "route": "IV",
+   "aware": "Reserve",
+   "labelQuery": "ceftolozane and tazobactam",
+   "terms": [
+    "ceftolo",
+    "tazobac"
+   ]
+  },
+  {
+   "id": "MEM",
+   "short": "MEM",
+   "name": "Meropenem",
+   "class": "Carbapenem",
+   "kingdom": "antibacterial",
+   "route": "IV",
+   "aware": "Watch",
+   "labelQuery": "meropenem",
+   "terms": [
+    "meropen"
+   ]
+  },
+  {
+   "id": "CA",
+   "short": "C/A",
+   "name": "Ceftazidime-avibactam",
+   "class": "BL/BLI",
+   "kingdom": "antibacterial",
+   "route": "IV",
+   "aware": "Reserve",
+   "labelQuery": "ceftazidime and avibactam",
+   "terms": [
+    "ceftazi",
+    "avibact"
+   ]
+  },
+  {
+   "id": "IR",
+   "short": "I/R",
+   "name": "Imipenem-relebactam",
+   "class": "BL/BLI",
+   "kingdom": "antibacterial",
+   "route": "IV",
+   "aware": "Reserve",
+   "labelQuery": "imipenem, cilastatin, and relebactam",
+   "terms": [
+    "imipene",
+    "relebac"
+   ]
+  },
+  {
+   "id": "AA",
+   "short": "A/A",
+   "name": "Aztreonam-avibactam",
+   "class": "BL/BLI",
+   "kingdom": "antibacterial",
+   "route": "IV",
+   "aware": "Not listed",
+   "labelQuery": "aztreonam and avibactam",
+   "terms": [
+    "aztreon",
+    "avibact"
+   ]
+  },
+  {
+   "id": "FDC",
+   "short": "FDC",
+   "name": "Cefiderocol",
+   "class": "Siderophore cephalosporin",
+   "kingdom": "antibacterial",
+   "route": "IV",
+   "aware": "Reserve",
+   "labelQuery": "cefiderocol",
+   "terms": [
+    "cefider"
+   ]
+  },
+  {
+   "id": "VAN",
+   "short": "VAN",
+   "name": "Vancomycin",
+   "class": "Glycopeptide",
+   "kingdom": "antibacterial",
+   "route": "IV/PO",
+   "aware": "Watch",
+   "labelQuery": "vancomycin",
+   "terms": [
+    "vancomy"
+   ]
+  },
+  {
+   "id": "DAL",
+   "short": "DAL",
+   "name": "Dalbavancin",
+   "class": "Glycopeptide",
+   "kingdom": "antibacterial",
+   "route": "IV",
+   "aware": "Reserve",
+   "labelQuery": "dalbavancin",
+   "terms": [
+    "dalbava"
+   ]
+  },
+  {
+   "id": "ORI",
+   "short": "ORI",
+   "name": "Oritavancin",
+   "class": "Glycopeptide",
+   "kingdom": "antibacterial",
+   "route": "IV",
+   "aware": "Reserve",
+   "labelQuery": "oritavancin",
+   "terms": [
+    "oritava"
+   ]
+  },
+  {
+   "id": "DAP",
+   "short": "DAP",
+   "name": "Daptomycin",
+   "class": "Lipopeptide",
+   "kingdom": "antibacterial",
+   "route": "IV",
+   "aware": "Reserve",
+   "labelQuery": "daptomycin",
+   "terms": [
+    "daptomy"
+   ]
+  },
+  {
+   "id": "LZD",
+   "short": "LZD",
+   "name": "Linezolid",
+   "class": "Oxazolidinone",
+   "kingdom": "antibacterial",
+   "route": "IV/PO",
+   "aware": "Reserve",
+   "labelQuery": "linezolid",
+   "terms": [
+    "linezol"
+   ]
+  },
+  {
+   "id": "DOX",
+   "short": "DOX",
+   "name": "Doxycycline",
+   "class": "Tetracycline",
+   "kingdom": "antibacterial",
+   "route": "PO/IV",
+   "aware": "Access",
+   "labelQuery": "doxycycline",
+   "terms": [
+    "doxycyc"
+   ]
+  },
+  {
+   "id": "TGC",
+   "short": "TGC",
+   "name": "Tigecycline",
+   "class": "Tetracycline",
+   "kingdom": "antibacterial",
+   "route": "IV",
+   "aware": "Reserve",
+   "labelQuery": "tigecycline",
+   "terms": [
+    "tigecyc"
+   ]
+  },
+  {
+   "id": "OMA",
+   "short": "OMA",
+   "name": "Omadacycline",
+   "class": "Tetracycline",
+   "kingdom": "antibacterial",
+   "route": "PO/IV",
+   "aware": "Reserve",
+   "labelQuery": "omadacycline",
+   "terms": [
+    "omadacy"
+   ]
+  },
+  {
+   "id": "GEN",
+   "short": "GEN",
+   "name": "Gentamicin",
+   "class": "Aminoglycoside",
+   "kingdom": "antibacterial",
+   "route": "IV",
+   "aware": "Access",
+   "labelQuery": "gentamicin",
+   "terms": [
+    "gentami"
+   ]
+  },
+  {
+   "id": "AMK",
+   "short": "AMK",
+   "name": "Amikacin",
+   "class": "Aminoglycoside",
+   "kingdom": "antibacterial",
+   "route": "IV",
+   "aware": "Access",
+   "labelQuery": "amikacin",
+   "terms": [
+    "amikaci"
+   ]
+  },
+  {
+   "id": "CIP",
+   "short": "CIP",
+   "name": "Ciprofloxacin",
+   "class": "Fluoroquinolone",
+   "kingdom": "antibacterial",
+   "route": "PO/IV",
+   "aware": "Watch",
+   "labelQuery": "ciprofloxacin",
+   "terms": [
+    "ciprofl"
+   ]
+  },
+  {
+   "id": "LVX",
+   "short": "LVX",
+   "name": "Levofloxacin",
+   "class": "Fluoroquinolone",
+   "kingdom": "antibacterial",
+   "route": "PO/IV",
+   "aware": "Watch",
+   "labelQuery": "levofloxacin",
+   "terms": [
+    "levoflo"
+   ]
+  },
+  {
+   "id": "MXF",
+   "short": "MXF",
+   "name": "Moxifloxacin",
+   "class": "Fluoroquinolone",
+   "kingdom": "antibacterial",
+   "route": "PO/IV",
+   "aware": "Watch",
+   "labelQuery": "moxifloxacin",
+   "legacy": true,
+   "terms": [
+    "moxiflo"
+   ]
+  },
+  {
+   "id": "SXT",
+   "short": "SXT",
+   "name": "TMP-SMX",
+   "class": "Sulfonamide",
+   "kingdom": "antibacterial",
+   "route": "PO/IV",
+   "aware": "Access",
+   "labelQuery": "sulfamethoxazole and trimethoprim",
+   "terms": [
+    "trimeth",
+    "sulfame"
+   ]
+  },
+  {
+   "id": "FOS",
+   "short": "FOS",
+   "name": "Fosfomycin",
+   "class": "Phosphonic acid",
+   "kingdom": "antibacterial",
+   "route": "PO / IV (IV availability varies)",
+   "aware": "Watch (oral) · Reserve (IV)",
+   "labelQuery": "fosfomycin",
+   "legacy": true,
+   "terms": [
+    "fosfomy"
+   ]
+  },
+  {
+   "id": "CHL",
+   "short": "CHL",
+   "name": "Chloramphenicol",
+   "class": "Amphenicol",
+   "kingdom": "antibacterial",
+   "route": "PO/IV",
+   "aware": "Access",
+   "labelQuery": "chloramphenicol",
+   "legacy": true,
+   "terms": [
+    "chloram"
+   ]
+  },
+  {
+   "id": "MTZ",
+   "short": "MTZ",
+   "name": "Metronidazole",
+   "class": "Nitroimidazole",
+   "kingdom": "antibacterial",
+   "route": "PO/IV",
+   "aware": "Access",
+   "labelQuery": "metronidazole",
+   "terms": [
+    "metroni"
+   ]
+  },
+  {
+   "id": "AZM",
+   "short": "AZM",
+   "name": "Azithromycin",
+   "class": "Macrolide",
+   "kingdom": "antibacterial",
+   "route": "PO/IV",
+   "aware": "Watch",
+   "labelQuery": "azithromycin",
+   "terms": [
+    "azithro"
+   ]
+  },
+  {
+   "id": "PMB",
+   "short": "PMB",
+   "name": "Polymyxin B",
+   "class": "Polymyxin",
+   "kingdom": "antibacterial",
+   "route": "IV",
+   "aware": "Reserve",
+   "labelQuery": "polymyxin b",
+   "terms": [
+    "polymyx"
+   ]
+  },
+  {
+   "id": "GEP",
+   "short": "GEP",
+   "name": "Gepotidacin",
+   "class": "Triazaacenaphthylene",
+   "kingdom": "antibacterial",
+   "route": "PO",
+   "aware": "Not listed",
+   "labelQuery": "gepotidacin",
+   "terms": [
+    "gepotid"
+   ]
+  },
+  {
+   "id": "ZOL",
+   "short": "ZOL",
+   "name": "Zoliflodacin",
+   "class": "Spiropyrimidinetrione",
+   "kingdom": "antibacterial",
+   "route": "PO",
+   "aware": "Not listed",
+   "labelQuery": "zoliflodacin",
+   "terms": [
+    "zoliflo"
+   ]
+  },
+  {
+   "id": "FLU",
+   "short": "FLU",
+   "name": "Fluconazole",
+   "class": "Triazole",
+   "kingdom": "antifungal",
+   "route": "PO/IV",
+   "aware": null,
+   "labelQuery": "fluconazole",
+   "terms": [
+    "flucona"
+   ]
+  },
+  {
+   "id": "VOR",
+   "short": "VOR",
+   "name": "Voriconazole",
+   "class": "Triazole",
+   "kingdom": "antifungal",
+   "route": "PO/IV",
+   "aware": null,
+   "labelQuery": "voriconazole",
+   "terms": [
+    "voricon"
+   ]
+  },
+  {
+   "id": "POS",
+   "short": "POS",
+   "name": "Posaconazole",
+   "class": "Triazole",
+   "kingdom": "antifungal",
+   "route": "PO/IV",
+   "aware": null,
+   "labelQuery": "posaconazole",
+   "terms": [
+    "posacon"
+   ]
+  },
+  {
+   "id": "ISA",
+   "short": "ISA",
+   "name": "Isavuconazole",
+   "class": "Triazole",
+   "kingdom": "antifungal",
+   "route": "PO/IV",
+   "aware": null,
+   "labelQuery": "isavuconazole",
+   "terms": [
+    "isavuco"
+   ]
+  },
+  {
+   "id": "CAS",
+   "short": "CAS",
+   "name": "Caspofungin",
+   "class": "Echinocandin",
+   "kingdom": "antifungal",
+   "route": "IV",
+   "aware": null,
+   "labelQuery": "caspofungin",
+   "terms": [
+    "caspofu"
+   ]
+  },
+  {
+   "id": "MIC",
+   "short": "MIC",
+   "name": "Micafungin",
+   "class": "Echinocandin",
+   "kingdom": "antifungal",
+   "route": "IV",
+   "aware": null,
+   "labelQuery": "micafungin",
+   "terms": [
+    "micafun"
+   ]
+  },
+  {
+   "id": "ANID",
+   "short": "ANID",
+   "name": "Anidulafungin",
+   "class": "Echinocandin",
+   "kingdom": "antifungal",
+   "route": "IV",
+   "aware": null,
+   "labelQuery": "anidulafungin",
+   "terms": [
+    "anidula"
+   ]
+  },
+  {
+   "id": "AMB",
+   "short": "AMB",
+   "name": "Amphotericin B",
+   "class": "Polyene",
+   "kingdom": "antifungal",
+   "route": "IV",
+   "aware": null,
+   "labelQuery": "amphotericin b",
+   "terms": [
+    "amphote"
+   ]
+  },
+  {
+   "id": "LAMB",
+   "short": "LAmB",
+   "name": "Liposomal AmB",
+   "class": "Polyene",
+   "kingdom": "antifungal",
+   "route": "IV",
+   "aware": null,
+   "labelQuery": "amphotericin B liposome",
+   "terms": [
+    "liposom",
+    "amphote"
+   ]
+  },
+  {
+   "id": "FLUCY",
+   "short": "5-FC",
+   "name": "Flucytosine",
+   "class": "Pyrimidine analogue",
+   "kingdom": "antifungal",
+   "route": "PO",
+   "aware": null,
+   "labelQuery": "flucytosine",
+   "terms": [
+    "flucyto"
+   ]
+  },
+  {
+   "id": "PEN",
+   "short": "PEN",
+   "name": "Pentamidine",
+   "class": "Antiprotozoal (anti-Pneumocystis)",
+   "kingdom": "antifungal",
+   "route": "IV/Inh.",
+   "aware": null,
+   "labelQuery": "pentamidine",
+   "terms": [
+    "pentami"
+   ]
+  },
+  {
+   "id": "ATO",
+   "short": "ATO",
+   "name": "Atovaquone",
+   "class": "Antiprotozoal (anti-Pneumocystis)",
+   "kingdom": "antifungal",
+   "route": "PO",
+   "aware": null,
+   "labelQuery": "atovaquone",
+   "terms": [
+    "atovaqu"
+   ]
+  },
+  {
+   "id": "OSE",
+   "short": "OSE",
+   "name": "Oseltamivir",
+   "class": "Neuraminidase inh.",
+   "kingdom": "antiviral",
+   "route": "PO",
+   "aware": null,
+   "labelQuery": "oseltamivir",
+   "terms": [
+    "oseltam"
+   ]
+  },
+  {
+   "id": "BAL",
+   "short": "BAL",
+   "name": "Baloxavir",
+   "class": "Cap-endo. inh.",
+   "kingdom": "antiviral",
+   "route": "PO",
+   "aware": null,
+   "labelQuery": "baloxavir",
+   "terms": [
+    "baloxav"
+   ]
+  },
+  {
+   "id": "NIM",
+   "short": "NIM",
+   "name": "Nirmatrelvir-ritonavir",
+   "class": "Protease inh.",
+   "kingdom": "antiviral",
+   "route": "PO",
+   "aware": null,
+   "labelQuery": "nirmatrelvir",
+   "terms": [
+    "nirmatr"
+   ]
+  },
+  {
+   "id": "REM",
+   "short": "REM",
+   "name": "Remdesivir",
+   "class": "RNA-pol. inh.",
+   "kingdom": "antiviral",
+   "route": "IV",
+   "aware": null,
+   "labelQuery": "remdesivir",
+   "terms": [
+    "remdesi"
+   ]
+  },
+  {
+   "id": "MOL",
+   "short": "MOL",
+   "name": "Molnupiravir",
+   "class": "RNA-pol. inh.",
+   "kingdom": "antiviral",
+   "route": "PO",
+   "aware": null,
+   "labelQuery": "molnupiravir",
+   "terms": [
+    "molnupi"
+   ]
+  },
+  {
+   "id": "ACY",
+   "short": "ACY",
+   "name": "Acyclovir",
+   "class": "Nucleoside analogue",
+   "kingdom": "antiviral",
+   "route": "PO/IV",
+   "aware": null,
+   "labelQuery": "acyclovir",
+   "terms": [
+    "acyclov"
+   ]
+  },
+  {
+   "id": "VAL",
+   "short": "VAL",
+   "name": "Valacyclovir",
+   "class": "Nucleoside analogue",
+   "kingdom": "antiviral",
+   "route": "PO",
+   "aware": null,
+   "labelQuery": "valacyclovir",
+   "terms": [
+    "valacyc"
+   ]
+  },
+  {
+   "id": "GAN",
+   "short": "GAN",
+   "name": "Ganciclovir",
+   "class": "Nucleoside analogue",
+   "kingdom": "antiviral",
+   "route": "IV",
+   "aware": null,
+   "labelQuery": "ganciclovir",
+   "terms": [
+    "gancicl"
+   ]
+  },
+  {
+   "id": "VGAN",
+   "short": "VGAN",
+   "name": "Valganciclovir",
+   "class": "Nucleoside analogue",
+   "kingdom": "antiviral",
+   "route": "PO",
+   "aware": null,
+   "labelQuery": "valganciclovir",
+   "terms": [
+    "valganc"
+   ]
+  },
+  {
+   "id": "FOS2",
+   "short": "FOSC",
+   "name": "Foscarnet",
+   "class": "Pyrophosphate analogue",
+   "kingdom": "antiviral",
+   "route": "IV",
+   "aware": null,
+   "labelQuery": "foscarnet",
+   "terms": [
+    "foscarn"
+   ]
+  },
+  {
+   "id": "MAR",
+   "short": "MAR",
+   "name": "Maribavir",
+   "class": "Kinase inh.",
+   "kingdom": "antiviral",
+   "route": "PO",
+   "aware": null,
+   "labelQuery": "maribavir",
+   "terms": [
+    "maribav"
+   ]
+  }
+ ]
+}

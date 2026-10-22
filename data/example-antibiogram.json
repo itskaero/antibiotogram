@@ -1,0 +1,15 @@
+{
+ "example": true,
+ "unit": "Example unit (illustrative numbers)",
+ "period": { "from": "2025-01-01", "to": "2025-12-31" },
+ "method": "First isolate per patient (CLSI M39)",
+ "rows": [
+  { "organism": "Staphylococcus aureus", "isolates": 64, "cells": { "Cefazolin": { "n": 64, "pctS": 71 }, "Vancomycin": { "n": 64, "pctS": 100 }, "Linezolid": { "n": 60, "pctS": 100 }, "Trimethoprim-Sulfamethoxazole": { "n": 62, "pctS": 88 }, "Doxycycline": { "n": 41, "pctS": 90 }, "Gentamicin": { "n": 58, "pctS": 84 } } },
+  { "organism": "Enterococcus faecalis", "isolates": 22, "cells": { "Ampicillin": { "n": 22, "pctS": 95 }, "Vancomycin": { "n": 22, "pctS": 91 }, "Linezolid": { "n": 20, "pctS": 100 } } },
+  { "organism": "Escherichia coli", "isolates": 88, "cells": { "Ampicillin": { "n": 88, "pctS": 18 }, "Ceftriaxone": { "n": 88, "pctS": 41 }, "Cefepime": { "n": 86, "pctS": 47 }, "Piperacillin-Tazobactam": { "n": 88, "pctS": 72 }, "Meropenem": { "n": 88, "pctS": 96 }, "Amikacin": { "n": 85, "pctS": 93 }, "Gentamicin": { "n": 88, "pctS": 66 }, "Ciprofloxacin": { "n": 87, "pctS": 34 }, "Trimethoprim-Sulfamethoxazole": { "n": 88, "pctS": 38 } } },
+  { "organism": "Klebsiella pneumoniae", "isolates": 52, "cells": { "Ceftriaxone": { "n": 52, "pctS": 27 }, "Cefepime": { "n": 52, "pctS": 31 }, "Piperacillin-Tazobactam": { "n": 52, "pctS": 44 }, "Meropenem": { "n": 52, "pctS": 58 }, "Ceftazidime-Avibactam": { "n": 24, "pctS": 63 }, "Amikacin": { "n": 50, "pctS": 70 }, "Gentamicin": { "n": 52, "pctS": 48 }, "Ciprofloxacin": { "n": 52, "pctS": 29 }, "Polymyxin B": { "n": 21, "pctS": 90 } } },
+  { "organism": "Pseudomonas aeruginosa", "isolates": 37, "cells": { "Cefepime": { "n": 37, "pctS": 76 }, "Piperacillin-Tazobactam": { "n": 37, "pctS": 73 }, "Meropenem": { "n": 37, "pctS": 70 }, "Amikacin": { "n": 36, "pctS": 89 }, "Ciprofloxacin": { "n": 37, "pctS": 78 }, "Polymyxin B": { "n": 18, "pctS": 100 } } },
+  { "organism": "Acinetobacter baumannii", "isolates": 29, "cells": { "Meropenem": { "n": 29, "pctS": 14 }, "Ampicillin-Sulbactam": { "n": 26, "pctS": 35 }, "Amikacin": { "n": 29, "pctS": 21 }, "Polymyxin B": { "n": 27, "pctS": 93 }, "Tigecycline": { "n": 19, "pctS": 68 } } },
+  { "organism": "Candida albicans", "isolates": 15, "cells": { "Fluconazole": { "n": 15, "pctS": 93 }, "Micafungin": { "n": 15, "pctS": 100 }, "Amphotericin B": { "n": 12, "pctS": 100 } } }
+ ]
+}

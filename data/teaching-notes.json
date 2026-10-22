@@ -1,0 +1,150 @@
+{
+ "author": "Antibiotogram editors",
+ "status": "Teaching commentary — not a dosing or treatment recommendation",
+ "notes": {
+  "AMP": {
+   "tagline": "Enterococcus anchor",
+   "summary": "Classic cell-wall drug for susceptible Enterococcus faecalis and selected streptococci.",
+   "shines": "Best remembered for enterococcal infections, especially when paired for endocarditis synergy.",
+   "trap": "Do not expect cephalosporin-like Gram-negative coverage. It is narrow and easy to over-credit."
+  },
+  "TZP": {
+   "tagline": "Broad empiric workhorse",
+   "summary": "Strong single-agent breadth for many hospital infections, especially when anaerobes matter.",
+   "shines": "Useful when you need Pseudomonas plus anaerobic coverage in one bag.",
+   "trap": "Do not lean on it for serious ESBL infections just because the lab says susceptible."
+  },
+  "SAM": {
+   "tagline": "Sulbactam matters",
+   "summary": "Good for oral flora and anaerobes, and worth remembering because sulbactam itself matters for Acinetobacter.",
+   "shines": "Helpful teaching drug for aspiration syndromes, bite wounds, and CRAB discussions.",
+   "trap": "The useful CRAB idea is the sulbactam exposure, not magical broad coverage against everything."
+  },
+  "CFZ": {
+   "tagline": "MSSA first-line memory hook",
+   "summary": "One of the cleanest answers for MSSA bacteremia and skin-soft tissue infections.",
+   "shines": "A good reminder that a narrow beta-lactam often beats a broader agent for MSSA.",
+   "trap": "Do not mentally upgrade it into MRSA or Enterococcus coverage."
+  },
+  "CRO": {
+   "tagline": "Daily broad-spectrum staple",
+   "summary": "Strong daily cephalosporin for many community infections and a frequent hospital default.",
+   "shines": "Great teaching drug for pneumococcus, H. influenzae, meningitis patterns, and mixed community syndromes.",
+   "trap": "It does not cover Pseudomonas and it is weak for AmpC derepression problems like Enterobacter cloacae complex."
+  },
+  "FEP": {
+   "tagline": "AmpC-aware cephalosporin",
+   "summary": "Broad cephalosporin with anti-pseudomonal activity and a better teaching role around inducible AmpC.",
+   "shines": "Useful when the trainee needs to separate cefepime from ceftriaxone in Enterobacter-type organisms.",
+   "trap": "It still does not cover anaerobes and it is not a universal answer for all resistant Gram-negatives."
+  },
+  "CPT": {
+   "tagline": "Anti-MRSA cephalosporin",
+   "summary": "A cephalosporin that matters because it reaches MRSA and often appears in salvage combinations.",
+   "shines": "High-yield for MRSA teaching and for the daptomycin-plus-ceftaroline synergy concept.",
+   "trap": "Do not confuse anti-MRSA activity with anti-pseudomonal activity. It does not solve that problem."
+  },
+  "CT": {
+   "tagline": "Pseudomonas-focused modern beta-lactam",
+   "summary": "A modern choice that trainees should associate with difficult Pseudomonas rather than routine use.",
+   "shines": "Good mental anchor for MDR Pseudomonas when standard anti-pseudomonal beta-lactams start failing.",
+   "trap": "It is not the same as ceftaroline and it is not an anaerobe solution."
+  },
+  "MEM": {
+   "tagline": "Carbapenem benchmark",
+   "summary": "Core reference carbapenem for ESBL and many severe Gram-negative infections.",
+   "shines": "Useful benchmark when trainees need to compare newer BL/BLI agents against an old standard.",
+   "trap": "Do not assume all carbapenem-resistant organisms are still partly carbapenem treatable."
+  },
+  "CA": {
+   "tagline": "KPC and OXA-48 memory hook",
+   "summary": "High-yield reserve agent for KPC and some OXA-48-like CRE discussions.",
+   "shines": "A key teaching drug for serine carbapenemases and why mechanism matters.",
+   "trap": "It does not fix metallo-beta-lactamases like NDM."
+  },
+  "AA": {
+   "tagline": "NDM teaching pearl",
+   "summary": "The standout option on this page for MBL logic, especially NDM-heavy salvage scenarios.",
+   "shines": "Excellent concept drug for explaining why aztreonam plus inhibitor logic matters in MBL infections.",
+   "trap": "It is still a specialist-space drug and should not be mentally promoted into a routine broad-spectrum default."
+  },
+  "FDC": {
+   "tagline": "Last-line Gram-negative tool",
+   "summary": "Siderophore cephalosporin that belongs in the conversation when resistant Gram-negatives have exhausted standard options.",
+   "shines": "Good for NDM, XDR Pseudomonas, and CRAB discussions where trainees need a modern salvage anchor.",
+   "trap": "Coverage on paper does not remove the need for source control, repeat susceptibility checks, and specialist input."
+  },
+  "VAN": {
+   "tagline": "MRSA baseline comparator",
+   "summary": "The usual baseline comparator for MRSA and severe Gram-positive infections.",
+   "shines": "Useful as the starting point for thinking through MRSA, enterococcal coverage, and C. difficile PO-specific use.",
+   "trap": "Remember that IV vancomycin and oral vancomycin solve very different problems."
+  },
+  "DAP": {
+   "tagline": "Bacteremia and VRE rescue agent",
+   "summary": "Important for MRSA salvage and VRE, especially outside the lung.",
+   "shines": "High-yield when paired with ceftaroline in persistent MRSA bacteremia or VISA-type problems.",
+   "trap": "Do not reach for it in pneumonia. The lung is the classic catch."
+  },
+  "LZD": {
+   "tagline": "Oral anti-MRSA and VRE option",
+   "summary": "A powerful oral-capable Gram-positive drug that trainees remember because it changes step-down planning.",
+   "shines": "Useful for MRSA pneumonia logic and for VRE discussions when oral therapy matters.",
+   "trap": "Myelosuppression, serotonin interactions, and prolonged-use toxicity are the exam traps."
+  },
+  "DOX": {
+   "tagline": "Oral flexibility",
+   "summary": "Flexible oral-heavy drug for atypicals, some skin infections, and selected MDR organisms like Stenotrophomonas.",
+   "shines": "Easy teaching bridge between atypicals and outpatient-friendly therapy.",
+   "trap": "It is not a universal staph or Gram-negative answer just because it comes in a tablet."
+  },
+  "OMA": {
+   "tagline": "Newer oral or IV tetracycline",
+   "summary": "Useful trainee card because it spans MRSA and atypicals while offering oral or IV flexibility.",
+   "shines": "A clean example of a newer drug that changes oral step-down thinking without being universally first-line.",
+   "trap": "It should stay a targeted tool, not a substitute for understanding the underlying syndrome."
+  },
+  "GEN": {
+   "tagline": "Synergy before breadth",
+   "summary": "Aminoglycoside teaching value is often about synergy and careful use rather than mindless double coverage.",
+   "shines": "Classic pair with ampicillin for enterococcal endocarditis teaching.",
+   "trap": "Nephrotoxicity and ototoxicity quickly cancel any theoretical benefit when used badly."
+  },
+  "MXF": {
+   "tagline": "Respiratory and atypical-heavy fluoroquinolone",
+   "summary": "Worth a return mention because it still shows up where preserved susceptibility, atypical coverage, and some anaerobic reach are useful.",
+   "shines": "A useful contrast drug: stronger respiratory and atypical framing than ciprofloxacin, but not an anti-pseudomonal answer.",
+   "trap": "QT issues, collateral damage, and over-crediting its spectrum are the common mistakes."
+  },
+  "SXT": {
+   "tagline": "Oral high-yield utility",
+   "summary": "Commonly useful oral drug that trainees should remember for selected UTIs, skin infections, and Stenotrophomonas.",
+   "shines": "A good teaching card for why oral options still matter in 2026 discussions.",
+   "trap": "Potassium, creatinine interpretation, and resistance variation are the usual catches."
+  },
+  "FOS": {
+   "tagline": "Older agent with selective MDR return",
+   "summary": "A real return agent, but mostly in syndrome-specific and susceptibility-driven situations, especially urinary isolates and selected MDR combination strategies.",
+   "shines": "Best remembered for resistant urinary Enterobacterales and as a mechanism-distinct partner rather than a universal salvage monotherapy.",
+   "trap": "Its role is much narrower than a giant spectrum chart implies. Route, source, and regional IV access all matter."
+  },
+  "CHL": {
+   "tagline": "Legacy salvage only",
+   "summary": "Historically broad, now mostly a niche or resource-limited salvage discussion because toxicity changed the risk-benefit balance.",
+   "shines": "Useful on a trainee page because it reminds people that old broad agents sometimes reappear when options collapse.",
+   "trap": "Do not romanticize it. Hematologic toxicity and limited modern routine use are the point."
+  },
+  "MTZ": {
+   "tagline": "Anaerobe specialist",
+   "summary": "The clearest anaerobe memory anchor on the page.",
+   "shines": "Important when a trainee needs to fix a regimen that forgot anaerobes.",
+   "trap": "It is not a broad abdominal drug on its own. It usually needs a partner."
+  },
+  "AZM": {
+   "tagline": "Atypical coverage shortcut",
+   "summary": "Still one of the easiest ways to remember atypical coverage.",
+   "shines": "Useful when comparing macrolides against fluoroquinolones or doxycycline in atypical pneumonia thinking.",
+   "trap": "It does not rescue beta-lactam failures against resistant typical pathogens."
+  }
+ }
+}
