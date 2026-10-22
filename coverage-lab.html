@@ -1,0 +1,873 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+</head>
+<body>
+<title>Coverage Lab</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<style>
+/* Layout: a horizontal rail of drug cards drives a honeycomb coverage map; summary, partners and notes sit beside it; the advances feed runs underneath. */
+:root {
+  --bg: #0a0e15; --panel: #11161f; --panel-2: #161c27; --card: #141a24;
+  --line: #222b38; --line-2: #2c3747;
+  --fg: #e8edf4; --fg-2: #9ba7b8; --fg-3: #687487;
+  --accent: #4f8cff; --accent-soft: rgba(79,140,255,.16);
+  --b: #f0a23b; --b-soft: rgba(240,162,59,.16);
+  --both: #e9f0ff;
+  --a-doc: #d6e4ff; --a-full: #4f8cff; --a-part: #2b5bb5; --a-var: #1c3566; --a-weak: #1a2230; --a-none: #171e29;
+  --hex-bg: #121822;
+  --lbl-strong: #08101e; --lbl-soft: #d6e1f2;
+  --gap: #ff5f56; --ok: #3ecf8e;
+  --shadow: 0 18px 40px -18px rgba(0,0,0,.7);
+  --font-ui: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-data: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --ease: cubic-bezier(.2,.8,.2,1);
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #eef1f6; --panel: #ffffff; --panel-2: #f5f7fb; --card: #ffffff;
+    --line: #dbe1ea; --line-2: #c7d0dd;
+    --fg: #101726; --fg-2: #4a5567; --fg-3: #77829a;
+    --accent: #2160e0; --accent-soft: rgba(33,96,224,.10);
+    --b: #b86200; --b-soft: rgba(184,98,0,.12);
+    --both: #0b2560;
+    --a-doc: #0b2f86; --a-full: #2f6fe6; --a-part: #8fb2f2; --a-var: #c9daf8; --a-weak: #e9edf3; --a-none: #e2e7ee;
+    --hex-bg: #e6eaf0;
+    --lbl-strong: #ffffff; --lbl-soft: #22304a;
+    --gap: #d63a31; --ok: #14935c;
+    --shadow: 0 18px 40px -22px rgba(30,45,80,.35);
+    color-scheme: light;
+  }
+}
+:root[data-theme="light"] {
+  --bg: #eef1f6; --panel: #ffffff; --panel-2: #f5f7fb; --card: #ffffff;
+  --line: #dbe1ea; --line-2: #c7d0dd;
+  --fg: #101726; --fg-2: #4a5567; --fg-3: #77829a;
+  --accent: #2160e0; --accent-soft: rgba(33,96,224,.10);
+  --b: #b86200; --b-soft: rgba(184,98,0,.12);
+  --both: #0b2560;
+  --a-doc: #0b2f86; --a-full: #2f6fe6; --a-part: #8fb2f2; --a-var: #c9daf8; --a-weak: #e9edf3; --a-none: #e2e7ee;
+  --hex-bg: #e6eaf0;
+  --lbl-strong: #ffffff; --lbl-soft: #22304a;
+  --gap: #d63a31; --ok: #14935c;
+  --shadow: 0 18px 40px -22px rgba(30,45,80,.35);
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--font-ui); font-size: 14px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.shell { max-width: 1320px; margin: 0 auto; padding-block: 24px 56px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 20px; }
+
+/* ── Header ───────────────────────────────────────────── */
+.head { display: flex; align-items: center; gap: 14px 20px; flex-wrap: wrap; }
+.brand { display: flex; align-items: center; gap: 12px; margin-right: auto; }
+.brand-mark { width: 36px; height: 36px; border-radius: 10px; background: var(--accent); display: grid; place-items: center; }
+.brand-mark svg { width: 20px; height: 20px; }
+.brand h1 { margin: 0; font-size: 1.35rem; font-weight: 800; letter-spacing: -.02em; line-height: 1.1; }
+.brand p { margin: 0; color: var(--fg-2); font-size: .82rem; }
+.search { display: flex; align-items: center; gap: 8px; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 0 12px; height: 38px; min-width: 0; flex: 0 1 260px; }
+.search svg { width: 15px; height: 15px; color: var(--fg-3); flex: none; }
+.search input { background: none; border: 0; outline: 0; color: var(--fg); font: inherit; width: 100%; min-width: 0; }
+.search input::placeholder { color: var(--fg-3); }
+.toggle { display: inline-flex; align-items: center; gap: 8px; height: 38px; padding: 0 14px; border-radius: 10px; border: 1px solid var(--line); background: var(--panel); cursor: pointer; font-weight: 600; font-size: .85rem; }
+.toggle[aria-pressed="true"] { border-color: var(--b); background: var(--b-soft); color: var(--fg); }
+.toggle .sw { width: 26px; height: 15px; border-radius: 99px; background: var(--line-2); position: relative; transition: background .25s var(--ease); }
+.toggle .sw::after { content: ""; position: absolute; top: 2px; left: 2px; width: 11px; height: 11px; border-radius: 50%; background: var(--fg); transition: transform .25s var(--ease); }
+.toggle[aria-pressed="true"] .sw { background: var(--b); }
+.toggle[aria-pressed="true"] .sw::after { transform: translateX(11px); background: var(--panel); }
+
+/* ── Rail ─────────────────────────────────────────────── */
+.rail-wrap { display: grid; gap: 12px; }
+.rail-bar { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.chips { display: flex; gap: 6px; flex-wrap: wrap; margin-right: auto; }
+.chip { border: 1px solid var(--line); background: transparent; color: var(--fg-2); border-radius: 99px; padding: 5px 12px; font-size: .8rem; font-weight: 600; cursor: pointer; transition: all .2s var(--ease); }
+.chip:hover { color: var(--fg); border-color: var(--line-2); }
+.chip[aria-pressed="true"] { background: var(--accent-soft); color: var(--fg); border-color: var(--accent); }
+.rail-hint { color: var(--fg-3); font-size: .78rem; }
+.nav-btn { width: 34px; height: 34px; border-radius: 9px; border: 1px solid var(--line); background: var(--panel); display: grid; place-items: center; cursor: pointer; }
+.nav-btn svg { width: 16px; height: 16px; }
+.rail {
+  display: flex; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: 4px;
+  padding: 12px 4px 18px; scrollbar-width: thin; scrollbar-color: var(--line-2) transparent;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 24px, #000 calc(100% - 24px), transparent 100%);
+          mask-image: linear-gradient(90deg, transparent 0, #000 24px, #000 calc(100% - 24px), transparent 100%);
+  cursor: grab;
+}
+.rail.dragging { cursor: grabbing; scroll-snap-type: none; }
+.rail.dragging .dcard { pointer-events: none; }
+.rail-empty { color: var(--fg-3); padding: 40px 8px; }
+
+.dcard {
+  --h: 215;
+  position: relative; flex: 0 0 236px; height: 150px; scroll-snap-align: start;
+  text-align: left; cursor: pointer; padding: 14px 16px 12px; border-radius: 16px;
+  border: 1px solid var(--line);
+  background:
+    radial-gradient(120% 90% at 100% 0%, hsl(var(--h) 80% 60% / .16), transparent 55%),
+    linear-gradient(160deg, var(--card), var(--panel));
+  display: grid; grid-template-rows: auto 1fr auto; gap: 2px; overflow: hidden;
+  transition: transform .45s var(--ease), border-color .3s, box-shadow .45s var(--ease), opacity .3s;
+}
+.dcard::before { /* sheen that sweeps across on selection */
+  content: ""; position: absolute; inset: -40% -60%; pointer-events: none;
+  background: linear-gradient(105deg, transparent 42%, rgba(255,255,255,.10) 50%, transparent 58%);
+  transform: translateX(-60%); opacity: 0;
+}
+.dcard:hover { transform: translateY(-3px); border-color: var(--line-2); }
+.dcard.is-a { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent), var(--shadow); transform: translateY(-6px); }
+.dcard.is-b { border-color: var(--b); box-shadow: 0 0 0 1px var(--b), var(--shadow); transform: translateY(-6px); }
+.dcard.flash::before { animation: sheen .9s var(--ease); }
+@keyframes sheen { 0% { transform: translateX(-60%); opacity: 1; } 100% { transform: translateX(60%); opacity: 0; } }
+.dc-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.dc-class { font-size: .68rem; text-transform: uppercase; letter-spacing: .08em; color: var(--fg-2); font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dc-route { font-family: var(--font-data); font-size: .66rem; color: var(--fg-2); border: 1px solid var(--line-2); border-radius: 6px; padding: 1px 6px; white-space: nowrap; }
+.dc-mid { align-self: center; min-width: 0; }
+.dc-code { font-family: var(--font-data); font-weight: 600; font-size: 1.55rem; letter-spacing: .02em; line-height: 1.1; display: flex; align-items: baseline; gap: 8px; }
+.dc-legacy { font-family: var(--font-ui); font-size: .62rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--fg-3); }
+.dc-name { color: var(--fg-2); font-size: .8rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dc-foot { display: flex; align-items: flex-end; justify-content: space-between; gap: 10px; }
+.fp { display: flex; gap: 4px; align-items: flex-end; height: 18px; }
+.fp-g { display: flex; gap: 1.5px; align-items: flex-end; height: 100%; }
+.fp i { display: block; width: 4px; border-radius: 1.5px; background: var(--a-none); height: 3px; transition: height .5s var(--ease), background .4s; }
+.fp i[data-r="4"] { height: 18px; background: var(--a-doc); }
+.fp i[data-r="3"] { height: 15px; background: var(--a-full); }
+.fp i[data-r="2"] { height: 10px; background: var(--a-part); }
+.fp i[data-r="1"] { height: 7px; background: var(--a-part); opacity: .6; }
+.fp i.fill { background: var(--b); }
+.dc-count { font-family: var(--font-data); font-size: .72rem; color: var(--fg-3); white-space: nowrap; }
+.dc-count b { color: var(--fg); font-weight: 600; font-size: .85rem; }
+.dc-tag { position: absolute; top: 10px; right: 10px; display: none; }
+.dcard .dc-top { padding-right: 0; }
+.badge { font-family: var(--font-data); font-size: .66rem; font-weight: 600; border-radius: 6px; padding: 1px 6px; }
+.dcard[data-fills]:not(.is-a):not(.is-b) .dc-route { display: none; }
+.dcard[data-fills]:not(.is-a):not(.is-b) .dc-tag { display: block; }
+.dc-tag .badge { background: var(--b-soft); color: var(--b); border: 1px solid var(--b); }
+.dcard.is-a .dc-route, .dcard.is-b .dc-route { display: none; }
+.dcard.is-a .dc-tag, .dcard.is-b .dc-tag { display: block; }
+.dcard.is-a .dc-tag .badge { background: var(--accent); color: var(--lbl-strong); border-color: var(--accent); }
+.dcard.is-b .dc-tag .badge { background: var(--b); color: var(--lbl-strong); border-color: var(--b); }
+.news-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ok); display: inline-block; margin-left: 2px; vertical-align: middle; }
+
+/* ── Main grid ────────────────────────────────────────── */
+.main { display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr); gap: 20px; align-items: start; }
+.side { display: grid; gap: 20px; }
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 18px; padding: 18px 20px; min-width: 0; }
+.p-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.p-title { margin: 0; font-size: 1.02rem; font-weight: 700; letter-spacing: -.01em; }
+.p-sub { margin: 2px 0 0; color: var(--fg-2); font-size: .8rem; }
+.kicker { font-size: .68rem; text-transform: uppercase; letter-spacing: .09em; color: var(--fg-3); font-weight: 700; }
+
+/* Map */
+.map-panel { position: relative; }
+.pair { display: flex; gap: 6px; flex-wrap: wrap; }
+.pill { display: inline-flex; align-items: center; gap: 6px; border-radius: 99px; padding: 3px 10px 3px 4px; font-size: .78rem; font-weight: 600; border: 1px solid var(--line); background: var(--panel-2); max-width: 100%; }
+.pill .k { font-family: var(--font-data); font-size: .66rem; border-radius: 99px; padding: 1px 7px; color: var(--lbl-strong); }
+.pill.a .k { background: var(--accent); }
+.pill.b .k { background: var(--b); }
+.pill .x { border: 0; background: none; color: var(--fg-3); cursor: pointer; padding: 0 0 0 2px; font-size: .9rem; line-height: 1; }
+.pill span.t { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.map-box { position: relative; margin-top: 10px; }
+.map-box svg { display: block; width: 100%; height: auto; overflow: visible; }
+.lat { fill: var(--hex-bg); }
+.clabel { font-family: var(--font-ui); font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; fill: var(--fg-2); }
+.clabel-n { font-family: var(--font-data); font-size: 10px; fill: var(--fg-3); }
+.hex { cursor: pointer; transform-box: fill-box; transform-origin: center; outline: none; }
+.hex .cell { fill: var(--a-none); stroke: transparent; stroke-width: 1.6; transition: fill .5s var(--ease) var(--d, 0ms), stroke .5s var(--ease) var(--d, 0ms); }
+.hex .lbl { font-family: var(--font-data); font-size: 10px; font-weight: 600; text-anchor: middle; dominant-baseline: central; fill: var(--fg-3); pointer-events: none; transition: fill .5s var(--ease) var(--d, 0ms); }
+.hex .mark { fill: var(--gap); opacity: 0; transition: opacity .4s var(--ease) var(--d, 0ms); }
+.hex .star { fill: var(--lbl-strong); opacity: 0; transition: opacity .4s var(--ease) var(--d, 0ms); }
+.hex:hover .cell, .hex:focus-visible .cell, .hex.hot .cell { stroke: var(--fg); }
+.hex[data-act="FD"] .cell { fill: var(--a-doc); }
+.hex[data-act="FD"] .star { opacity: .9; }
+.hex[data-act="F"] .cell { fill: var(--a-full); }
+.hex[data-act="P"] .cell { fill: var(--a-part); }
+.hex[data-act="V"] .cell { fill: url(#hatch); }
+.hex[data-act="C"] .cell { fill: var(--a-weak); stroke: var(--a-full); stroke-dasharray: 4 3; }
+.hex[data-act="I"] .cell { fill: var(--a-weak); stroke: var(--fg-3); stroke-dasharray: 1.5 3; }
+.hex[data-act="both"] .cell { fill: var(--both); }
+.hex[data-act="onlyA"] .cell { fill: var(--a-full); }
+.hex[data-act="onlyB"] .cell { fill: var(--b); }
+.hex[data-act="partial"] .cell { fill: url(#hatch); }
+.hex[data-act="gap"] .mark { opacity: 1; }
+.hex[data-act="FD"] .lbl, .hex[data-act="F"] .lbl, .hex[data-act="both"] .lbl, .hex[data-act="onlyA"] .lbl, .hex[data-act="onlyB"] .lbl { fill: var(--lbl-strong); }
+.hex[data-act="P"] .lbl, .hex[data-act="V"] .lbl, .hex[data-act="partial"] .lbl { fill: var(--lbl-soft); }
+.hex[data-act="both"] .lbl { fill: var(--bg); }
+.scan { pointer-events: none; }
+
+.legend { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line); font-size: .75rem; color: var(--fg-2); }
+.lg { display: inline-flex; align-items: center; gap: 6px; }
+.lg svg { width: 14px; height: 14px; flex: none; }
+.map-note { margin: 8px 0 0; font-size: .74rem; color: var(--fg-3); }
+
+.tip {
+  position: absolute; z-index: 5; pointer-events: none; min-width: 190px; max-width: 250px;
+  background: var(--panel-2); border: 1px solid var(--line-2); border-radius: 12px; padding: 10px 12px;
+  box-shadow: var(--shadow); font-size: .78rem; opacity: 0; transform: translateY(4px);
+  transition: opacity .18s var(--ease), transform .18s var(--ease);
+}
+.tip.on { opacity: 1; transform: none; }
+.tip h4 { margin: 0; font-size: .86rem; }
+.tip .tsub { color: var(--fg-3); font-size: .72rem; margin-bottom: 6px; }
+.tip .row { display: flex; align-items: center; gap: 8px; margin-top: 3px; }
+.tip .row .k { font-family: var(--font-data); font-size: .64rem; border-radius: 99px; padding: 0 6px; color: var(--lbl-strong); }
+
+/* Summary */
+.big { display: flex; align-items: flex-end; gap: 12px; margin-top: 12px; flex-wrap: wrap; }
+.big-n { font-size: 3rem; font-weight: 700; letter-spacing: -.04em; line-height: 1; font-variant-numeric: tabular-nums; }
+.big-n small { font-size: 1.4rem; font-weight: 600; color: var(--fg-2); margin-left: 2px; }
+.big-meta { padding-bottom: 6px; font-size: .8rem; color: var(--fg-2); }
+.delta { font-family: var(--font-data); font-weight: 600; color: var(--b); }
+.segs { display: flex; gap: 3px; margin-top: 14px; height: 22px; }
+.segs i { flex: 1; border-radius: 3px; background: var(--a-none); transition: background .45s var(--ease) var(--d, 0ms), transform .45s var(--ease) var(--d, 0ms); }
+.segs i.sep { flex: 0 0 6px; background: transparent; }
+.segs i[data-k="rel"] { background: var(--a-full); }
+.segs i[data-k="doc"] { background: var(--a-doc); }
+.segs i[data-k="part"] { background: var(--a-part); }
+.segs i[data-k="b"] { background: var(--b); }
+.segs i[data-k="both"] { background: var(--both); }
+.seg-axis { display: flex; justify-content: space-between; font-size: .68rem; color: var(--fg-3); margin-top: 4px; font-family: var(--font-data); }
+.rings { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin-top: 18px; }
+.ring { display: grid; justify-items: center; gap: 4px; text-align: center; }
+.ring svg { width: 64px; height: 64px; }
+.ring .trk { fill: none; stroke: var(--line); stroke-width: 6; }
+.ring .arc { fill: none; stroke-width: 6; stroke-linecap: round; transition: stroke-dashoffset .8s var(--ease), stroke .4s; transform: rotate(-90deg); transform-origin: center; transform-box: fill-box; }
+.ring .arc.rel { stroke: var(--accent); }
+.ring .arc.par { stroke: var(--a-part); }
+.ring .ring-n { font-family: var(--font-data); font-size: 13px; font-weight: 600; fill: var(--fg); text-anchor: middle; dominant-baseline: central; }
+.ring-l { font-size: .7rem; color: var(--fg-2); font-weight: 600; line-height: 1.2; }
+
+/* Partners */
+.plist { display: grid; gap: 8px; margin-top: 12px; }
+.partner { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 10px; text-align: left; border: 1px solid var(--line); background: var(--panel-2); border-radius: 12px; padding: 10px 12px; cursor: pointer; transition: border-color .2s, transform .3s var(--ease); width: 100%; }
+.partner:hover { border-color: var(--b); transform: translateX(2px); }
+.partner .code { font-family: var(--font-data); font-weight: 600; font-size: .9rem; min-width: 40px; }
+.partner .nm { font-size: .8rem; min-width: 0; }
+.partner .nm small { display: block; color: var(--fg-3); font-size: .72rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.partner .plus { font-family: var(--font-data); font-weight: 600; color: var(--b); }
+.gaps { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+.gchip { font-family: var(--font-data); font-size: .7rem; border-radius: 6px; padding: 2px 7px; border: 1px solid var(--line-2); color: var(--fg-2); background: transparent; cursor: pointer; }
+.gchip:hover { color: var(--fg); border-color: var(--gap); }
+.subhead { margin: 16px 0 0; display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.fine { font-size: .72rem; color: var(--fg-3); margin: 10px 0 0; }
+
+/* Notes */
+.notes { display: grid; gap: 12px; margin-top: 10px; }
+.note h5 { margin: 0 0 2px; font-size: .74rem; text-transform: uppercase; letter-spacing: .08em; color: var(--fg-3); }
+.note p { margin: 0; font-size: .85rem; color: var(--fg); max-width: 62ch; }
+.note.trap h5 { color: var(--gap); }
+
+/* Advances */
+.adv-head { display: flex; align-items: center; gap: 10px 14px; flex-wrap: wrap; }
+.adv-head .p-title { margin-right: auto; }
+.status { display: inline-flex; align-items: center; gap: 7px; font-size: .78rem; color: var(--fg-2); }
+.status .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--fg-3); }
+.status[data-s="live"] .dot { background: var(--ok); box-shadow: 0 0 0 0 var(--ok); animation: ping 2.4s infinite; }
+.status[data-s="cached"] .dot { background: var(--accent); }
+.status[data-s="offline"] .dot { background: var(--b); }
+.status[data-s="loading"] .dot { background: var(--accent); animation: blink 1s infinite; }
+@keyframes ping { 0% { box-shadow: 0 0 0 0 rgba(62,207,142,.5); } 80%,100% { box-shadow: 0 0 0 8px rgba(62,207,142,0); } }
+@keyframes blink { 50% { opacity: .3; } }
+.btn { display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; border-radius: 9px; border: 1px solid var(--line); background: var(--panel-2); cursor: pointer; font-size: .8rem; font-weight: 600; }
+.btn svg { width: 14px; height: 14px; }
+.btn.spin svg { animation: rot .8s linear infinite; }
+@keyframes rot { to { transform: rotate(360deg); } }
+.adv-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; margin-top: 14px; }
+.col-h { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+.feed { list-style: none; margin: 0; padding: 0; display: grid; }
+.item { display: grid; grid-template-columns: 70px minmax(0, 1fr); gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); animation: rise .5s var(--ease) both; animation-delay: var(--d, 0ms); }
+@keyframes rise { from { opacity: .001; transform: translateY(6px); } }
+.item:last-child { border-bottom: 0; }
+.when { font-family: var(--font-data); font-size: .7rem; color: var(--fg-3); padding-top: 2px; }
+.src { display: inline-block; font-size: .64rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--fg-2); border: 1px solid var(--line-2); border-radius: 5px; padding: 0 5px; margin-bottom: 4px; }
+.item a.t { color: var(--fg); font-weight: 600; font-size: .86rem; text-decoration: none; display: block; line-height: 1.4; }
+.item a.t:hover { color: var(--accent); }
+.item p { margin: 3px 0 0; color: var(--fg-2); font-size: .8rem; max-width: 70ch; }
+.item .tags { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 6px; }
+.tagb { font-family: var(--font-data); font-size: .66rem; border: 1px solid var(--line-2); border-radius: 5px; padding: 0 6px; background: none; color: var(--fg-2); cursor: pointer; }
+.tagb:hover, .tagb.on { border-color: var(--accent); color: var(--fg); }
+.new { font-size: .62rem; font-weight: 800; letter-spacing: .08em; color: var(--ok); margin-left: 6px; }
+.empty { color: var(--fg-2); font-size: .82rem; padding: 14px 0; }
+.empty a { color: var(--accent); }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+@media (max-width: 1020px) {
+  .main { grid-template-columns: minmax(0, 1fr); }
+  .side { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+}
+@media (max-width: 720px) {
+  .adv-grid { grid-template-columns: minmax(0, 1fr); }
+  .rail-hint { display: none; }
+  .search { flex: 1 1 100%; order: 3; }
+  .dcard { flex-basis: 214px; }
+  .item { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; transition-delay: 0ms !important; }
+}
+</style>
+
+<div class="shell">
+  <header class="head">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M12 2.5l8.2 4.75v9.5L12 21.5l-8.2-4.75v-9.5z" stroke="#fff" stroke-width="2"/><path d="M12 8l3.5 2v4L12 16l-3.5-2v-4z" fill="#fff"/></svg>
+      </div>
+      <div>
+        <h1>Coverage Lab</h1>
+        <p>Antibiotogram · 33 antibacterials × 23 bacterial phenotypes</p>
+      </div>
+    </div>
+    <label class="search" for="q">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <span class="sr">Search antibiotics</span>
+      <input id="q" type="search" placeholder="Search drug, class or route" autocomplete="off">
+    </label>
+    <button class="toggle" id="cmp" aria-pressed="false" type="button"><span class="sw" aria-hidden="true"></span>Compare two</button>
+  </header>
+
+  <section class="rail-wrap" aria-label="Antibiotic cards">
+    <div class="rail-bar">
+      <div class="chips" id="chips" role="group" aria-label="Filter by family"></div>
+      <span class="rail-hint" id="rail-hint">Bars on each card = its coverage fingerprint. <span style="color:var(--b)">Amber</span> bars fill the selected drug's gaps.</span>
+      <button class="nav-btn" id="prev" type="button" aria-label="Scroll cards left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></button>
+      <button class="nav-btn" id="next" type="button" aria-label="Scroll cards right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></button>
+    </div>
+    <div class="rail" id="rail" tabindex="0"></div>
+  </section>
+
+  <div class="main">
+    <section class="panel map-panel" aria-labelledby="map-title">
+      <div class="p-head">
+        <div>
+          <h2 class="p-title" id="map-title">Coverage map</h2>
+          <p class="p-sub">Center of each cluster is the wild type; the outer ring holds resistant phenotypes.</p>
+        </div>
+        <div class="pair" id="pair"></div>
+      </div>
+      <div class="map-box" id="map-box">
+        <svg id="map" role="group" aria-label="Honeycomb of bacterial phenotypes"></svg>
+        <div class="tip" id="tip" role="status" aria-live="polite"></div>
+      </div>
+      <div class="legend" id="legend"></div>
+      <p class="map-note">Fungi and viruses are left out here because no antibacterial reaches them.</p>
+    </section>
+
+    <aside class="side">
+      <section class="panel" aria-labelledby="sum-title">
+        <div class="p-head">
+          <div>
+            <div class="kicker">Reliable coverage</div>
+            <h2 class="p-title sr" id="sum-title">Coverage summary</h2>
+          </div>
+        </div>
+        <div class="big">
+          <div class="big-n" id="big-n">0<small>%</small></div>
+          <div class="big-meta" id="big-meta"></div>
+        </div>
+        <div class="segs" id="segs" aria-hidden="true"></div>
+        <div class="seg-axis"><span>G+</span><span>G−</span><span>Anaerobe · Atypical</span></div>
+        <div class="rings" id="rings"></div>
+      </section>
+
+      <section class="panel" aria-labelledby="pt-title">
+        <h2 class="p-title" id="pt-title">Closes the gaps</h2>
+        <p class="p-sub" id="pt-sub"></p>
+        <div class="plist" id="plist"></div>
+        <div class="subhead"><span class="kicker" id="gap-k">Still uncovered</span></div>
+        <div class="gaps" id="gaps"></div>
+        <p class="fine">Partners are ranked by gaps closed, then by the narrowest spectrum. This is set arithmetic, not synergy data; check the Combinations tab for regimens.</p>
+      </section>
+
+      <section class="panel" aria-labelledby="nt-title">
+        <h2 class="p-title" id="nt-title">Field notes</h2>
+        <div class="notes" id="notes"></div>
+      </section>
+    </aside>
+  </div>
+
+  <section class="panel" aria-labelledby="adv-title">
+    <div class="adv-head">
+      <h2 class="p-title" id="adv-title">Recent advances</h2>
+      <span class="status" id="status" data-s="loading"><span class="dot"></span><span id="status-t">Checking…</span></span>
+      <button class="btn" id="refresh" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12a8 8 0 1 1-2.34-5.66M20 4v5h-5"/></svg>Check now</button>
+    </div>
+    <div class="adv-grid">
+      <div>
+        <div class="col-h"><span class="kicker">Approvals &amp; guidance</span><button class="tagb" id="only" type="button" aria-pressed="false">Selected drugs only</button></div>
+        <ul class="feed" id="feed-cur"></ul>
+      </div>
+      <div>
+        <div class="col-h"><span class="kicker" id="lit-k">Latest literature</span><span class="when" id="lit-next"></span></div>
+        <ul class="feed" id="feed-lit"></ul>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+const DATA = {"drugs":[{"id":"AMP","s":"AMP","n":"Ampicillin","c":"Penicillin","r":"IV","legacy":false},{"id":"AMC","s":"AMC","n":"Amoxicillin-clavulanate","c":"Penicillin","r":"PO","legacy":false},{"id":"TZP","s":"TZP","n":"Piperacillin-tazobactam","c":"Penicillin","r":"IV","legacy":false},{"id":"SAM","s":"SAM","n":"Ampicillin-sulbactam","c":"Penicillin","r":"IV","legacy":false},{"id":"CFZ","s":"CFZ","n":"Cefazolin","c":"Cephalosporin","r":"IV","legacy":false},{"id":"CRO","s":"CRO","n":"Ceftriaxone","c":"Cephalosporin","r":"IV","legacy":false},{"id":"FEP","s":"FEP","n":"Cefepime","c":"Cephalosporin","r":"IV","legacy":false},{"id":"CPT","s":"CPT","n":"Ceftaroline","c":"Cephalosporin","r":"IV","legacy":false},{"id":"CT","s":"C/T","n":"Ceftolozane-tazobactam","c":"Cephalosporin","r":"IV","legacy":false},{"id":"MEM","s":"MEM","n":"Meropenem","c":"Carbapenem","r":"IV","legacy":false},{"id":"CA","s":"C/A","n":"Ceftazidime-avibactam","c":"BL/BLI","r":"IV","legacy":false},{"id":"IR","s":"I/R","n":"Imipenem-relebactam","c":"BL/BLI","r":"IV","legacy":false},{"id":"AA","s":"A/A","n":"Aztreonam-avibactam","c":"BL/BLI","r":"IV","legacy":false},{"id":"FDC","s":"FDC","n":"Cefiderocol","c":"Siderophore cephalosporin","r":"IV","legacy":false},{"id":"VAN","s":"VAN","n":"Vancomycin","c":"Glycopeptide","r":"IV/PO","legacy":false},{"id":"DAL","s":"DAL","n":"Dalbavancin","c":"Glycopeptide","r":"IV","legacy":false},{"id":"ORI","s":"ORI","n":"Oritavancin","c":"Glycopeptide","r":"IV","legacy":false},{"id":"DAP","s":"DAP","n":"Daptomycin","c":"Lipopeptide","r":"IV","legacy":false},{"id":"LZD","s":"LZD","n":"Linezolid","c":"Oxazolidinone","r":"IV/PO","legacy":false},{"id":"DOX","s":"DOX","n":"Doxycycline","c":"Tetracycline","r":"PO/IV","legacy":false},{"id":"TGC","s":"TGC","n":"Tigecycline","c":"Tetracycline","r":"IV","legacy":false},{"id":"OMA","s":"OMA","n":"Omadacycline","c":"Tetracycline","r":"PO/IV","legacy":false},{"id":"GEN","s":"GEN","n":"Gentamicin","c":"Aminoglycoside","r":"IV","legacy":false},{"id":"AMK","s":"AMK","n":"Amikacin","c":"Aminoglycoside","r":"IV","legacy":false},{"id":"CIP","s":"CIP","n":"Ciprofloxacin","c":"Fluoroquinolone","r":"PO/IV","legacy":false},{"id":"LVX","s":"LVX","n":"Levofloxacin","c":"Fluoroquinolone","r":"PO/IV","legacy":false},{"id":"MXF","s":"MXF","n":"Moxifloxacin","c":"Fluoroquinolone","r":"PO/IV","legacy":true},{"id":"SXT","s":"SXT","n":"TMP-SMX","c":"Sulfonamide","r":"PO/IV","legacy":false},{"id":"FOS","s":"FOS","n":"Fosfomycin","c":"Phosphonic acid","r":"PO / IV region-dependent","legacy":true},{"id":"CHL","s":"CHL","n":"Chloramphenicol","c":"Amphenicol","r":"PO/IV","legacy":true},{"id":"MTZ","s":"MTZ","n":"Metronidazole","c":"Nitroimidazole","r":"PO/IV","legacy":false},{"id":"AZM","s":"AZM","n":"Azithromycin","c":"Macrolide","r":"PO/IV","legacy":false},{"id":"PMB","s":"PMB","n":"Polymyxin B","c":"Polymyxin","r":"IV","legacy":false}],"orgs":[{"id":"mssa","g":"gpos","n":"Staphylococcus aureus","a":"MSSA","act":{"AMP":"N","AMC":"F","TZP":"F","SAM":"F","CFZ":"FD","CRO":"F","FEP":"F","CPT":"F","CT":"F","MEM":"F","CA":"N","IR":"N","AA":"N","FDC":"N","VAN":"F","DAL":"F","ORI":"F","DAP":"F","LZD":"F","DOX":"F","TGC":"F","OMA":"F","GEN":"P","AMK":"P","CIP":"F","LVX":"F","MXF":"F","PMB":"N","SXT":"F","MTZ":"N","AZM":"P"}},{"id":"mrsa","g":"gpos mdr","n":"Staphylococcus aureus","a":"MRSA","act":{"AMP":"N","AMC":"N","TZP":"N","SAM":"N","CFZ":"N","CRO":"N","FEP":"N","CPT":"F","CT":"N","MEM":"N","CA":"N","IR":"N","AA":"N","FDC":"N","VAN":"FD","DAL":"F","ORI":"F","DAP":"F","LZD":"F","DOX":"P","TGC":"F","OMA":"F","GEN":"N","AMK":"N","CIP":"N","LVX":"N","MXF":"N","PMB":"N","SXT":"F","MTZ":"N","AZM":"N"}},{"id":"vrsa_visa","g":"gpos mdr","n":"Staphylococcus aureus","a":"VRSA/VISA","act":{"AMP":"N","AMC":"N","TZP":"N","SAM":"N","CFZ":"N","CRO":"N","FEP":"N","CPT":"F","CT":"N","MEM":"N","CA":"N","IR":"N","AA":"N","FDC":"N","VAN":"N","DAL":"P","ORI":"F","DAP":"FD","LZD":"F","DOX":"P","TGC":"F","OMA":"F","GEN":"N","AMK":"N","CIP":"N","LVX":"N","MXF":"N","PMB":"N","SXT":"V","MTZ":"N","AZM":"N"}},{"id":"lrsa","g":"gpos mdr","n":"Staph. aureus","a":"LRSA","act":{"AMP":"N","AMC":"N","TZP":"N","SAM":"N","CFZ":"N","CRO":"N","FEP":"N","CPT":"F","CT":"N","MEM":"N","CA":"N","IR":"N","AA":"N","FDC":"N","VAN":"N","DAL":"P","ORI":"F","DAP":"FD","LZD":"N","DOX":"P","TGC":"F","OMA":"P","GEN":"N","AMK":"N","CIP":"N","LVX":"N","MXF":"N","PMB":"N","SXT":"V","MTZ":"N","AZM":"N"}},{"id":"drsp","g":"gpos","n":"Streptococcus pneumoniae","a":"DRSP","act":{"AMP":"V","AMC":"V","TZP":"V","SAM":"V","CFZ":"P","CRO":"F","FEP":"F","CPT":"F","CT":"N","MEM":"F","CA":"N","IR":"N","AA":"N","FDC":"N","VAN":"FD","DAL":"F","ORI":"F","DAP":"N","LZD":"F","DOX":"V","TGC":"F","OMA":"F","GEN":"N","AMK":"N","CIP":"N","LVX":"F","MXF":"F","PMB":"N","SXT":"V","MTZ":"N","AZM":"V"}},{"id":"e_faecalis","g":"gpos","n":"Enterococcus faecalis","a":"E. faecalis","act":{"AMP":"FD","AMC":"F","TZP":"F","SAM":"F","CFZ":"N","CRO":"N","FEP":"N","CPT":"N","CT":"N","MEM":"N","CA":"N","IR":"N","AA":"N","FDC":"N","VAN":"F","DAL":"F","ORI":"F","DAP":"F","LZD":"F","DOX":"N","TGC":"P","OMA":"N","GEN":"C","AMK":"C","CIP":"P","LVX":"P","MXF":"P","PMB":"N","SXT":"N","MTZ":"N","AZM":"N"}},{"id":"vre","g":"gpos mdr","n":"Enterococcus faecium","a":"VRE","act":{"AMP":"N","AMC":"N","TZP":"N","SAM":"N","CFZ":"N","CRO":"N","FEP":"N","CPT":"N","CT":"N","MEM":"N","CA":"N","IR":"N","AA":"N","FDC":"N","VAN":"N","DAL":"F","ORI":"F","DAP":"FD","LZD":"F","DOX":"N","TGC":"F","OMA":"N","GEN":"N","AMK":"N","CIP":"N","LVX":"N","MXF":"N","PMB":"N","SXT":"N","MTZ":"N","AZM":"N"}},{"id":"e_coli","g":"gneg","n":"Escherichia coli","a":"Standard E. coli","act":{"AMP":"V","AMC":"F","TZP":"F","SAM":"F","CFZ":"F","CRO":"F","FEP":"F","CPT":"N","CT":"F","MEM":"F","CA":"F","IR":"F","AA":"N","FDC":"F","VAN":"N","DAL":"N","ORI":"N","DAP":"N","LZD":"N","DOX":"V","TGC":"F","OMA":"F","GEN":"F","AMK":"F","CIP":"F","LVX":"F","MXF":"F","PMB":"F","SXT":"V","MTZ":"N","AZM":"N"}},{"id":"esbl_e","g":"gneg mdr","n":"ESBL-producing Enterobacterales","a":"ESBL-E","act":{"AMP":"N","AMC":"N","TZP":"V","SAM":"N","CFZ":"N","CRO":"N","FEP":"P","CPT":"N","CT":"N","MEM":"FD","CA":"F","IR":"F","AA":"N","FDC":"F","VAN":"N","DAL":"N","ORI":"N","DAP":"N","LZD":"N","DOX":"N","TGC":"F","OMA":"F","GEN":"V","AMK":"F","CIP":"N","LVX":"N","MXF":"N","PMB":"F","SXT":"N","MTZ":"N","AZM":"N"}},{"id":"kpc_cre","g":"gneg mdr","n":"CRE - KPC-producing","a":"KPC-Kp","act":{"AMP":"N","AMC":"N","TZP":"N","SAM":"N","CFZ":"N","CRO":"N","FEP":"N","CPT":"N","CT":"N","MEM":"N","CA":"FD","IR":"F","AA":"I","FDC":"F","VAN":"N","DAL":"N","ORI":"N","DAP":"N","LZD":"N","DOX":"N","TGC":"F","OMA":"P","GEN":"N","AMK":"V","CIP":"N","LVX":"N","MXF":"N","PMB":"F","SXT":"N","MTZ":"N","AZM":"N"}},{"id":"ndm_cre","g":"gneg mdr","n":"CRE - NDM-producing","a":"NDM-Kp/Ec","act":{"AMP":"N","AMC":"N","TZP":"N","SAM":"N","CFZ":"N","CRO":"N","FEP":"N","CPT":"N","CT":"N","MEM":"N","CA":"N","IR":"N","AA":"FD","FDC":"F","VAN":"N","DAL":"N","ORI":"N","DAP":"N","LZD":"N","DOX":"N","TGC":"F","OMA":"P","GEN":"N","AMK":"V","CIP":"N","LVX":"N","MXF":"N","PMB":"F","SXT":"N","MTZ":"N","AZM":"N"}},{"id":"oxa48_cre","g":"gneg mdr","n":"CRE - OXA-48-like","a":"OXA-48","act":{"AMP":"N","AMC":"N","TZP":"N","SAM":"N","CFZ":"N","CRO":"N","FEP":"N","CPT":"N","CT":"N","MEM":"N","CA":"F","IR":"P","AA":"F","FDC":"F","VAN":"N","DAL":"N","ORI":"N","DAP":"N","LZD":"N","DOX":"N","TGC":"F","OMA":"P","GEN":"N","AMK":"V","CIP":"N","LVX":"N","MXF":"N","PMB":"F","SXT":"N","MTZ":"N","AZM":"N"}},{"id":"ecc_mdr","g":"gneg mdr","n":"Enterobacter cloacae complex","a":"ECC-MDR","act":{"AMP":"N","AMC":"N","TZP":"V","SAM":"N","CFZ":"N","CRO":"N","FEP":"F","CPT":"N","CT":"F","MEM":"F","CA":"F","IR":"F","AA":"I","FDC":"F","VAN":"N","DAL":"N","ORI":"N","DAP":"N","LZD":"N","DOX":"N","TGC":"F","OMA":"F","GEN":"V","AMK":"F","CIP":"V","LVX":"V","MXF":"N","PMB":"F","SXT":"V","MTZ":"N","AZM":"N"}},{"id":"pa","g":"gneg","n":"Pseudomonas aeruginosa","a":"Standard PA","act":{"AMP":"N","AMC":"N","TZP":"F","SAM":"N","CFZ":"N","CRO":"N","FEP":"F","CPT":"N","CT":"F","MEM":"F","CA":"N","IR":"F","AA":"N","FDC":"F","VAN":"N","DAL":"N","ORI":"N","DAP":"N","LZD":"N","DOX":"N","TGC":"N","OMA":"N","GEN":"F","AMK":"F","CIP":"F","LVX":"F","MXF":"N","PMB":"F","SXT":"N","MTZ":"N","AZM":"N"}},{"id":"mdr_pa","g":"gneg mdr","n":"MDR Pseudomonas aeruginosa","a":"MDR-PA","act":{"AMP":"N","AMC":"N","TZP":"N","SAM":"N","CFZ":"N","CRO":"N","FEP":"V","CPT":"N","CT":"FD","MEM":"V","CA":"V","IR":"F","AA":"N","FDC":"F","VAN":"N","DAL":"N","ORI":"N","DAP":"N","LZD":"N","DOX":"N","TGC":"N","OMA":"N","GEN":"V","AMK":"V","CIP":"V","LVX":"V","MXF":"N","PMB":"F","SXT":"N","MTZ":"N","AZM":"N"}},{"id":"ndm_pa","g":"gneg mdr","n":"XDR Pseudomonas","a":"NDM-PA","act":{"AMP":"N","AMC":"N","TZP":"N","SAM":"N","CFZ":"N","CRO":"N","FEP":"N","CPT":"N","CT":"N","MEM":"N","CA":"N","IR":"N","AA":"FD","FDC":"F","VAN":"N","DAL":"N","ORI":"N","DAP":"N","LZD":"N","DOX":"N","TGC":"N","OMA":"N","GEN":"N","AMK":"N","CIP":"N","LVX":"N","MXF":"N","PMB":"F","SXT":"N","MTZ":"N","AZM":"N"}},{"id":"crab","g":"gneg mdr","n":"Acinetobacter baumannii","a":"CRAB","act":{"AMP":"N","AMC":"N","TZP":"N","SAM":"F","CFZ":"N","CRO":"N","FEP":"N","CPT":"N","CT":"N","MEM":"N","CA":"N","IR":"N","AA":"N","FDC":"F","VAN":"N","DAL":"N","ORI":"N","DAP":"N","LZD":"N","DOX":"P","TGC":"F","OMA":"P","GEN":"N","AMK":"N","CIP":"N","LVX":"N","MXF":"N","PMB":"FD","SXT":"V","MTZ":"N","AZM":"N"}},{"id":"steno","g":"gneg mdr","n":"Stenotrophomonas maltophilia","a":"S. malt.","act":{"AMP":"N","AMC":"N","TZP":"N","SAM":"N","CFZ":"N","CRO":"N","FEP":"N","CPT":"N","CT":"N","MEM":"N","CA":"N","IR":"N","AA":"N","FDC":"I","VAN":"N","DAL":"N","ORI":"N","DAP":"N","LZD":"N","DOX":"F","TGC":"F","OMA":"F","GEN":"N","AMK":"N","CIP":"P","LVX":"F","MXF":"F","PMB":"N","SXT":"FD","MTZ":"N","AZM":"N"}},{"id":"hflu","g":"gneg","n":"Haemophilus influenzae","a":"H. influenzae","act":{"AMP":"V","AMC":"F","TZP":"F","SAM":"F","CFZ":"N","CRO":"FD","FEP":"F","CPT":"N","CT":"N","MEM":"F","CA":"N","IR":"N","AA":"N","FDC":"N","VAN":"N","DAL":"N","ORI":"N","DAP":"N","LZD":"N","DOX":"F","TGC":"F","OMA":"F","GEN":"F","AMK":"F","CIP":"F","LVX":"F","MXF":"F","PMB":"N","SXT":"V","MTZ":"N","AZM":"F"}},{"id":"b_fragilis","g":"anaerobe","n":"Bacteroides fragilis","a":"B. fragilis","act":{"AMP":"N","AMC":"F","TZP":"FD","SAM":"F","CFZ":"N","CRO":"N","FEP":"N","CPT":"N","CT":"N","MEM":"F","CA":"F","IR":"F","AA":"N","FDC":"N","VAN":"N","DAL":"N","ORI":"N","DAP":"N","LZD":"N","DOX":"N","TGC":"F","OMA":"F","GEN":"N","AMK":"N","CIP":"N","LVX":"N","MXF":"F","PMB":"N","SXT":"N","MTZ":"FD","AZM":"N"}},{"id":"c_diff","g":"anaerobe","n":"Clostridioides difficile","a":"C. diff","act":{"AMP":"N","AMC":"N","TZP":"N","SAM":"N","CFZ":"N","CRO":"N","FEP":"N","CPT":"N","CT":"N","MEM":"N","CA":"N","IR":"N","AA":"N","FDC":"N","VAN":"FD","DAL":"N","ORI":"N","DAP":"N","LZD":"N","DOX":"N","TGC":"N","OMA":"N","GEN":"N","AMK":"N","CIP":"N","LVX":"N","MXF":"N","PMB":"N","SXT":"N","MTZ":"P","AZM":"N"}},{"id":"mycoplasma","g":"atypical","n":"Mycoplasma pneumoniae","a":"Mycoplasma","act":{"AMP":"N","AMC":"N","TZP":"N","SAM":"N","CFZ":"N","CRO":"N","FEP":"N","CPT":"N","CT":"N","MEM":"N","CA":"N","IR":"N","AA":"N","FDC":"N","VAN":"N","DAL":"N","ORI":"N","DAP":"N","LZD":"F","DOX":"F","TGC":"F","OMA":"FD","GEN":"N","AMK":"N","CIP":"F","LVX":"F","MXF":"F","PMB":"N","SXT":"N","MTZ":"N","AZM":"F"}},{"id":"legionella","g":"atypical","n":"Legionella pneumophila","a":"Legionella","act":{"AMP":"N","AMC":"N","TZP":"N","SAM":"N","CFZ":"N","CRO":"N","FEP":"N","CPT":"N","CT":"N","MEM":"N","CA":"N","IR":"N","AA":"N","FDC":"N","VAN":"N","DAL":"N","ORI":"N","DAP":"N","LZD":"F","DOX":"F","TGC":"F","OMA":"F","GEN":"N","AMK":"N","CIP":"FD","LVX":"FD","MXF":"F","PMB":"N","SXT":"N","MTZ":"N","AZM":"F"}}],"prof":{"AMP":{"sub":"Enterococcus anchor","shines":"Best remembered for enterococcal infections, especially when paired for endocarditis synergy.","trap":"Do not expect cephalosporin-like Gram-negative coverage. It is narrow and easy to over-credit."},"TZP":{"sub":"Broad empiric workhorse","shines":"Useful when you need Pseudomonas plus anaerobic coverage in one bag.","trap":"Do not lean on it for serious ESBL infections just because the lab says susceptible."},"SAM":{"sub":"Sulbactam matters","shines":"Helpful teaching drug for aspiration syndromes, bite wounds, and CRAB discussions.","trap":"The useful CRAB idea is the sulbactam exposure, not magical broad coverage against everything."},"CFZ":{"sub":"MSSA first-line memory hook","shines":"A good reminder that a narrow beta-lactam often beats a broader agent for MSSA.","trap":"Do not mentally upgrade it into MRSA or Enterococcus coverage."},"CRO":{"sub":"Daily broad-spectrum staple","shines":"Great teaching drug for pneumococcus, H. influenzae, meningitis patterns, and mixed community syndromes.","trap":"It does not cover Pseudomonas and it is weak for AmpC derepression problems like Enterobacter cloacae complex."},"FEP":{"sub":"AmpC-aware cephalosporin","shines":"Useful when the trainee needs to separate cefepime from ceftriaxone in Enterobacter-type organisms.","trap":"It still does not cover anaerobes and it is not a universal answer for all resistant Gram-negatives."},"CPT":{"sub":"Anti-MRSA cephalosporin","shines":"High-yield for MRSA teaching and for the daptomycin-plus-ceftaroline synergy concept.","trap":"Do not confuse anti-MRSA activity with anti-pseudomonal activity. It does not solve that problem."},"CT":{"sub":"Pseudomonas-focused modern beta-lactam","shines":"Good mental anchor for MDR Pseudomonas when standard anti-pseudomonal beta-lactams start failing.","trap":"It is not the same as ceftaroline and it is not an anaerobe solution."},"MEM":{"sub":"Carbapenem benchmark","shines":"Useful benchmark when trainees need to compare newer BL/BLI agents against an old standard.","trap":"Do not assume all carbapenem-resistant organisms are still partly carbapenem treatable."},"CA":{"sub":"KPC and OXA-48 memory hook","shines":"A key teaching drug for serine carbapenemases and why mechanism matters.","trap":"It does not fix metallo-beta-lactamases like NDM."},"AA":{"sub":"NDM teaching pearl","shines":"Excellent concept drug for explaining why aztreonam plus inhibitor logic matters in MBL infections.","trap":"It is still a specialist-space drug and should not be mentally promoted into a routine broad-spectrum default."},"FDC":{"sub":"Last-line Gram-negative tool","shines":"Good for NDM, XDR Pseudomonas, and CRAB discussions where trainees need a modern salvage anchor.","trap":"Coverage on paper does not remove the need for source control, repeat susceptibility checks, and specialist input."},"VAN":{"sub":"MRSA baseline comparator","shines":"Useful as the starting point for thinking through MRSA, enterococcal coverage, and C. difficile PO-specific use.","trap":"Remember that IV vancomycin and oral vancomycin solve very different problems."},"DAP":{"sub":"Bacteremia and VRE rescue agent","shines":"High-yield when paired with ceftaroline in persistent MRSA bacteremia or VISA-type problems.","trap":"Do not reach for it in pneumonia. The lung is the classic catch."},"LZD":{"sub":"Oral anti-MRSA and VRE option","shines":"Useful for MRSA pneumonia logic and for VRE discussions when oral therapy matters.","trap":"Myelosuppression, serotonin interactions, and prolonged-use toxicity are the exam traps."},"DOX":{"sub":"Oral flexibility","shines":"Easy teaching bridge between atypicals and outpatient-friendly therapy.","trap":"It is not a universal staph or Gram-negative answer just because it comes in a tablet."},"OMA":{"sub":"Newer oral or IV tetracycline","shines":"A clean example of a newer drug that changes oral step-down thinking without being universally first-line.","trap":"It should stay a targeted tool, not a substitute for understanding the underlying syndrome."},"GEN":{"sub":"Synergy before breadth","shines":"Classic pair with ampicillin for enterococcal endocarditis teaching.","trap":"Nephrotoxicity and ototoxicity quickly cancel any theoretical benefit when used badly."},"MXF":{"sub":"Respiratory and atypical-heavy fluoroquinolone","shines":"A useful contrast drug: stronger respiratory and atypical framing than ciprofloxacin, but not an anti-pseudomonal answer.","trap":"QT issues, collateral damage, and over-crediting its spectrum are the common mistakes."},"SXT":{"sub":"Oral high-yield utility","shines":"A good teaching card for why oral options still matter in 2026 discussions.","trap":"Potassium, creatinine interpretation, and resistance variation are the usual catches."},"FOS":{"sub":"Older agent with selective MDR return","shines":"Best remembered for resistant urinary Enterobacterales and as a mechanism-distinct partner rather than a universal salvage monotherapy.","trap":"Its role is much narrower than a giant spectrum chart implies. Route, source, and regional IV access all matter."},"CHL":{"sub":"Legacy salvage only","shines":"Useful on a trainee page because it reminds people that old broad agents sometimes reappear when options collapse.","trap":"Do not romanticize it. Hematologic toxicity and limited modern routine use are the point."},"MTZ":{"sub":"Anaerobe specialist","shines":"Important when a trainee needs to fix a regimen that forgot anaerobes.","trap":"It is not a broad abdominal drug on its own. It usually needs a partner."},"AZM":{"sub":"Atypical coverage shortcut","shines":"Useful when comparing macrolides against fluoroquinolones or doxycycline in atypical pneumonia thinking.","trap":"It does not rescue beta-lactam failures against resistant typical pathogens."}}};
+
+const RANK = { FD: 4, F: 3, P: 2, V: 1.5, C: 1, I: 0.75, N: 0 };
+const ACT_LABEL = { FD: 'Drug of choice', F: 'Active', P: 'Partial activity', V: 'Variable, check local data', C: 'Combination only', I: 'In vitro or limited data', N: 'Not reliable' };
+const CMP_LABEL = { both: 'Both drugs active', onlyA: 'Only drug A active', onlyB: 'Only drug B active', partial: 'Partial or variable', gap: 'Neither drug reliable' };
+const SHORT = { mssa: 'MSSA', mrsa: 'MRSA', vrsa_visa: 'VISA', lrsa: 'LRSA', drsp: 'DRSP', e_faecalis: 'E.fcl', vre: 'VRE', e_coli: 'E.coli', esbl_e: 'ESBL', kpc_cre: 'KPC', ndm_cre: 'NDM', oxa48_cre: 'OXA48', ecc_mdr: 'ECC', pa: 'PA', mdr_pa: 'MDR-PA', ndm_pa: 'NDM-PA', crab: 'CRAB', steno: 'Steno', hflu: 'H.flu', b_fragilis: 'B.frag', c_diff: 'C.diff', mycoplasma: 'Myco', legionella: 'Legion' };
+const CLASS_HUE = { Penicillin: 205, Cephalosporin: 225, Carbapenem: 260, 'BL/BLI': 280, 'Siderophore cephalosporin': 300, Glycopeptide: 160, Lipopeptide: 150, Oxazolidinone: 140, Tetracycline: 45, Aminoglycoside: 15, Fluoroquinolone: 345, Sulfonamide: 60, 'Phosphonic acid': 90, Amphenicol: 30, Nitroimidazole: 185, Macrolide: 115, Polymyxin: 0 };
+const FILTERS = [
+  { key: 'all', label: 'All', test: () => true },
+  { key: 'bl', label: 'β-lactams', test: (d) => ['Penicillin', 'Cephalosporin', 'Carbapenem'].includes(d.c) },
+  { key: 'reserve', label: 'Reserve', test: (d) => ['BL/BLI', 'Siderophore cephalosporin', 'Polymyxin'].includes(d.c) || d.id === 'CT' },
+  { key: 'gp', label: 'Anti-Gram-positive', test: (d) => ['Glycopeptide', 'Lipopeptide', 'Oxazolidinone'].includes(d.c) || d.id === 'CPT' },
+  { key: 'oral', label: 'Oral options', test: (d) => /PO/.test(d.r) },
+  { key: 'legacy', label: 'Legacy return', test: (d) => d.legacy },
+];
+
+// Curated items carry drug tags so the rail and the feed can point at each other.
+const CURATED = [
+  { id: 'who-tpp-2026', src: 'WHO', date: '2026-03-11', title: 'Target product profiles for new antibacterial agents', body: 'Sets out what new agents still need to do: severe MDR Gram-negatives, high-risk Gram-positives and bacterial meningitis.', link: 'https://www.who.int/publications/i/item/9789240121188', tags: [] },
+  { id: 'eucast-16', src: 'EUCAST', date: '2026-01-02', title: 'Breakpoint tables v16.0: gepotidacin added, TMP-SMX logic revised', body: 'UTI teaching points and the TMP-SMX card should use the 2026 breakpoint language.', link: 'https://www.eucast.org/about-eucast/news/', tags: ['SXT'] },
+  { id: 'fda-gc-2025', src: 'FDA', date: '2025-12-12', title: 'Zoliflodacin and gepotidacin approved for uncomplicated gonorrhoea', body: 'Two oral first-in-class options for a pathogen where ceftriaxone has been the last reliable single agent.', link: 'https://www.fda.gov/news-events/press-announcements/fda-approves-two-oral-therapies-treat-gonorrhea', tags: ['CRO'] },
+  { id: 'who-pipeline-2025', src: 'WHO', date: '2025-10-02', title: 'Clinical antibacterial pipeline fell from 97 to 90 candidates', body: 'Gaps flagged in paediatric formulations, oral outpatient options and combination strategies.', link: 'https://www.who.int/news/item/02-10-2025-who-releases-new-reports-on-new-tests-and-treatments-in-development-for-bacterial-infections', tags: [] },
+  { id: 'idsa-amr-2025', src: 'IDSA', date: '2025-06-01', title: 'AMR guidance: identify the carbapenemase before choosing the BL/BLI', body: 'KPC, OXA-48 and NDM need different agents. Aztreonam-avibactam and cefiderocol are the MBL anchors.', link: 'https://www.idsociety.org/practice-guideline/amr-guidance/', tags: ['CA', 'AA', 'FDC', 'IR', 'MEM'] },
+  { id: 'fda-blujepa-2025', src: 'FDA', date: '2025-03-25', title: 'Gepotidacin (Blujepa) approved for uncomplicated UTI', body: 'A new oral mechanism for cystitis that can spare fluoroquinolones and TMP-SMX.', link: 'https://www.fda.gov/drugs/drug-approvals-and-databases/drug-trials-snapshots-blujepa', tags: ['CIP', 'LVX', 'SXT', 'FOS'] },
+  { id: 'who-aware', src: 'WHO', date: '2025-01-01', title: 'AWaRe antibiotic book: Reserve agents stay culture-directed', body: 'Ceftazidime-avibactam and cefiderocol belong to confirmed MDR infections. Fosfomycin, moxifloxacin and chloramphenicol return only in selective roles.', link: 'https://www.who.int/publications/i/item/9789240062382', tags: ['CA', 'FDC', 'FOS', 'MXF', 'CHL'] },
+];
+
+const ORGS = DATA.orgs;
+const DRUGS = DATA.drugs;
+const drugById = Object.fromEntries(DRUGS.map((d) => [d.id, d]));
+const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+const store = {
+  get(k, f) { try { const v = localStorage.getItem(k); return v == null ? f : JSON.parse(v); } catch { return f; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} },
+};
+
+const state = { a: store.get('cl.a', 'TZP'), b: null, compare: false, filter: 'all', q: '', only: false };
+if (!drugById[state.a]) state.a = 'TZP';
+
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const code = (org, drugId) => { const c = org.act[drugId]; return RANK[c] == null ? 'N' : c; };
+const rank = (org, drugId) => RANK[code(org, drugId)];
+const reliable = (org, drugId) => rank(org, drugId) >= 3;
+
+// ── Honeycomb layout ────────────────────────────────────
+const S = 34, W = Math.sqrt(3) * S;
+const DIRS = [[1, 0], [1, -1], [0, -1], [-1, 0], [-1, 1], [0, 1]];
+const px = (q, r) => [W * (q + r / 2), S * 1.5 * r];
+function spiral([cq, cr], n) {
+  const out = [[cq, cr]];
+  for (let k = 1; out.length < n; k++) {
+    let q = cq + DIRS[4][0] * k, r = cr + DIRS[4][1] * k;
+    for (let i = 0; i < 6; i++) for (let j = 0; j < k; j++) { out.push([q, r]); q += DIRS[i][0]; r += DIRS[i][1]; }
+  }
+  return out.slice(0, n);
+}
+const byTier = (g) => ORGS.filter((o) => o.g.split(' ')[0] === g).sort((x, y) => x.g.includes('mdr') - y.g.includes('mdr'));
+const CLUSTERS = [
+  { key: 'gpos', label: 'Gram-positive', ring: 'G+', orgs: byTier('gpos'), cells: (n) => spiral([1, 1], n) },
+  { key: 'gneg', label: 'Gram-negative', ring: 'G−', orgs: byTier('gneg'), cells: (n) => spiral([5, 1], n) },
+  { key: 'anaerobe', label: 'Anaerobes', ring: 'Anaerobe', orgs: byTier('anaerobe'), cells: () => [[-1, 5], [0, 5]] },
+  { key: 'atypical', label: 'Atypicals', ring: 'Atypical', orgs: byTier('atypical'), cells: () => [[2, 5], [3, 5]] },
+];
+const PLACED = [];
+CLUSTERS.forEach((c) => c.cells(c.orgs.length).forEach(([q, r], i) => PLACED.push({ org: c.orgs[i], q, r, cluster: c })));
+const MAP_ORDER = CLUSTERS.flatMap((c) => c.orgs);
+
+function hexPoints(cx, cy, rad) {
+  let p = '';
+  for (let i = 0; i < 6; i++) { const a = Math.PI / 180 * (60 * i - 30); p += `${(cx + rad * Math.cos(a)).toFixed(1)},${(cy + rad * Math.sin(a)).toFixed(1)} `; }
+  return p.trim();
+}
+
+function buildMap() {
+  const svg = $('map');
+  const occupied = new Set(PLACED.map((p) => p.q + ',' + p.r));
+  const lattice = [];
+  for (let r = 0; r <= 6; r++) {
+    for (let q = Math.ceil(-0.6 - r / 2); q <= Math.floor(8.6 - r / 2); q++) {
+      if (occupied.has(q + ',' + r)) continue;
+      const d = Math.min(...PLACED.map((p) => (Math.abs(p.q - q) + Math.abs(p.r - r) + Math.abs(p.q + p.r - q - r)) / 2));
+      lattice.push({ q, r, o: d <= 1 ? 0.9 : d === 2 ? 0.5 : 0.22 });
+    }
+  }
+  const all = [...lattice, ...PLACED].map(({ q, r }) => px(q, r));
+  const minX = Math.min(...all.map((p) => p[0])) - W / 2 - 2, maxX = Math.max(...all.map((p) => p[0])) + W / 2 + 2;
+  const minY = Math.min(...all.map((p) => p[1])) - S - 30, maxY = Math.max(...all.map((p) => p[1])) + S + 2;
+  svg.setAttribute('viewBox', `${minX.toFixed(1)} ${minY.toFixed(1)} ${(maxX - minX).toFixed(1)} ${(maxY - minY).toFixed(1)}`);
+  svg.dataset.minx = minX; svg.dataset.maxx = maxX;
+
+  let html = `<defs>
+    <pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <rect width="6" height="6" style="fill:var(--a-var)"/><rect width="2.6" height="6" style="fill:var(--a-part)"/>
+    </pattern>
+    <linearGradient id="scang" x1="0" x2="1"><stop offset="0" stop-color="#4f8cff" stop-opacity="0"/><stop offset=".7" stop-color="#4f8cff" stop-opacity=".22"/><stop offset="1" stop-color="#4f8cff" stop-opacity="0"/></linearGradient>
+  </defs>`;
+  html += lattice.map(({ q, r, o }) => { const [x, y] = px(q, r); return `<polygon class="lat" points="${hexPoints(x, y, S - 2.5)}" style="opacity:${o}"/>`; }).join('');
+  CLUSTERS.forEach((c) => {
+    const pts = PLACED.filter((p) => p.cluster === c).map((p) => px(p.q, p.r));
+    const x = Math.min(...pts.map((p) => p[0])) - W / 2 + 2, y = Math.min(...pts.map((p) => p[1])) - S - 8;
+    html += `<text class="clabel" x="${x.toFixed(1)}" y="${y.toFixed(1)}">${c.label}<tspan class="clabel-n" dx="6">${c.orgs.length}</tspan></text>`;
+  });
+  html += PLACED.map((p) => {
+    const [x, y] = px(p.q, p.r);
+    const d = Math.round((x - minX) * 1.1 + (y - minY) * 0.35);
+    return `<g class="hex" data-id="${p.org.id}" tabindex="0" role="button" style="--d:${d}ms">
+      <polygon class="cell" points="${hexPoints(x, y, S - 2.5)}"/>
+      <path class="star" d="M${x} ${y - 21}l2 4 4.4.6-3.2 3 .8 4.4-4-2.1-4 2.1.8-4.4-3.2-3 4.4-.6z" transform="scale(.7)" transform-origin="${x} ${y - 16}"/>
+      <circle class="mark" cx="${x + 16}" cy="${y - 14}" r="3.6"/>
+      <text class="lbl" x="${x}" y="${y + 1}">${SHORT[p.org.id] || p.org.a}</text>
+    </g>`;
+  }).join('');
+  html += `<rect class="scan" id="scan" x="${minX - 120}" y="${minY}" width="120" height="${maxY - minY}" fill="url(#scang)" opacity="0"/>`;
+  svg.innerHTML = html;
+
+  svg.querySelectorAll('.hex').forEach((g) => {
+    const show = () => showTip(g);
+    g.addEventListener('mouseenter', show);
+    g.addEventListener('focus', show);
+    g.addEventListener('click', show);
+    g.addEventListener('mouseleave', hideTip);
+    g.addEventListener('blur', hideTip);
+  });
+}
+
+function hexState(org) {
+  if (!state.b) return code(org, state.a);
+  const ra = rank(org, state.a), rb = rank(org, state.b);
+  if (ra >= 3 && rb >= 3) return 'both';
+  if (ra >= 3) return 'onlyA';
+  if (rb >= 3) return 'onlyB';
+  return Math.max(ra, rb) >= 1.5 ? 'partial' : 'gap';
+}
+
+function paintMap(animate) {
+  const svg = $('map');
+  svg.querySelectorAll('.hex').forEach((g) => {
+    const org = ORGS.find((o) => o.id === g.dataset.id);
+    const next = hexState(org);
+    const changed = g.dataset.act !== next;
+    g.dataset.act = next;
+    g.setAttribute('aria-label', `${org.a}: ${tipLine(org)}`);
+    if (animate && changed && !RM) {
+      g.animate([{ transform: 'scale(.78)' }, { transform: 'scale(1.07)' }, { transform: 'scale(1)' }],
+        { duration: 560, delay: parseFloat(g.style.getPropertyValue('--d')) || 0, easing: 'cubic-bezier(.2,.8,.2,1)' });
+    }
+  });
+  if (animate && !RM) {
+    const scan = $('scan'), span = +svg.dataset.maxx - +svg.dataset.minx + 240;
+    scan.animate([{ transform: 'translateX(0px)', opacity: 1 }, { transform: `translateX(${span}px)`, opacity: 1 }],
+      { duration: 900, easing: 'cubic-bezier(.4,0,.2,1)' });
+  }
+}
+
+function tipLine(org) {
+  const a = code(org, state.a);
+  let s = `${drugById[state.a].s} ${ACT_LABEL[a]}`;
+  if (state.b) s += `; ${drugById[state.b].s} ${ACT_LABEL[code(org, state.b)]}`;
+  return s;
+}
+
+function showTip(g) {
+  const org = ORGS.find((o) => o.id === g.dataset.id);
+  const tip = $('tip'), box = $('map-box').getBoundingClientRect(), r = g.getBoundingClientRect();
+  const row = (id, cls) => `<div class="row"><span class="k" style="background:var(${cls})">${esc(drugById[id].s)}</span>${ACT_LABEL[code(org, id)]}</div>`;
+  tip.innerHTML = `<h4>${esc(org.a)}</h4><div class="tsub">${esc(org.n)}</div>${row(state.a, '--accent')}${state.b ? row(state.b, '--b') : ''}`;
+  $('map-box').querySelectorAll('.hex.hot').forEach((h) => h.classList.remove('hot'));
+  g.classList.add('hot');
+  tip.classList.add('on');
+  const tw = tip.offsetWidth, th = tip.offsetHeight;
+  let left = r.left - box.left + r.width / 2 - tw / 2;
+  left = Math.max(0, Math.min(left, box.width - tw));
+  let top = r.top - box.top - th - 8;
+  if (top < 0) top = r.bottom - box.top + 8;
+  tip.style.left = left + 'px'; tip.style.top = top + 'px';
+}
+function hideTip() { $('tip').classList.remove('on'); $('map-box').querySelectorAll('.hex.hot').forEach((h) => h.classList.remove('hot')); }
+
+// ── Legend ──────────────────────────────────────────────
+function swatch(fill, extra = '') { return `<svg viewBox="0 0 14 14"><polygon points="${hexPoints(7, 7, 6.6)}" style="fill:${fill};${extra}"/></svg>`; }
+function renderLegend() {
+  const L = state.b
+    ? [['var(--both)', CMP_LABEL.both], ['var(--accent)', `Only ${drugById[state.a].s}`], ['var(--b)', `Only ${drugById[state.b].s}`], ['url(#hatch)', 'Partial or variable'], ['var(--a-none)', 'Gap', '', true]]
+    : [['var(--a-doc)', 'Drug of choice'], ['var(--a-full)', 'Active'], ['var(--a-part)', 'Partial'], ['url(#hatch)', 'Variable'], ['var(--a-weak)', 'Combination only', 'stroke:var(--a-full);stroke-dasharray:2 1.5'], ['var(--a-none)', 'Not reliable']];
+  $('legend').innerHTML = L.map(([f, t, x, gap]) => `<span class="lg">${gap
+    ? `<svg viewBox="0 0 14 14"><polygon points="${hexPoints(7, 7, 6.6)}" style="fill:var(--a-none)"/><circle cx="10.5" cy="3.5" r="2.4" style="fill:var(--gap)"/></svg>`
+    : swatch(f, x)}${t}</span>`).join('');
+}
+
+// ── Cards ───────────────────────────────────────────────
+function fingerprint(d, gapSet) {
+  const groups = CLUSTERS.map((c) => `<span class="fp-g">${c.orgs.map((o) => {
+    const rk = rank(o, d.id), r = rk >= 4 ? 4 : rk >= 3 ? 3 : rk >= 2 ? 2 : rk >= 1.5 ? 1 : 0;
+    const fill = gapSet && rk >= 3 && gapSet.has(o.id) ? ' class="fill"' : '';
+    return `<i data-r="${r}"${fill}></i>`;
+  }).join('')}</span>`);
+  return `<span class="fp" aria-hidden="true">${groups.join('')}</span>`;
+}
+const newsTags = new Set(CURATED.flatMap((c) => c.tags));
+function visibleDrugs() {
+  const f = FILTERS.find((x) => x.key === state.filter);
+  const q = state.q.trim().toLowerCase();
+  return DRUGS.filter((d) => f.test(d) && (!q || `${d.n} ${d.s} ${d.c} ${d.r}`.toLowerCase().includes(q)));
+}
+function gapsOf(ids) { return new Set(ORGS.filter((o) => !ids.some((id) => reliable(o, id))).map((o) => o.id)); }
+
+function renderRail() {
+  const list = visibleDrugs();
+  const gapSet = gapsOf([state.a, state.b].filter(Boolean));
+  $('rail').innerHTML = list.length ? list.map((d) => {
+    const rel = ORGS.filter((o) => reliable(o, d.id)).length;
+    const fills = d.id !== state.a && d.id !== state.b ? ORGS.filter((o) => gapSet.has(o.id) && reliable(o, d.id)).length : 0;
+    const role = d.id === state.a ? 'is-a' : d.id === state.b ? 'is-b' : '';
+    const tag = role === 'is-a' ? 'A' : role === 'is-b' ? 'B' : `+${fills}`;
+    return `<button type="button" class="dcard ${role}" data-id="${d.id}" ${fills ? `data-fills="${fills}"` : ''} aria-pressed="${!!role}" style="--h:${CLASS_HUE[d.c] ?? 215}"
+      aria-label="${esc(d.n)}, ${esc(d.c)}, reliable against ${rel} of ${ORGS.length}${fills ? `, fills ${fills} gaps` : ''}">
+      <span class="dc-top"><span class="dc-class">${esc(d.c)}${newsTags.has(d.id) ? '<span class="news-dot" title="In recent advances"></span>' : ''}</span><span class="dc-route">${esc(d.r.replace(' region-dependent', ''))}</span></span>
+      <span class="dc-tag"><span class="badge">${tag}</span></span>
+      <span class="dc-mid"><span class="dc-code">${esc(d.s)}${d.legacy ? '<span class="dc-legacy">Legacy</span>' : ''}</span><span class="dc-name">${esc(d.n)}</span></span>
+      <span class="dc-foot">${fingerprint(d, gapSet)}<span class="dc-count"><b>${rel}</b>/${ORGS.length}</span></span>
+    </button>`;
+  }).join('') : '<div class="rail-empty">No antibiotics match that search. Clear it or pick another family.</div>';
+}
+
+function renderChips() {
+  $('chips').innerHTML = FILTERS.map((f) => `<button type="button" class="chip" data-f="${f.key}" aria-pressed="${state.filter === f.key}">${f.label}</button>`).join('');
+}
+
+// ── Summary ─────────────────────────────────────────────
+function tween(el, to, fmt) {
+  const from = +el.dataset.v || 0; el.dataset.v = to;
+  if (RM) { el.innerHTML = fmt(to); return; }
+  const t0 = performance.now();
+  const step = (t) => { const k = Math.min(1, (t - t0) / 700), e = 1 - Math.pow(1 - k, 3); el.innerHTML = fmt(Math.round(from + (to - from) * e)); if (k < 1) requestAnimationFrame(step); };
+  requestAnimationFrame(step);
+}
+function covered(o) { return reliable(o, state.a) || (state.b && reliable(o, state.b)); }
+function partialOnly(o) { const m = Math.max(rank(o, state.a), state.b ? rank(o, state.b) : 0); return m >= 1.5 && m < 3; }
+
+function renderSummary(animate) {
+  const n = ORGS.length, rel = ORGS.filter(covered).length, part = ORGS.filter(partialOnly).length;
+  const pct = Math.round((rel / n) * 100);
+  tween($('big-n'), pct, (v) => `${v}<small>%</small>`);
+  const aOnly = ORGS.filter((o) => reliable(o, state.a)).length;
+  $('big-meta').innerHTML = state.b
+    ? `${rel} of ${n} phenotypes<br><span class="delta">+${rel - aOnly}</span> added by ${esc(drugById[state.b].s)}`
+    : `${rel} of ${n} phenotypes<br>${part} more partial or variable`;
+  $('segs').innerHTML = CLUSTERS.map((c, ci) => (ci ? '<i class="sep"></i>' : '') + c.orgs.map((o, i) => {
+    let k = '';
+    if (state.b) { const s = hexState(o); k = s === 'both' ? 'both' : s === 'onlyA' ? 'rel' : s === 'onlyB' ? 'b' : s === 'partial' ? 'part' : ''; }
+    else { const r = rank(o, state.a); k = r >= 4 ? 'doc' : r >= 3 ? 'rel' : r >= 1.5 ? 'part' : ''; }
+    return `<i data-k="${k}" title="${esc(o.a)}" style="--d:${animate ? (MAP_ORDER.indexOf(o) * 22) : 0}ms"></i>`;
+  }).join('')).join('');
+  const C = 2 * Math.PI * 26;
+  $('rings').innerHTML = CLUSTERS.map((c) => {
+    const t = c.orgs.length, r = c.orgs.filter(covered).length, p = c.orgs.filter(partialOnly).length;
+    return `<div class="ring"><svg viewBox="0 0 64 64">
+      <circle class="trk" cx="32" cy="32" r="26"/>
+      <circle class="arc par" cx="32" cy="32" r="26" stroke-dasharray="${C}" stroke-dashoffset="${C}" data-o="${C * (1 - (r + p) / t)}"/>
+      <circle class="arc rel" cx="32" cy="32" r="26" stroke-dasharray="${C}" stroke-dashoffset="${C}" data-o="${C * (1 - r / t)}"/>
+      <text class="ring-n" x="32" y="32">${r}/${t}</text></svg><span class="ring-l">${c.ring}</span></div>`;
+  }).join('');
+  requestAnimationFrame(() => requestAnimationFrame(() => $('rings').querySelectorAll('.arc').forEach((a) => a.setAttribute('stroke-dashoffset', a.dataset.o))));
+}
+
+// ── Partners & gaps ─────────────────────────────────────
+function renderPartners() {
+  const base = [state.a, state.b].filter(Boolean);
+  const gaps = gapsOf(base);
+  const breadth = (id) => ORGS.filter((o) => reliable(o, id)).length;
+  const cands = DRUGS.filter((d) => !base.includes(d.id)).map((d) => {
+    const closes = ORGS.filter((o) => gaps.has(o.id) && reliable(o, d.id));
+    return { d, closes, breadth: breadth(d.id) };
+  }).filter((x) => x.closes.length).sort((x, y) => y.closes.length - x.closes.length || x.breadth - y.breadth).slice(0, 3);
+  const names = base.map((id) => drugById[id].s).join(' + ');
+  $('pt-sub').textContent = gaps.size ? `What best fills the ${gaps.size} gaps left by ${names}.` : `${names} reliably covers every phenotype on the map.`;
+  $('plist').innerHTML = cands.map(({ d, closes }) => `<button type="button" class="partner" data-pick="${d.id}">
+    <span class="code">${esc(d.s)}</span>
+    <span class="nm">${esc(d.n)}<small>${closes.map((o) => SHORT[o.id]).join(' · ')}</small></span>
+    <span class="plus">+${closes.length}</span></button>`).join('') || '<div class="empty">No single agent closes the remaining gaps.</div>';
+  $('gap-k').textContent = `Still uncovered (${gaps.size})`;
+  $('gaps').innerHTML = [...gaps].map((id) => { const o = ORGS.find((x) => x.id === id); return `<button type="button" class="gchip" data-org="${id}" title="${esc(o.n)}">${esc(SHORT[id])}</button>`; }).join('') || '<span class="fine" style="margin:0">None</span>';
+}
+
+function renderNotes() {
+  const blocks = [state.a, state.b].filter(Boolean).map((id) => {
+    const d = drugById[id], p = DATA.prof[id];
+    if (!p) return `<div class="note"><h5>${esc(d.n)}</h5><p>${esc(d.c)} · ${esc(d.r)}. No teaching notes for this drug yet.</p></div>`;
+    return `<div class="note"><h5>${esc(d.s)} · ${esc(p.sub)}</h5><p>${esc(p.shines)}</p></div><div class="note trap"><h5>Common trap</h5><p>${esc(p.trap)}</p></div>`;
+  });
+  $('notes').innerHTML = blocks.join('');
+}
+
+function renderPair() {
+  const pill = (id, cls, k) => `<span class="pill ${cls}"><span class="k">${k}</span><span class="t">${esc(drugById[id].n)}</span>${cls === 'b' ? '<button class="x" type="button" data-clear-b aria-label="Remove second drug">×</button>' : ''}</span>`;
+  $('pair').innerHTML = pill(state.a, 'a', 'A') + (state.b ? pill(state.b, 'b', 'B') : state.compare ? '<span class="pill" style="padding-left:10px;color:var(--fg-2)">Tap a second card</span>' : '');
+}
+
+function render(animate = true) {
+  renderRail(); renderPair(); renderLegend(); paintMap(animate); renderSummary(animate); renderPartners(); renderNotes(); renderCurated();
+}
+
+function select(id, flash = true) {
+  if (state.compare && id !== state.a) state.b = id === state.b ? null : id;
+  else if (!state.compare) { state.a = id; state.b = null; store.set('cl.a', id); }
+  render(true);
+  const el = $('rail').querySelector(`[data-id="${id}"]`);
+  if (el) {
+    if (flash && !RM) { el.classList.add('flash'); setTimeout(() => el.classList.remove('flash'), 900); }
+    el.scrollIntoView({ behavior: RM ? 'auto' : 'smooth', inline: 'center', block: 'nearest' });
+  }
+  queueLiterature();
+}
+
+// ── Recent advances: curated + live PubMed with auto refresh ──
+const TTL = 6 * 3600e3;
+let seen = store.get('cl.seen', null);
+if (!seen) { seen = CURATED.map((c) => c.id); store.set('cl.seen', seen); }
+const seenSet = new Set(seen);
+const fmtDate = (iso) => new Date(iso + 'T00:00:00').toLocaleDateString('en-GB', { month: 'short', year: 'numeric' });
+function ago(t) { const m = Math.round((Date.now() - t) / 60000); return m < 1 ? 'just now' : m < 60 ? `${m} min ago` : `${Math.round(m / 60)} h ago`; }
+
+function renderCurated() {
+  const focus = [state.a, state.b].filter(Boolean);
+  const items = CURATED.filter((c) => !state.only || c.tags.some((t) => focus.includes(t)));
+  $('only').setAttribute('aria-pressed', state.only); $('only').classList.toggle('on', state.only);
+  $('feed-cur').innerHTML = items.length ? items.map((c, i) => `<li class="item" style="--d:${i * 40}ms">
+    <span class="when">${fmtDate(c.date)}</span>
+    <div><span class="src">${esc(c.src)}</span>${seenSet.has(c.id) ? '' : '<span class="new">NEW</span>'}
+      <a class="t" href="${c.link}" target="_blank" rel="noopener noreferrer">${esc(c.title)}</a>
+      <p>${esc(c.body)}</p>
+      ${c.tags.length ? `<div class="tags">${c.tags.map((t) => `<button type="button" class="tagb ${focus.includes(t) ? 'on' : ''}" data-pick-a="${t}">${esc(drugById[t].s)}</button>`).join('')}</div>` : ''}
+    </div></li>`).join('') : `<li class="empty">No approvals or guidance in this list mention ${esc(focus.map((id) => drugById[id].s).join(' or '))}.</li>`;
+}
+
+function setStatus(s, text) { $('status').dataset.s = s; $('status-t').textContent = text; }
+function pubmedQuery(d) { return `"${d.n.replace(/-/g, ' ')}"[tiab] AND (resistance[tiab] OR trial[tiab] OR susceptibility[tiab])`; }
+
+function renderLit(d, entry, failed) {
+  $('lit-k').textContent = `Latest literature · ${d.s}`;
+  const searchUrl = `https://pubmed.ncbi.nlm.nih.gov/?term=${encodeURIComponent(pubmedQuery(d))}&sort=date`;
+  if (!entry) {
+    $('feed-lit').innerHTML = `<li class="empty">${failed
+      ? `The live PubMed feed can't load here. On the published site it refreshes every 6 hours. <a href="${searchUrl}" target="_blank" rel="noopener noreferrer">Open the ${esc(d.s)} search on PubMed</a>.`
+      : 'Loading…'}</li>`;
+    $('lit-next').textContent = '';
+    return;
+  }
+  const known = new Set(store.get('cl.pmseen.' + d.id, []));
+  $('feed-lit').innerHTML = entry.items.map((a, i) => `<li class="item" style="--d:${i * 40}ms">
+    <span class="when">${esc(a.date)}</span>
+    <div><span class="src">${esc(a.journal)}</span>${entry.firstLoad || known.has(a.id) ? '' : '<span class="new">NEW</span>'}
+      <a class="t" href="https://pubmed.ncbi.nlm.nih.gov/${a.id}/" target="_blank" rel="noopener noreferrer">${esc(a.title)}</a>
+      <p>${esc(a.authors)}</p></div></li>`).join('') || `<li class="empty">No recent PubMed results. <a href="${searchUrl}" target="_blank" rel="noopener noreferrer">Search PubMed</a>.</li>`;
+  store.set('cl.pmseen.' + d.id, entry.items.map((a) => a.id));
+  const next = Math.max(0, entry.t + TTL - Date.now());
+  $('lit-next').textContent = `next check in ${Math.floor(next / 3600e3)} h ${Math.floor((next % 3600e3) / 60000)} min`;
+}
+
+async function fetchLit(d) {
+  const base = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/';
+  const s = await fetch(`${base}esearch.fcgi?db=pubmed&retmode=json&sort=pub+date&retmax=6&term=${encodeURIComponent(pubmedQuery(d))}`);
+  if (!s.ok) throw new Error('search ' + s.status);
+  const ids = (await s.json()).esearchresult?.idlist || [];
+  if (!ids.length) return [];
+  const m = await fetch(`${base}esummary.fcgi?db=pubmed&retmode=json&id=${ids.join(',')}`);
+  if (!m.ok) throw new Error('summary ' + m.status);
+  const res = (await m.json()).result || {};
+  return ids.map((id) => res[id]).filter(Boolean).map((a) => ({
+    id: a.uid, title: a.title, journal: a.source || 'PubMed', date: (a.pubdate || '').split(' ').slice(0, 2).join(' '),
+    authors: (a.authors || []).slice(0, 2).map((x) => x.name).join(', ') + ((a.authors || []).length > 2 ? ' et al.' : ''),
+  }));
+}
+
+let litTimer = 0, litSeq = 0;
+function queueLiterature(force) { clearTimeout(litTimer); litTimer = setTimeout(() => loadLiterature(force), force ? 0 : 450); }
+async function loadLiterature(force) {
+  const d = drugById[state.b || state.a], key = 'cl.pm.' + d.id, seq = ++litSeq;
+  const cached = store.get(key, null);
+  if (cached && !force && Date.now() - cached.t < TTL) {
+    renderLit(d, cached); setStatus('cached', `Up to date · checked ${ago(cached.t)}`); return;
+  }
+  setStatus('loading', 'Checking PubMed…'); $('refresh').classList.add('spin');
+  if (!cached) renderLit(d, null, false);
+  try {
+    const items = await fetchLit(d);
+    if (seq !== litSeq) return;
+    const entry = { t: Date.now(), items, firstLoad: !cached };
+    store.set(key, { t: entry.t, items });
+    renderLit(d, entry); setStatus('live', 'Live · checked just now');
+  } catch (e) {
+    if (seq !== litSeq) return;
+    if (cached) { renderLit(d, cached); setStatus('offline', `Offline · showing results from ${ago(cached.t)}`); }
+    else { renderLit(d, null, true); setStatus('offline', 'Live feed unavailable here'); }
+  } finally { if (seq === litSeq) $('refresh').classList.remove('spin'); }
+}
+// Auto-update: re-check whenever the cached result goes stale, and when the tab comes back into view.
+setInterval(() => { const c = store.get('cl.pm.' + (state.b || state.a), null); if (!c || Date.now() - c.t > TTL) loadLiterature(); }, 10 * 60e3);
+document.addEventListener('visibilitychange', () => { if (!document.hidden) loadLiterature(); });
+
+// ── Events ──────────────────────────────────────────────
+function bind() {
+  const rail = $('rail');
+  rail.addEventListener('click', (e) => { const c = e.target.closest('.dcard'); if (c) select(c.dataset.id); });
+  rail.addEventListener('keydown', (e) => {
+    if (!['ArrowLeft', 'ArrowRight'].includes(e.key)) return;
+    const cards = [...rail.querySelectorAll('.dcard')]; if (!cards.length) return;
+    const cur = cards.indexOf(document.activeElement);
+    const i = Math.max(0, Math.min(cards.length - 1, (cur < 0 ? 0 : cur) + (e.key === 'ArrowRight' ? 1 : -1)));
+    cards[i].focus(); cards[i].scrollIntoView({ behavior: RM ? 'auto' : 'smooth', inline: 'nearest', block: 'nearest' }); e.preventDefault();
+  });
+  // drag to scroll with a mouse
+  let drag = null;
+  rail.addEventListener('pointerdown', (e) => { if (e.pointerType !== 'mouse') return; drag = { x: e.clientX, s: rail.scrollLeft, moved: false }; });
+  window.addEventListener('pointermove', (e) => {
+    if (!drag) return; const dx = e.clientX - drag.x;
+    if (!drag.moved && Math.abs(dx) > 6) { drag.moved = true; rail.classList.add('dragging'); }
+    if (drag.moved) rail.scrollLeft = drag.s - dx;
+  });
+  window.addEventListener('pointerup', () => { if (drag?.moved) setTimeout(() => rail.classList.remove('dragging'), 0); drag = null; });
+  $('prev').addEventListener('click', () => rail.scrollBy({ left: -rail.clientWidth * 0.8, behavior: RM ? 'auto' : 'smooth' }));
+  $('next').addEventListener('click', () => rail.scrollBy({ left: rail.clientWidth * 0.8, behavior: RM ? 'auto' : 'smooth' }));
+  $('chips').addEventListener('click', (e) => { const b = e.target.closest('[data-f]'); if (!b) return; state.filter = b.dataset.f; renderChips(); renderRail(); rail.scrollTo({ left: 0 }); });
+  $('q').addEventListener('input', (e) => { state.q = e.target.value; renderRail(); });
+  $('cmp').addEventListener('click', () => {
+    state.compare = !state.compare; $('cmp').setAttribute('aria-pressed', state.compare);
+    if (!state.compare) state.b = null;
+    render(!state.compare);
+    queueLiterature();
+  });
+  document.addEventListener('click', (e) => {
+    const p = e.target.closest('[data-pick]');
+    if (p) { state.compare = true; $('cmp').setAttribute('aria-pressed', 'true'); select(p.dataset.pick); return; }
+    const a = e.target.closest('[data-pick-a]');
+    if (a) { state.compare = false; $('cmp').setAttribute('aria-pressed', 'false'); select(a.dataset.pickA); window.scrollTo({ top: 0, behavior: RM ? 'auto' : 'smooth' }); return; }
+    if (e.target.closest('[data-clear-b]')) { state.b = null; render(true); queueLiterature(); return; }
+    const g = e.target.closest('[data-org]');
+    if (g) { const h = $('map').querySelector(`.hex[data-id="${g.dataset.org}"]`); if (h) { h.focus(); showTip(h); } return; }
+    if (!e.target.closest('.hex')) hideTip();
+  });
+  $('only').addEventListener('click', () => { state.only = !state.only; renderCurated(); });
+  $('refresh').addEventListener('click', () => queueLiterature(true));
+  // newly arrived curated items stop being "new" a few seconds after they've been on screen
+  setTimeout(() => store.set('cl.seen', CURATED.map((c) => c.id)), 5000);
+}
+
+buildMap(); renderChips(); bind(); render(false);
+// intro: let the honeycomb fill in once on load
+$('map').querySelectorAll('.hex').forEach((g) => { g.dataset.act = ''; });
+requestAnimationFrame(() => { const el = $('rail').querySelector('.is-a'); if (el) $('rail').scrollLeft = el.offsetLeft - 24; paintMap(true); });
+loadLiterature();
+</script>
+
+</body>
+</html>
