@@ -169,7 +169,7 @@ function renderNav() {
     return `<a href="#${v.id}" ${S.view === v.id ? 'aria-current="page"' : ''}>${svgIcon(v.id)}${v.label}${extra}</a>`;
   }).join('')}</div>`).join('');
   const rev = D.orgs.filter((o) => o.review.status === 'reviewed').length;
-  const dosed = Object.values(D.dosing.drugs).filter((x) => x.status !== 'not-sourced').length;
+  const dosed = Object.values(D.dosing.drugs).filter((x) => x.status === 'sourced' || x.status === 'partial').length;
   $('#side-status').innerHTML = `<div class="row"><span>Data edition</span><b>${esc(D.version)}</b></div>
     <div class="row"><span>Rows reviewed</span><b>${rev}/${D.orgs.length}</b></div>
     <div class="row"><span>Doses sourced</span><b>${dosed}/${D.drugs.length}</b></div>
@@ -459,7 +459,7 @@ function vDrugs() {
     <div class="stack">
       <section class="panel"><div class="p-head"><div><h2 class="p-title">Dosing</h2><p class="p-sub">Highlighted row: ${esc(POPS.find((p) => p.id === S.ctx.pop).label)}, renal ${esc(S.ctx.renal)}, hepatic ${esc(S.ctx.hepatic)}. <button type="button" class="btn" data-open-ctx style="height:24px;padding:0 8px">Change</button></p></div></div>
         ${ds.status === 'not-sourced' ? `<div class="banner warn" style="margin-bottom:12px">${svgIcon('<path d="M12 3l9 16H3z"/><path d="M12 10v4M12 17h.01"/>')}<div><b>Doses not yet sourced for ${esc(d.name)}.</b> Each line will be copied from the FDA label${d.kingdom === 'antibacterial' ? ' or the WHO AWaRe book' : ''} with its section and revision date, and checked by a clinician. Until then, use the label or your local formulary.</div></div>` : ''}
-        ${ds.status !== 'not-sourced' ? `<div class="banner info" style="margin-bottom:12px">${svgIcon('<circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v5h1"/>')}<div>Copied from the cited source and re-checked line by line against it${D.dosing.extractedOn ? ` (${esc(D.dosing.extractedOn)})` : ''}. <b>Clinician review: ${ds.reviewedBy ? `${esc(ds.reviewedBy)}, ${esc(ds.reviewedOn)}` : 'pending'}.</b> Confirm against the current label or your formulary before prescribing.${ds.gaps ? `<br><span class="p-sub" style="max-width:none">${esc(ds.gaps)}</span>` : ''}</div></div>` : ''}
+        ${ds.status === 'no-source' ? `<div class="banner warn" style="margin-bottom:12px">${svgIcon('<path d="M12 3l9 16H3z"/><path d="M12 10v4M12 17h.01"/>')}<div><b>No usable FDA label for ${esc(d.name)}.</b> ${esc(ds.gaps || '')} Use your local formulary.</div></div>` : ''}${ds.status !== 'not-sourced' && ds.status !== 'no-source' ? `<div class="banner info" style="margin-bottom:12px">${svgIcon('<circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v5h1"/>')}<div>Copied from the cited source and re-checked line by line against it${D.dosing.extractedOn ? ` (${esc(D.dosing.extractedOn)})` : ''}. <b>Clinician review: ${ds.reviewedBy ? `${esc(ds.reviewedBy)}, ${esc(ds.reviewedOn)}` : 'pending'}.</b> Confirm against the current label or your formulary before prescribing.${ds.gaps ? `<br><span class="p-sub" style="max-width:none">${esc(ds.gaps)}</span>` : ''}</div></div>` : ''}
         <div class="table-scroll"><table class="dose-table"><thead><tr><th>Population</th><th>Dose</th><th>Source</th></tr></thead><tbody>
         ${POPS.map((p) => `<tr class="${S.ctx.pop === p.id ? 'cur' : ''}"><td><b>${p.label}</b><br><span class="p-sub">${p.range}</span></td>${doseCells(ds[p.id], ds.status)}</tr>`).join('')}
         </tbody></table></div>
@@ -626,7 +626,7 @@ function vAdvances() {
 function vSources() {
   const rev = D.orgs.filter((o) => o.review.status === 'reviewed').length;
   const withBasis = D.orgs.filter((o) => o.basis.length).length;
-  const dosed = Object.values(D.dosing.drugs).filter((x) => x.status !== 'not-sourced').length;
+  const dosed = Object.values(D.dosing.drugs).filter((x) => x.status === 'sourced' || x.status === 'partial').length;
   const rules = D.sites.reduce((n, s) => n + (s.rules?.length || 0), 0);
   const row = (name, file, done, total, note) => `<tr><td><b>${name}</b><br><code class="mono p-sub">${file}</code></td><td>${done}/${total}<div class="meter"><i style="width:${total ? (done / total) * 100 : 0}%"></i></div></td><td class="p-sub">${note}</td></tr>`;
   return `
@@ -635,7 +635,7 @@ function vSources() {
     <div class="table-scroll"><table class="ds-table"><thead><tr><th>Dataset</th><th>Progress</th><th>Notes</th></tr></thead><tbody>
       ${row('Coverage rows: guideline mapped', 'data/organisms.json', withBasis, D.orgs.length, 'Each row lists the guideline or reference it follows.')}
       ${row('Coverage rows: clinician reviewed', 'data/organisms.json', rev, D.orgs.length, 'A reviewer checks every cell against the cited source and records name and date.')}
-      ${row('Dosing: sourced', 'data/dosing.json', dosed, D.drugs.length, 'Neonate, infant, child and adult, with renal and hepatic bands, from FDA labels and the WHO AWaRe book.')}
+      ${row('Dosing: sourced', 'data/dosing.json', dosed, D.drugs.length, 'From the current FDA label (DailyMed) or the WHO AWaRe book, re-checked line by line against the source. Partial means some bands are not covered by the source. Clinician review pending.')}
       ${row('Site-of-infection rules', 'data/sites.json', rules, rules, 'Only statements made directly in a label or guideline.')}
       ${row('AWaRe group', 'data/drugs.json', D.drugs.filter((d) => d.aware && d.aware !== 'Not listed').length, D.drugs.filter((d) => d.kingdom === 'antibacterial').length, 'WHO 2023 list. Drugs approved after it show “Not listed”.')}
     </tbody></table></div></section>
