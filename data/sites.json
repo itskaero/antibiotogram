@@ -1,0 +1,33 @@
+{
+ "status": "Only rules stated directly in an FDA label or the cited guideline are listed. A drug with no rule here is unrated for that site, not endorsed.",
+ "sites": [
+  { "id": "any", "label": "Any site" },
+  { "id": "blood", "label": "Bloodstream", "rules": [
+    { "drug": "TGC", "effect": "caution", "note": "Boxed warning: higher all-cause mortality than comparators across trials. Reserve for when alternatives are unsuitable.", "source": "fda-labels" } ] },
+  { "id": "lung", "label": "Pneumonia", "rules": [
+    { "drug": "DAP", "effect": "avoid", "note": "Label: not indicated for pneumonia (inactivated by pulmonary surfactant).", "source": "fda-labels" },
+    { "drug": "TGC", "effect": "caution", "note": "Not indicated for hospital- or ventilator-acquired pneumonia; mortality signal was highest in VAP.", "source": "fda-labels" },
+    { "drug": "LZD", "effect": "labelled", "note": "Labelled for nosocomial and community-acquired pneumonia.", "source": "fda-labels" } ] },
+  { "id": "cns", "label": "CNS / meningitis", "rules": [
+    { "drug": "CRO", "effect": "labelled", "note": "Labelled for bacterial meningitis.", "source": "fda-labels" },
+    { "drug": "MEM", "effect": "labelled", "note": "Labelled for bacterial meningitis in children 3 months and older.", "source": "fda-labels" },
+    { "drug": "MTZ", "effect": "labelled", "note": "IV metronidazole is labelled for anaerobic CNS infections including brain abscess.", "source": "fda-labels" },
+    { "drug": "ACY", "effect": "labelled", "note": "IV acyclovir is labelled for herpes simplex encephalitis.", "source": "fda-labels" },
+    { "drug": "LAMB", "effect": "labelled", "note": "Induction for cryptococcal meningitis, with flucytosine.", "source": "idsa-crypto-2010" },
+    { "drug": "FLUCY", "effect": "labelled", "note": "Induction partner for cryptococcal meningitis; never as monotherapy.", "source": "idsa-crypto-2010" },
+    { "drug": "CAS", "effect": "avoid", "note": "Echinocandins are not recommended for CNS candidiasis.", "source": "idsa-candida-2016" },
+    { "drug": "MIC", "effect": "avoid", "note": "Echinocandins are not recommended for CNS candidiasis.", "source": "idsa-candida-2016" },
+    { "drug": "ANID", "effect": "avoid", "note": "Echinocandins are not recommended for CNS candidiasis.", "source": "idsa-candida-2016" } ] },
+  { "id": "urine", "label": "Urinary tract", "rules": [
+    { "drug": "FOS", "effect": "labelled", "note": "Oral fosfomycin is labelled only for uncomplicated cystitis.", "source": "fda-labels" },
+    { "drug": "GEP", "effect": "labelled", "note": "Labelled for uncomplicated UTI in females 12 years and older.", "source": "fda-labels" },
+    { "drug": "MXF", "effect": "caution", "note": "No urinary tract indication in the label.", "source": "fda-labels" },
+    { "drug": "TGC", "effect": "caution", "note": "No urinary tract indication in the label.", "source": "fda-labels" },
+    { "drug": "FLU", "effect": "labelled", "note": "Preferred for symptomatic Candida cystitis when susceptible.", "source": "idsa-candida-2016" },
+    { "drug": "CAS", "effect": "caution", "note": "Echinocandins reach low urinary concentrations; not recommended for Candida cystitis.", "source": "idsa-candida-2016" },
+    { "drug": "MIC", "effect": "caution", "note": "Echinocandins reach low urinary concentrations; not recommended for Candida cystitis.", "source": "idsa-candida-2016" },
+    { "drug": "ANID", "effect": "caution", "note": "Echinocandins reach low urinary concentrations; not recommended for Candida cystitis.", "source": "idsa-candida-2016" } ] },
+  { "id": "gut", "label": "C. difficile (gut lumen)", "rules": [
+    { "drug": "VAN", "effect": "labelled", "note": "Oral vancomycin only; IV vancomycin does not reach the colon.", "source": "idsa-cdi-2021" } ] }
+ ]
+}

@@ -1,0 +1,82 @@
+{
+ "status": "Teaching commentary",
+ "combinations": [
+  {
+   "drugs": [
+    "AMP",
+    "GEN"
+   ],
+   "title": "Ampicillin + gentamicin",
+   "kind": "Synergy",
+   "body": "Classic teaching pair for Enterococcus faecalis endocarditis when aminoglycoside synergy is still appropriate and high-level aminoglycoside resistance is not blocking the plan.",
+   "why": "Cell-wall activity increases aminoglycoside uptake. The second drug is not there to look broad. It is there to create synergy.",
+   "caution": "Renal and ototoxicity risk matter. This is not a casual add-on."
+  },
+  {
+   "drugs": [
+    "AMP",
+    "CRO"
+   ],
+   "title": "Ampicillin + ceftriaxone",
+   "kind": "Dual beta-lactam",
+   "body": "High-yield trainee pair for E. faecalis endocarditis when you want to avoid aminoglycoside toxicity.",
+   "why": "The teaching pearl is targeted dual beta-lactam synergy, not broad empiric coverage.",
+   "caution": "This is organism-specific thinking. Do not copy it into unrelated syndromes."
+  },
+  {
+   "drugs": [
+    "DAP",
+    "CPT"
+   ],
+   "title": "Daptomycin + ceftaroline",
+   "kind": "Salvage MRSA combo",
+   "body": "Memorable salvage pair for persistent MRSA bacteremia and difficult VISA or VRSA-type situations.",
+   "why": "Ceftaroline changes the membrane or cell-wall context and can help daptomycin perform better in selected salvage scenarios.",
+   "caution": "This lives in specialist territory, especially when bacteremia is persistent."
+  },
+  {
+   "drugs": [
+    "CRO",
+    "MTZ"
+   ],
+   "title": "Ceftriaxone + metronidazole",
+   "kind": "Broadening",
+   "body": "A practical teaching pair for intra-abdominal coverage when ceftriaxone alone forgot anaerobes.",
+   "why": "The second drug fixes a spectrum gap. It is not a fancy synergy story.",
+   "caution": "If you already chose a single agent with solid anaerobe coverage, this may be duplicate thinking."
+  },
+  {
+   "drugs": [
+    "SAM",
+    "PMB"
+   ],
+   "title": "Ampicillin-sulbactam + polymyxin B",
+   "kind": "CRAB salvage frame",
+   "body": "Useful as a teaching frame for CRAB: sulbactam matters, and polymyxin exposure may be part of salvage strategies.",
+   "why": "This pair reflects how CRAB often forces mechanism-based thinking instead of routine broad-spectrum defaults.",
+   "caution": "Toxicity and regional susceptibility patterns matter. This is not a beginner regimen."
+  },
+  {
+   "drugs": [
+    "FDC",
+    "PMB"
+   ],
+   "title": "Cefiderocol + polymyxin B",
+   "kind": "Reserve salvage",
+   "body": "A reserve-space pair used when XDR Gram-negative options are running out and the team wants more than one active mechanism.",
+   "why": "The idea is not automatic synergy. It is risk management in an organism space with very few remaining moves.",
+   "caution": "If cefiderocol is clearly active and source control is strong, combination logic still needs deliberate review rather than reflex use."
+  },
+  {
+   "drugs": [
+    "TZP",
+    "VAN"
+   ],
+   "title": "Piperacillin-tazobactam + vancomycin",
+   "kind": "Common but watchful",
+   "body": "Very common empiric pairing because it quickly covers MRSA plus many Gram-negatives and anaerobes.",
+   "why": "This is broadening, not targeted synergy. It buys time while cultures settle the picture.",
+   "caution": "Broad empiric use should narrow quickly, and nephrotoxicity concerns matter when vancomycin is involved."
+  }
+ ]
+}

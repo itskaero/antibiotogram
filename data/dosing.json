@@ -1,0 +1,548 @@
+{
+ "schema": {
+  "populations": {
+   "neonate": "Birth to 28 days (state gestational/postnatal age bands where the source does)",
+   "infant": "1–12 months",
+   "child": "1–17 years",
+   "adult": "18 years and older"
+  },
+  "renal": "Adjustments by CrCl or eGFR band, plus haemodialysis and CRRT where the source states them",
+  "hepatic": "Adjustments by Child-Pugh class where the source states them",
+  "entry": {
+   "text": "Dose exactly as written in the source",
+   "source": "id in sources.json",
+   "section": "label or guideline section",
+   "version": "label revision date or edition",
+   "verifiedBy": "reviewer name",
+   "verifiedOn": "YYYY-MM-DD"
+  }
+ },
+ "plannedSources": [
+  "fda-labels",
+  "who-aware-book-2022"
+ ],
+ "drugs": {
+  "AMP": {
+   "status": "not-sourced",
+   "neonate": null,
+   "infant": null,
+   "child": null,
+   "adult": null,
+   "renal": null,
+   "hepatic": null
+  },
+  "AMC": {
+   "status": "not-sourced",
+   "neonate": null,
+   "infant": null,
+   "child": null,
+   "adult": null,
+   "renal": null,
+   "hepatic": null
+  },
+  "TZP": {
+   "status": "not-sourced",
+   "neonate": null,
+   "infant": null,
+   "child": null,
+   "adult": null,
+   "renal": null,
+   "hepatic": null
+  },
+  "SAM": {
+   "status": "not-sourced",
+   "neonate": null,
+   "infant": null,
+   "child": null,
+   "adult": null,
+   "renal": null,
+   "hepatic": null
+  },
+  "CFZ": {
+   "status": "not-sourced",
+   "neonate": null,
+   "infant": null,
+   "child": null,
+   "adult": null,
+   "renal": null,
+   "hepatic": null
+  },
+  "CRO": {
+   "status": "not-sourced",
+   "neonate": null,
+   "infant": null,
+   "child": null,
+   "adult": null,
+   "renal": null,
+   "hepatic": null
+  },
+  "FEP": {
+   "status": "not-sourced",
+   "neonate": null,
+   "infant": null,
+   "child": null,
+   "adult": null,
+   "renal": null,
+   "hepatic": null
+  },
+  "CPT": {
+   "status": "not-sourced",
+   "neonate": null,
+   "infant": null,
+   "child": null,
+   "adult": null,
+   "renal": null,
+   "hepatic": null
+  },
+  "CT": {
+   "status": "not-sourced",
+   "neonate": null,
+   "infant": null,
+   "child": null,
+   "adult": null,
+   "renal": null,
+   "hepatic": null
+  },
+  "MEM": {
+   "status": "not-sourced",
+   "neonate": null,
+   "infant": null,
+   "child": null,
+   "adult": null,
+   "renal": null,
+   "hepatic": null
+  },
+  "CA": {
+   "status": "not-sourced",
+   "neonate": null,
+   "infant": null,
+   "child": null,
+   "adult": null,
+   "renal": null,
+   "hepatic": null
+  },
+  "IR": {
+   "status": "not-sourced",
+   "neonate": null,
+   "infant": null,
+   "child": null,
+   "adult": null,
+   "renal": null,
+   "hepatic": null
+  },
+  "AA": {
+   "status": "not-sourced",
+   "neonate": null,
+   "infant": null,
+   "child": null,
+   "adult": null,
+   "renal": null,
+   "hepatic": null
+  },
+  "FDC": {
+   "status": "not-sourced",
+   "neonate": null,
+   "infant": null,
+   "child": null,
+   "adult": null,
+   "renal": null,
+   "hepatic": null
+  },
+  "VAN": {
+   "status": "not-sourced",
+   "neonate": null,
+   "infant": null,
+   "child": null,
+   "adult": null,
+   "renal": null,
+   "hepatic": null
+  },
+  "DAL": {
+   "status": "not-sourced",
+   "neonate": null,
+   "infant": null,
+   "child": null,
+   "adult": null,
+   "renal": null,
+   "hepatic": null
+  },
+  "ORI": {
+   "status": "not-sourced",
+   "neonate": null,
+   "infant": null,
+   "child": null,
+   "adult": null,
+   "renal": null,
+   "hepatic": null
+  },
+  "DAP": {
+   "status": "not-sourced",
+   "neonate": null,
+   "infant": null,
+   "child": null,
+   "adult": null,
+   "renal": null,
+   "hepatic": null
+  },
+  "LZD": {
+   "status": "not-sourced",
+   "neonate": null,
+   "infant": null,
+   "child": null,
+   "adult": null,
+   "renal": null,
+   "hepatic": null
+  },
+  "DOX": {
+   "status": "not-sourced",
+   "neonate": null,
+   "infant": null,
+   "child": null,
+   "adult": null,
+   "renal": null,
+   "hepatic": null
+  },
+  "TGC": {
+   "status": "not-sourced",
+   "neonate": null,
+   "infant": null,
+   "child": null,
+   "adult": null,
+   "renal": null,
+   "hepatic": null
+  },
+  "OMA": {
+   "status": "not-sourced",
+   "neonate": null,
+   "infant": null,
+   "child": null,
+   "adult": null,
+   "renal": null,
+   "hepatic": null
+  },
+  "GEN": {
+   "status": "not-sourced",
+   "neonate": null,
+   "infant": null,
+   "child": null,
+   "adult": null,
+   "renal": null,
+   "hepatic": null
+  },
+  "AMK": {
+   "status": "not-sourced",
+   "neonate": null,
+   "infant": null,
+   "child": null,
+   "adult": null,
+   "renal": null,
+   "hepatic": null
+  },
+  "CIP": {
+   "status": "not-sourced",
+   "neonate": null,
+   "infant": null,
+   "child": null,
+   "adult": null,
+   "renal": null,
+   "hepatic": null
+  },
+  "LVX": {
+   "status": "not-sourced",
+   "neonate": null,
+   "infant": null,
+   "child": null,
+   "adult": null,
+   "renal": null,
+   "hepatic": null
+  },
+  "MXF": {
+   "status": "not-sourced",
+   "neonate": null,
+   "infant": null,
+   "child": null,
+   "adult": null,
+   "renal": null,
+   "hepatic": null
+  },
+  "SXT": {
+   "status": "not-sourced",
+   "neonate": null,
+   "infant": null,
+   "child": null,
+   "adult": null,
+   "renal": null,
+   "hepatic": null
+  },
+  "FOS": {
+   "status": "not-sourced",
+   "neonate": null,
+   "infant": null,
+   "child": null,
+   "adult": null,
+   "renal": null,
+   "hepatic": null
+  },
+  "CHL": {
+   "status": "not-sourced",
+   "neonate": null,
+   "infant": null,
+   "child": null,
+   "adult": null,
+   "renal": null,
+   "hepatic": null
+  },
+  "MTZ": {
+   "status": "not-sourced",
+   "neonate": null,
+   "infant": null,
+   "child": null,
+   "adult": null,
+   "renal": null,
+   "hepatic": null
+  },
+  "AZM": {
+   "status": "not-sourced",
+   "neonate": null,
+   "infant": null,
+   "child": null,
+   "adult": null,
+   "renal": null,
+   "hepatic": null
+  },
+  "PMB": {
+   "status": "not-sourced",
+   "neonate": null,
+   "infant": null,
+   "child": null,
+   "adult": null,
+   "renal": null,
+   "hepatic": null
+  },
+  "GEP": {
+   "status": "not-sourced",
+   "neonate": null,
+   "infant": null,
+   "child": null,
+   "adult": null,
+   "renal": null,
+   "hepatic": null
+  },
+  "ZOL": {
+   "status": "not-sourced",
+   "neonate": null,
+   "infant": null,
+   "child": null,
+   "adult": null,
+   "renal": null,
+   "hepatic": null
+  },
+  "FLU": {
+   "status": "not-sourced",
+   "neonate": null,
+   "infant": null,
+   "child": null,
+   "adult": null,
+   "renal": null,
+   "hepatic": null
+  },
+  "VOR": {
+   "status": "not-sourced",
+   "neonate": null,
+   "infant": null,
+   "child": null,
+   "adult": null,
+   "renal": null,
+   "hepatic": null
+  },
+  "POS": {
+   "status": "not-sourced",
+   "neonate": null,
+   "infant": null,
+   "child": null,
+   "adult": null,
+   "renal": null,
+   "hepatic": null
+  },
+  "ISA": {
+   "status": "not-sourced",
+   "neonate": null,
+   "infant": null,
+   "child": null,
+   "adult": null,
+   "renal": null,
+   "hepatic": null
+  },
+  "CAS": {
+   "status": "not-sourced",
+   "neonate": null,
+   "infant": null,
+   "child": null,
+   "adult": null,
+   "renal": null,
+   "hepatic": null
+  },
+  "MIC": {
+   "status": "not-sourced",
+   "neonate": null,
+   "infant": null,
+   "child": null,
+   "adult": null,
+   "renal": null,
+   "hepatic": null
+  },
+  "ANID": {
+   "status": "not-sourced",
+   "neonate": null,
+   "infant": null,
+   "child": null,
+   "adult": null,
+   "renal": null,
+   "hepatic": null
+  },
+  "AMB": {
+   "status": "not-sourced",
+   "neonate": null,
+   "infant": null,
+   "child": null,
+   "adult": null,
+   "renal": null,
+   "hepatic": null
+  },
+  "LAMB": {
+   "status": "not-sourced",
+   "neonate": null,
+   "infant": null,
+   "child": null,
+   "adult": null,
+   "renal": null,
+   "hepatic": null
+  },
+  "FLUCY": {
+   "status": "not-sourced",
+   "neonate": null,
+   "infant": null,
+   "child": null,
+   "adult": null,
+   "renal": null,
+   "hepatic": null
+  },
+  "PEN": {
+   "status": "not-sourced",
+   "neonate": null,
+   "infant": null,
+   "child": null,
+   "adult": null,
+   "renal": null,
+   "hepatic": null
+  },
+  "ATO": {
+   "status": "not-sourced",
+   "neonate": null,
+   "infant": null,
+   "child": null,
+   "adult": null,
+   "renal": null,
+   "hepatic": null
+  },
+  "OSE": {
+   "status": "not-sourced",
+   "neonate": null,
+   "infant": null,
+   "child": null,
+   "adult": null,
+   "renal": null,
+   "hepatic": null
+  },
+  "BAL": {
+   "status": "not-sourced",
+   "neonate": null,
+   "infant": null,
+   "child": null,
+   "adult": null,
+   "renal": null,
+   "hepatic": null
+  },
+  "NIM": {
+   "status": "not-sourced",
+   "neonate": null,
+   "infant": null,
+   "child": null,
+   "adult": null,
+   "renal": null,
+   "hepatic": null
+  },
+  "REM": {
+   "status": "not-sourced",
+   "neonate": null,
+   "infant": null,
+   "child": null,
+   "adult": null,
+   "renal": null,
+   "hepatic": null
+  },
+  "MOL": {
+   "status": "not-sourced",
+   "neonate": null,
+   "infant": null,
+   "child": null,
+   "adult": null,
+   "renal": null,
+   "hepatic": null
+  },
+  "ACY": {
+   "status": "not-sourced",
+   "neonate": null,
+   "infant": null,
+   "child": null,
+   "adult": null,
+   "renal": null,
+   "hepatic": null
+  },
+  "VAL": {
+   "status": "not-sourced",
+   "neonate": null,
+   "infant": null,
+   "child": null,
+   "adult": null,
+   "renal": null,
+   "hepatic": null
+  },
+  "GAN": {
+   "status": "not-sourced",
+   "neonate": null,
+   "infant": null,
+   "child": null,
+   "adult": null,
+   "renal": null,
+   "hepatic": null
+  },
+  "VGAN": {
+   "status": "not-sourced",
+   "neonate": null,
+   "infant": null,
+   "child": null,
+   "adult": null,
+   "renal": null,
+   "hepatic": null
+  },
+  "FOS2": {
+   "status": "not-sourced",
+   "neonate": null,
+   "infant": null,
+   "child": null,
+   "adult": null,
+   "renal": null,
+   "hepatic": null
+  },
+  "MAR": {
+   "status": "not-sourced",
+   "neonate": null,
+   "infant": null,
+   "child": null,
+   "adult": null,
+   "renal": null,
+   "hepatic": null
+  }
+ }
+}

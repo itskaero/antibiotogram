@@ -1,0 +1,29 @@
+{
+ "alerts": [
+  {
+   "tone": "danger",
+   "title": "NDM-producing Pseudomonas ST235 remains a major red flag",
+   "body": "ST235 is a high-risk clone carrying NDM, which no avibactam combination inhibits. Suspect it in XDR Pseudomonas and send isolates for carbapenemase testing early."
+  },
+  {
+   "tone": "danger",
+   "title": "Linezolid-resistant S. aureus is no longer theoretical",
+   "body": "cfr, optrA and poxtA genes undo the assumption that linezolid always covers MRSA. Check susceptibility before relying on it in salvage regimens."
+  },
+  {
+   "tone": "warn",
+   "title": "Community-onset OXA-48 stories matter because they change pretest thinking",
+   "body": "OXA-48-like enzymes now appear in patients without recent hospital contact. Travel and prior healthcare history should raise suspicion before the full panel returns."
+  },
+  {
+   "tone": "info",
+   "title": "CRAB: sulbactam is the active ingredient",
+   "body": "For carbapenem-resistant Acinetobacter, sulbactam is the active component; IDSA 2024 favours high-dose sulbactam-based regimens over polymyxin-centred ones."
+  },
+  {
+   "tone": "new",
+   "title": "Newer oral agents change step-down plans",
+   "body": "Omadacycline, linezolid and, in uncomplicated UTI and gonorrhoea, gepotidacin and zoliflodacin widen oral step-down choices. Check the label indication for each."
+  }
+ ]
+}

@@ -1,110 +1,58 @@
-# 🧪 Antibiotogram (Simple Clinical Decision Tool)
+# Antibiotogram
 
-A lightweight, practical antibiogram tool designed to help clinicians quickly choose appropriate antibiotics based on common sensitivity patterns.
+A sourced antimicrobial coverage reference for trainees and teachers: spectrum bands to compare drugs, organism maps, dosing tables, and your own unit's antibiogram beside the reference.
 
-Try it live: https://itskaero.github.io/antibiotogram/
+Live: https://itskaero.github.io/antibiotogram/
 
----
+## What's in it
 
-## 💡 Why this exists
+| View | What it does |
+|---|---|
+| **Overview** | Counts, WHO AWaRe mix, the organisms with the fewest reliable options, recent advances and resistance alerts. |
+| **Spectrum** | Gantt-style bands: up to four drugs across every organism, a "together" row that shows the gaps, and a full list showing what each other drug would add. Switches between the reference and your imported antibiogram (% susceptible, n < 30 hatched). |
+| **Organisms** | Honeycomb map per kingdom (bacteria, fungi, viruses), coloured by how many reliable options exist or by one drug. Each organism lists its mechanism, cited guideline and ranked options. |
+| **Drugs** | Horizontal card rail with a coverage fingerprint on every card; drug pages with AWaRe group, FDA label link, dosing by population with renal and hepatic bands, site-of-infection rules, teaching notes and live PubMed results. |
+| **Antibiogram** | Import an [Antibiome](https://github.com/itskaero/antibiome) export (JSON) or a CSV. The file stays in the browser. |
+| **Recent advances** | Hand-checked approvals and guidance, plus guidelines, trials and reviews from PubMed refreshed weekly by a GitHub Action. |
+| **Sources & review** | Every reference, and how much of each dataset is sourced and clinician-reviewed. |
 
-Choosing the right antibiotic shouldn't feel like guesswork.
+Patient context (population, kidney and liver function, site of infection) is set from the top bar and stays in the browser.
 
-In real-world clinical settings—especially in busy OPDs or low-resource environments—you often don’t have time to go through long guidelines. This tool aims to bridge that gap by providing a quick, visual reference for antibiotic selection.
+## Data
 
-An **antibiogram** is essentially a summary of how sensitive bacteria are to different antibiotics, helping guide empirical therapy decisions. :contentReference[oaicite:0]{index=0}
+All data is in [`data/`](data/) as JSON so changes can be reviewed in pull requests.
 
----
+| File | Contents | Source |
+|---|---|---|
+| `drugs.json` | 58 antimicrobials, class, route, WHO AWaRe 2023 group | WHO AWaRe 2023, FDA labels |
+| `organisms.json` | 38 organisms and resistance phenotypes with activity codes per drug | Guideline cited per row in `basis` |
+| `sites.json` | Site-of-infection rules | Only statements made directly in an FDA label or the cited guideline |
+| `dosing.json` | Neonate, infant, child, adult, renal and hepatic dosing | **Schema only for now.** To be filled from FDA labels and the WHO AWaRe book, each entry with section, revision date and reviewer |
+| `sources.json` | Every reference with citation and link | — |
+| `curated.json` | Hand-checked approvals and guidance | — |
+| `advances.json` | Weekly literature feed | Written by `scripts/update-advances.mjs` |
+| `teaching-notes.json`, `combinations.json`, `alerts.json` | Teaching commentary | Editors |
 
-##  What this tool does
+Activity codes: `FD` drug of choice, `F` active, `P` partial, `V` variable, `C` combination only, `I` in vitro or limited data, `N` not reliable. A missing code means **not assessed**, never inactive.
 
--  Provides a **quick reference for antibiotic sensitivity**
--  Helps with **empirical decision-making**
--  Designed for **fast use at bedside / OPD**
--  Focused on **clarity over complexity**
+Each organism row has `review.status`. It changes to `reviewed` only when a named clinician has checked every cell against the cited source.
 
----
+### Weekly update
 
-##  How to use
+`.github/workflows/update-advances.yml` runs every Monday (or on demand from the Actions tab). It runs `node scripts/update-advances.mjs`, which queries PubMed for guidelines, randomised trials, meta-analyses and systematic reviews naming a drug in `drugs.json`, plus FDA press releases, and commits `data/advances.json` if anything changed.
 
-1. Open the app  
-2. Select organism (if applicable)  
-3. View suggested antibiotics / sensitivity patterns  
-4. Use it as a **guide**, not a replacement for clinical judgment  
+## Running locally
 
----
+The app loads JSON with `fetch`, so serve the folder instead of opening the file directly:
 
-##  Who this is for
+```bash
+npx serve .        # or: python3 -m http.server
+```
 
-- Medical students  
-- House officers / interns  
-- Pediatric & medicine trainees  
-- Busy clinicians who want quick decision support  
+It installs as an app (PWA) and works offline with the last downloaded data.
 
----
+## Disclaimer
 
-## ⚠️ Important disclaimer
+For education and decision support. Coverage is a population-level summary. It does not replace culture and susceptibility results, your local antibiogram, the product label or specialist advice.
 
-This tool is meant for **educational and support purposes only**.
-
-- It does **NOT replace clinical judgment**
-- It does **NOT substitute local hospital antibiograms**
-- Always consider:
-  - Patient condition
-  - Local resistance patterns
-  - Culture & sensitivity results (when available)
-
-Antibiograms are **population-level summaries**, not patient-specific answers. :contentReference[oaicite:1]{index=1}
-
----
-
-##  Limitations
-
-- May not reflect **local resistance trends**
-- Does not account for:
-  - Comorbidities
-  - Drug allergies
-  - Pharmacokinetics
-- Should not be used as the **sole basis for treatment**
-
----
-
-##  Tech stack
-
-- HTML / CSS / JavaScript  
-- Static deployment via GitHub Pages  
-
----
-
-##  Future ideas
-
-- Local hospital antibiogram integration  
-- Pediatric-specific antibiotic guidance  
-- Dose suggestions  
-- Offline mode (PWA)  
-- Resistance trend visualization  
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome!
-
-If you:
-- Spot an error  
-- Want to improve UI/UX  
-- Want to add organisms or antibiotics  
-
-Feel free to open an issue or submit a pull request.
-
----
-
-##  Author
-
-Made with practicality in mind by a clinician who got tired of flipping through PDFs during duty.
-
----
-
-## ⭐ If you find this useful
-
-Give it a star ⭐ — it helps others discover it!
+The previous single-page version is kept in [`legacy/`](legacy/).
