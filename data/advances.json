@@ -1,14 +1,41 @@
 {
- "generated": "2026-10-22T10:55:31.489Z",
+ "generated": "2026-10-26T10:11:46.604Z",
  "window": "last 120 days",
  "sources": [
   "PubMed E-utilities (guidelines, RCTs, meta-analyses, systematic reviews)",
   "FDA press releases RSS"
  ],
- "failures": [
-  "Error: FDA RSS 401"
- ],
+ "failures": [],
  "items": [
+  {
+   "id": "pmid-42928111",
+   "source": "PubMed",
+   "kind": "Systematic Review",
+   "kingdom": "antibacterial",
+   "date": "2026-10-26",
+   "title": "Azithromycin versus ceftriaxone for uncomplicated typhoid fever in children: a systematic review and meta-analysis of randomized controlled trials",
+   "journal": "BMC Infect Dis",
+   "authors": "Manzoor MU, Anwar A et al.",
+   "url": "https://pubmed.ncbi.nlm.nih.gov/42928111/",
+   "drugs": [
+    "CRO",
+    "AZM"
+   ]
+  },
+  {
+   "id": "pmid-42910750",
+   "source": "PubMed",
+   "kind": "Randomized Controlled Trial",
+   "kingdom": "antibacterial",
+   "date": "2026-10-23",
+   "title": "Extended Ceftriaxone Prophylaxis and Postoperative Inflammation and Infection-Related Symptoms After Ureteral Lithotripsy with Negative Urine Cultures",
+   "journal": "J Vis Exp",
+   "authors": "Wei J, Liu M et al.",
+   "url": "https://pubmed.ncbi.nlm.nih.gov/42910750/",
+   "drugs": [
+    "CRO"
+   ]
+  },
   {
    "id": "pmid-42902159",
    "source": "PubMed",
@@ -19,6 +46,16 @@
    "journal": "BMC Infect Dis",
    "authors": "Hosseini B, Pablo LA et al.",
    "url": "https://pubmed.ncbi.nlm.nih.gov/42902159/",
+   "drugs": []
+  },
+  {
+   "id": "fda-fda-approves-first-its-kind-chronic-hepatitis-b-treatment",
+   "source": "FDA",
+   "kind": "Press release",
+   "kingdom": null,
+   "date": "2026-10-20",
+   "title": "FDA Approves First-of-Its-Kind Chronic Hepatitis B Treatment",
+   "url": "http://www.fda.gov/news-events/press-announcements/fda-approves-first-its-kind-chronic-hepatitis-b-treatment",
    "drugs": []
   },
   {
@@ -95,6 +132,18 @@
    "journal": "Microbiologyopen",
    "authors": "Dehghan A, Arabian M et al.",
    "url": "https://pubmed.ncbi.nlm.nih.gov/42830652/",
+   "drugs": []
+  },
+  {
+   "id": "pmid-42830175",
+   "source": "PubMed",
+   "kind": "Systematic Review",
+   "kingdom": "antibacterial",
+   "date": "2026-10-04",
+   "title": "Comparative efficacy and safety of pharmacological regimens for Mycobacterium avium complex pulmonary disease and bacteremia: A systematic review with separate network meta-analyses",
+   "journal": "J Infect",
+   "authors": "Cheng Q, Guo L et al.",
+   "url": "https://pubmed.ncbi.nlm.nih.gov/42830175/",
    "drugs": []
   },
   {
@@ -238,42 +287,6 @@
    "drugs": [
     "TGC"
    ]
-  },
-  {
-   "id": "pmid-42691062",
-   "source": "PubMed",
-   "kind": "Randomized Controlled Trial",
-   "kingdom": "antibacterial",
-   "date": "2026-09-03",
-   "title": "Efficacy and safety of 5-day versus 7-day antibiotic therapy for spontaneous bacterial peritonitis in children with idiopathic nephrotic syndrome: an open-label randomized controlled trial",
-   "journal": "J Trop Pediatr",
-   "authors": "Kherojit H, Dawman L et al.",
-   "url": "https://pubmed.ncbi.nlm.nih.gov/42691062/",
-   "drugs": []
-  },
-  {
-   "id": "pmid-42678149",
-   "source": "PubMed",
-   "kind": "Randomized Controlled Trial",
-   "kingdom": "antibacterial",
-   "date": "2026-09-01",
-   "title": "Vaginal microbe-binding antibody interactions with a Lactobacillus crispatus live biotherapeutic following treatment for bacterial vaginosis",
-   "journal": "Microbiol Spectr",
-   "authors": "Liu R, Armstrong E et al.",
-   "url": "https://pubmed.ncbi.nlm.nih.gov/42678149/",
-   "drugs": []
-  },
-  {
-   "id": "pmid-42661162",
-   "source": "PubMed",
-   "kind": "Meta-Analysis",
-   "kingdom": "antibacterial",
-   "date": "2026-08-28",
-   "title": "Comprehensive in silico genomics analysis of global trends and host-specific emergence of aminoglycoside resistance in Staphylococcus aureus: a One-Health perspective",
-   "journal": "BMC Microbiol",
-   "authors": "El-Sehrawy AAMA, Jasim SA et al.",
-   "url": "https://pubmed.ncbi.nlm.nih.gov/42661162/",
-   "drugs": []
   },
   {
    "id": "pmid-42624345",
