@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-26T10:11:46.604Z",
+ "generated": "2026-11-02T12:30:31.548Z",
  "window": "last 120 days",
  "sources": [
   "PubMed E-utilities (guidelines, RCTs, meta-analyses, systematic reviews)",
@@ -7,6 +7,84 @@
  ],
  "failures": [],
  "items": [
+  {
+   "id": "pmid-42968069",
+   "source": "PubMed",
+   "kind": "Systematic Review",
+   "kingdom": "antibacterial",
+   "date": "2026-11-01",
+   "title": "Prevalence, antimicrobial resistance, and molecular resistance determinants of non-typhoidal Salmonella in Nigeria: a systematic review and meta-analysis with a one health perspective",
+   "journal": "BMC Infect Dis",
+   "authors": "Akinbobola JS, Akinbobola RIA et al.",
+   "url": "https://pubmed.ncbi.nlm.nih.gov/42968069/",
+   "drugs": []
+  },
+  {
+   "id": "pmid-42959153",
+   "source": "PubMed",
+   "kind": "Systematic Review",
+   "kingdom": "antibacterial",
+   "date": "2026-10-30",
+   "title": "Global prevalence of vancomycin-resistant Enterococcus in patients with haematological malignancies: a systematic review and meta-analysis",
+   "journal": "Front Public Health",
+   "authors": "Aljebaly FSM",
+   "url": "https://pubmed.ncbi.nlm.nih.gov/42959153/",
+   "drugs": [
+    "VAN"
+   ]
+  },
+  {
+   "id": "pmid-42949193",
+   "source": "PubMed",
+   "kind": "Systematic Review",
+   "kingdom": "antibacterial",
+   "date": "2026-10-28",
+   "title": "Intra-wound Vancomycin Powder for Surgical Site Infection Prophylaxis in Spinal Surgery: A Systematic Review and Meta-analysis",
+   "journal": "J Vis Exp",
+   "authors": "Xianjun D",
+   "url": "https://pubmed.ncbi.nlm.nih.gov/42949193/",
+   "drugs": [
+    "VAN"
+   ]
+  },
+  {
+   "id": "pmid-42947086",
+   "source": "PubMed",
+   "kind": "Randomized Controlled Trial",
+   "kingdom": "antifungal",
+   "date": "2026-10-28",
+   "title": "Cervicovaginal zinc and copper profiles across vaginitis phenotypes and hydrogel assignment: an exploratory pilot study",
+   "journal": "BMC Womens Health",
+   "authors": "Kunkli A, Rátonyi D et al.",
+   "url": "https://pubmed.ncbi.nlm.nih.gov/42947086/",
+   "drugs": []
+  },
+  {
+   "id": "pmid-42934652",
+   "source": "PubMed",
+   "kind": "Randomized Controlled Trial",
+   "kingdom": "antibacterial",
+   "date": "2026-10-27",
+   "title": "Efficacy of fosfomycin tromethamine powder in preventing biofilm-forming bacterial colonization on double-j stents in patients with upper urinary tract calculi",
+   "journal": "BMC Urol",
+   "authors": "Ye JB, Huang M et al.",
+   "url": "https://pubmed.ncbi.nlm.nih.gov/42934652/",
+   "drugs": [
+    "FOS"
+   ]
+  },
+  {
+   "id": "pmid-42934547",
+   "source": "PubMed",
+   "kind": "Systematic Review",
+   "kingdom": "antibacterial",
+   "date": "2026-10-27",
+   "title": "Pyrexia of unknown origin (PUO) in South Asia: a systematic review of etiology, diagnostic gaps and management practices",
+   "journal": "BMC Infect Dis",
+   "authors": "Gupta B, Blanco N et al.",
+   "url": "https://pubmed.ncbi.nlm.nih.gov/42934547/",
+   "drugs": []
+  },
   {
    "id": "pmid-42928111",
    "source": "PubMed",
@@ -21,6 +99,18 @@
     "CRO",
     "AZM"
    ]
+  },
+  {
+   "id": "pmid-42912815",
+   "source": "PubMed",
+   "kind": "Systematic Review",
+   "kingdom": "antibacterial",
+   "date": "2026-10-23",
+   "title": "Efficacy and safety of fluoroquinolones in the treatment of human brucellosis: A systematic review and meta-analysis",
+   "journal": "PLoS Negl Trop Dis",
+   "authors": "Mohammadi-Sartang M, Rafieipour N et al.",
+   "url": "https://pubmed.ncbi.nlm.nih.gov/42912815/",
+   "drugs": []
   },
   {
    "id": "pmid-42910750",
@@ -111,6 +201,18 @@
    ]
   },
   {
+   "id": "pmid-42863282",
+   "source": "PubMed",
+   "kind": "Systematic Review",
+   "kingdom": "antibacterial",
+   "date": "2026-10-12",
+   "title": "Digital health technologies for the prevention and management of urinary tract infections in menopausal women: A systematic review",
+   "journal": "Maturitas",
+   "authors": "Cappelli E, Cappelli MA et al.",
+   "url": "https://pubmed.ncbi.nlm.nih.gov/42863282/",
+   "drugs": []
+  },
+  {
    "id": "pmid-42840011",
    "source": "PubMed",
    "kind": "Systematic Review",
@@ -147,18 +249,6 @@
    "drugs": []
   },
   {
-   "id": "pmid-42791588",
-   "source": "PubMed",
-   "kind": "Systematic Review",
-   "kingdom": "antibacterial",
-   "date": "2026-09-25",
-   "title": "Surveillance of antibiotic-resistant bacteria integrating whole genome sequencing and epidemiological information - a global, systematic review, 2012-2023",
-   "journal": "Antimicrob Resist Infect Control",
-   "authors": "Reichert F, Perry M et al.",
-   "url": "https://pubmed.ncbi.nlm.nih.gov/42791588/",
-   "drugs": []
-  },
-  {
    "id": "pmid-42778003",
    "source": "PubMed",
    "kind": "Systematic Review",
@@ -183,20 +273,6 @@
    "drugs": []
   },
   {
-   "id": "pmid-42765564",
-   "source": "PubMed",
-   "kind": "Meta-Analysis",
-   "kingdom": "antibacterial",
-   "date": "2026-09-21",
-   "title": "Intrawound vancomycin for prevention of surgical site infection: meta-analysis of randomized clinical trials",
-   "journal": "BJS Open",
-   "authors": "Patel S, Nischal SA et al.",
-   "url": "https://pubmed.ncbi.nlm.nih.gov/42765564/",
-   "drugs": [
-    "VAN"
-   ]
-  },
-  {
    "id": "pmid-42747618",
    "source": "PubMed",
    "kind": "Systematic Review",
@@ -207,46 +283,6 @@
    "authors": "Chen T, Han M et al.",
    "url": "https://pubmed.ncbi.nlm.nih.gov/42747618/",
    "drugs": []
-  },
-  {
-   "id": "pmid-42742546",
-   "source": "PubMed",
-   "kind": "Randomized Controlled Trial",
-   "kingdom": "antibacterial",
-   "date": "2026-09-15",
-   "title": "[Complex therapy of chronic bacterial prostatitis using the immunomodulatory drug sodium aminodihydrophthalazinedione]",
-   "journal": "Urologiia",
-   "authors": "Shibaev A N, Smernitsky A M et al.",
-   "url": "https://pubmed.ncbi.nlm.nih.gov/42742546/",
-   "drugs": []
-  },
-  {
-   "id": "pmid-42740774",
-   "source": "PubMed",
-   "kind": "Meta-Analysis",
-   "kingdom": "antibacterial",
-   "date": "2026-09-15",
-   "title": "Safety and tolerability of linezolid to treat tuberculosis: a systematic review and meta-analysis",
-   "journal": "Respir Res Clin Pract",
-   "authors": "Amiri M, Cheraghi M et al.",
-   "url": "https://pubmed.ncbi.nlm.nih.gov/42740774/",
-   "drugs": [
-    "LZD"
-   ]
-  },
-  {
-   "id": "pmid-42740438",
-   "source": "PubMed",
-   "kind": "Randomized Controlled Trial",
-   "kingdom": "antibacterial",
-   "date": "2026-09-15",
-   "title": "Fourteen-Day Amoxicillin- or Tetracycline-Containing Bismuth Quadruple Therapy versus 14-Day Metronidazole-Based Triple Therapy as the Treatment for Clarithromycin-Resistant Helicobacter pylori Infection: A Multicenter Randomized Controlled Trial",
-   "journal": "Gut Liver",
-   "authors": "Koh M, Choi CW et al.",
-   "url": "https://pubmed.ncbi.nlm.nih.gov/42740438/",
-   "drugs": [
-    "MTZ"
-   ]
   },
   {
    "id": "pmid-42731055",
@@ -261,34 +297,6 @@
    "drugs": []
   },
   {
-   "id": "pmid-42720951",
-   "source": "PubMed",
-   "kind": "Systematic Review",
-   "kingdom": "antibacterial",
-   "date": "2026-09-10",
-   "title": "Cefepime and Mortality: A Systematic Review and Bayesian Meta-Analysis",
-   "journal": "JAMA Netw Open",
-   "authors": "Sohani ZN, Zhong YJ et al.",
-   "url": "https://pubmed.ncbi.nlm.nih.gov/42720951/",
-   "drugs": [
-    "FEP"
-   ]
-  },
-  {
-   "id": "pmid-42705767",
-   "source": "PubMed",
-   "kind": "Meta-Analysis",
-   "kingdom": "antibacterial",
-   "date": "2026-09-07",
-   "title": "Global prevalence of tigecycline-resistant foodborne Enterobacterales along the food chain: A meta-analysis",
-   "journal": "Food Res Int",
-   "authors": "Li M, Wang S et al.",
-   "url": "https://pubmed.ncbi.nlm.nih.gov/42705767/",
-   "drugs": [
-    "TGC"
-   ]
-  },
-  {
    "id": "pmid-42624345",
    "source": "PubMed",
    "kind": "Systematic Review",
@@ -299,6 +307,20 @@
    "authors": "Costa RV, Cerilo-Filho M et al.",
    "url": "https://pubmed.ncbi.nlm.nih.gov/42624345/",
    "drugs": []
+  },
+  {
+   "id": "pmid-42618875",
+   "source": "PubMed",
+   "kind": "Randomized Controlled Trial",
+   "kingdom": "antifungal",
+   "date": "2026-08-20",
+   "title": "Voriconazole versus itraconazole for antifungal prophylaxis in patients with graft-versus-host disease: A prospective randomized trial",
+   "journal": "Int J Hematol",
+   "authors": "Hayashi Y, Kanda Y et al.",
+   "url": "https://pubmed.ncbi.nlm.nih.gov/42618875/",
+   "drugs": [
+    "VOR"
+   ]
   },
   {
    "id": "pmid-42611892",
