@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-02T12:30:31.548Z",
+ "generated": "2026-11-09T12:56:25.826Z",
  "window": "last 120 days",
  "sources": [
   "PubMed E-utilities (guidelines, RCTs, meta-analyses, systematic reviews)",
@@ -7,6 +7,30 @@
  ],
  "failures": [],
  "items": [
+  {
+   "id": "pmid-42980223",
+   "source": "PubMed",
+   "kind": "Systematic Review",
+   "kingdom": "antibacterial",
+   "date": "2026-11-04",
+   "title": "Addition of probenecid to beta-lactam antibiotics in the treatment of skin and soft tissue infections: a systematic review",
+   "journal": "J Antimicrob Chemother",
+   "authors": "Hewitt C, Llewelyn MJ et al.",
+   "url": "https://pubmed.ncbi.nlm.nih.gov/42980223/",
+   "drugs": []
+  },
+  {
+   "id": "pmid-42975318",
+   "source": "PubMed",
+   "kind": "Randomized Controlled Trial",
+   "kingdom": "antibacterial",
+   "date": "2026-11-03",
+   "title": "Rifamycin use and gut microbial antibiotic resistance genes in cirrhosis: Results from a double-blind, placebo-controlled clinical trial",
+   "journal": "Gut Microbes",
+   "authors": "Bajaj JS, Davis BC et al.",
+   "url": "https://pubmed.ncbi.nlm.nih.gov/42975318/",
+   "drugs": []
+  },
   {
    "id": "pmid-42968069",
    "source": "PubMed",
@@ -101,6 +125,18 @@
    ]
   },
   {
+   "id": "pmid-42925421",
+   "source": "PubMed",
+   "kind": "Systematic Review",
+   "kingdom": "antifungal",
+   "date": "2026-10-24",
+   "title": "Epidemiological, etiological, and antifungal resistance patterns of vulvovaginal Candida spp. infections in Cameroon: A systematic review and meta-analysis",
+   "journal": "Med Mycol",
+   "authors": "Malieuze Nanfah MD, Yop Kite MM et al.",
+   "url": "https://pubmed.ncbi.nlm.nih.gov/42925421/",
+   "drugs": []
+  },
+  {
    "id": "pmid-42912815",
    "source": "PubMed",
    "kind": "Systematic Review",
@@ -146,6 +182,18 @@
    "date": "2026-10-20",
    "title": "FDA Approves First-of-Its-Kind Chronic Hepatitis B Treatment",
    "url": "http://www.fda.gov/news-events/press-announcements/fda-approves-first-its-kind-chronic-hepatitis-b-treatment",
+   "drugs": []
+  },
+  {
+   "id": "pmid-42887262",
+   "source": "PubMed",
+   "kind": "Meta-Analysis",
+   "kingdom": "antibacterial",
+   "date": "2026-10-16",
+   "title": "Quantitative risk assessment of Salmonella exposure along the chicken production-to-consumption chain in China combined with meta-analysis",
+   "journal": "Int J Food Microbiol",
+   "authors": "Xu C, Bian Z et al.",
+   "url": "https://pubmed.ncbi.nlm.nih.gov/42887262/",
    "drugs": []
   },
   {
@@ -201,18 +249,6 @@
    ]
   },
   {
-   "id": "pmid-42863282",
-   "source": "PubMed",
-   "kind": "Systematic Review",
-   "kingdom": "antibacterial",
-   "date": "2026-10-12",
-   "title": "Digital health technologies for the prevention and management of urinary tract infections in menopausal women: A systematic review",
-   "journal": "Maturitas",
-   "authors": "Cappelli E, Cappelli MA et al.",
-   "url": "https://pubmed.ncbi.nlm.nih.gov/42863282/",
-   "drugs": []
-  },
-  {
    "id": "pmid-42840011",
    "source": "PubMed",
    "kind": "Systematic Review",
@@ -222,30 +258,6 @@
    "journal": "Front Cell Infect Microbiol",
    "authors": "Xie F, Zhou Y et al.",
    "url": "https://pubmed.ncbi.nlm.nih.gov/42840011/",
-   "drugs": []
-  },
-  {
-   "id": "pmid-42830652",
-   "source": "PubMed",
-   "kind": "Systematic Review",
-   "kingdom": "antibacterial",
-   "date": "2026-10-05",
-   "title": "Iran's Escherichia coli AMR Landscape (2010-2025): A One Health Systematic Review and Meta-Analysis",
-   "journal": "Microbiologyopen",
-   "authors": "Dehghan A, Arabian M et al.",
-   "url": "https://pubmed.ncbi.nlm.nih.gov/42830652/",
-   "drugs": []
-  },
-  {
-   "id": "pmid-42830175",
-   "source": "PubMed",
-   "kind": "Systematic Review",
-   "kingdom": "antibacterial",
-   "date": "2026-10-04",
-   "title": "Comparative efficacy and safety of pharmacological regimens for Mycobacterium avium complex pulmonary disease and bacteremia: A systematic review with separate network meta-analyses",
-   "journal": "J Infect",
-   "authors": "Cheng Q, Guo L et al.",
-   "url": "https://pubmed.ncbi.nlm.nih.gov/42830175/",
    "drugs": []
   },
   {
@@ -382,32 +394,6 @@
    "url": "https://pubmed.ncbi.nlm.nih.gov/42500178/",
    "drugs": [
     "FLU"
-   ]
-  },
-  {
-   "id": "pmid-42426619",
-   "source": "PubMed",
-   "kind": "Systematic Review",
-   "kingdom": "antifungal",
-   "date": "2026-07-10",
-   "title": "Fatal brain infection in early life: primary amoebic meningoencephalitis caused by Naegleria fowleri in neonates and infants",
-   "journal": "BMC Infect Dis",
-   "authors": "Mahdavi J, Pirayeshfar S et al.",
-   "url": "https://pubmed.ncbi.nlm.nih.gov/42426619/",
-   "drugs": []
-  },
-  {
-   "id": "pmid-42429789",
-   "source": "PubMed",
-   "kind": "Randomized Controlled Trial",
-   "kingdom": "antiviral",
-   "date": "2026-07-10",
-   "title": "Virologic insights from the phase 3 REDPINE trial: remdesivir in renally impaired and immunocompromised patients with COVID-19",
-   "journal": "Antimicrob Agents Chemother",
-   "authors": "Rodriguez L, Andreatta K et al.",
-   "url": "https://pubmed.ncbi.nlm.nih.gov/42429789/",
-   "drugs": [
-    "REM"
    ]
   }
  ]
